@@ -44,7 +44,8 @@ jobs:
           "$AAPT" dump badging "$APK" > /tmp/badging.txt
           grep -m1 "^package:" /tmp/badging.txt
           grep -q "package: name='com.aeruno.nativeprototype'" /tmp/badging.txt || { echo "::error::wrong application id"; exit 1; }
-          grep -q "^sdkVersion:'31'" /tmp/badging.txt || { echo "::error::minSdk is not 31"; exit 1; }
+          grep -i "sdkversion" /tmp/badging.txt
+          grep -Eiq "(^|[^a-z])(min)?sdkversion:'31'" /tmp/badging.txt || { echo "::error::minSdk is not 31"; exit 1; }
           cp "$APK" "AerunoNative-build${GITHUB_RUN_NUMBER}-debug.apk"
           {
             echo "### AERUNO Native prototype, build ${GITHUB_RUN_NUMBER} (debug)"
