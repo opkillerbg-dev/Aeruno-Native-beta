@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.aeruno.nativeprototype.ui.specimen.TypeSpecimenScreen
+import com.aeruno.nativeprototype.ui.cardtest.CardTestScreen
 import com.aeruno.nativeprototype.ui.theme.AerunoTheme
 
 class MainActivity : ComponentActivity() {
@@ -16,13 +16,14 @@ class MainActivity : ComponentActivity() {
         val transparent = android.graphics.Color.TRANSPARENT
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.light(transparent, transparent),
-            navigationBarStyle = SystemBarStyle.light(transparent, transparent),
+            // N03: the card-test background ends in deep forest, so the navigation bar gets light icons.
+            navigationBarStyle = SystemBarStyle.dark(transparent),
         )
         setContent {
             AerunoTheme {
-                // N02: the type specimen is the only screen. Prototype ships debug builds only,
-                // so this is the debug-only path. N04 replaces it with the Today screen.
-                TypeSpecimenScreen()
+                // N03: the card test is the only screen (the N02 type specimen stays in the repo,
+                // unused). Prototype ships debug builds only. N04 replaces this with the Today screen.
+                CardTestScreen()
             }
         }
     }

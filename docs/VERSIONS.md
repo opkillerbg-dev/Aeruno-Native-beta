@@ -15,6 +15,13 @@ Looked up on 2026-11-19 in the official Android and Gradle release pages. **Comp
 
 GitHub Actions used: `actions/checkout@v4`, `actions/setup-java@v4`, `gradle/actions/setup-gradle@v4` (installs Gradle 8.13), `actions/upload-artifact@v4`. The first two and the last were used by the owner's older project's build and ran fine (with deprecation warnings). `setup-gradle@v4` worked in run #4. Update them together in a later card.
 
-Not included on purpose: Gradle wrapper (needs a binary file that cannot be downloaded in the coding sandbox), Haze or any blur library (N03), fonts (N02), tests, release signing.
+Not included on purpose: Gradle wrapper (needs a binary file that cannot be downloaded in the coding sandbox), tests, release signing.
 
-Dependencies in the app: Compose UI, Compose Foundation, Material 3 (only as a base for the custom theme) and activity-compose. Nothing else.
+Dependencies in the app: Compose UI, Compose Foundation, Material 3 (only as a base for the custom theme), activity-compose and, since N03, Haze. Nothing else.
+
+## Haze (added in N03)
+| Library | Version | Why this one |
+|---|---|---|
+| `dev.chrisbanes.haze:haze` | 1.7.2 | Last stable 1.x release (2026-02-10; 1.7.0 notes call it the last of the 1.x line). Built against Kotlin 2.2.20 and Jetpack Compose 1.9.x; this project uses Kotlin 2.3.0 and BOM 2026.05.00, and a newer compiler reads older library metadata. Android 12+ uses the platform blur (the project's minSdk is 31). |
+
+Checked 2026-11-20 on the official Haze changelog (chrisbanes.github.io/haze). **Not chosen:** Haze 2.0.x and 2.1.0 (2.1.0 released 2026-11-02): per the changelog they are built with Kotlin 2.4.x and Jetpack Compose 1.12.x, newer than this project's Kotlin 2.3.0 and BOM 2026.05.00, and Haze 2 moved blur to a separate `haze-blur` artifact with a different API. Upgrading is a later decision. **Compatibility with this project is not proven until a CI run is green.** If the build fails because of Haze, stop and report (no fake blur).

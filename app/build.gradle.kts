@@ -17,7 +17,7 @@ android {
         targetSdk = 36
         // CI passes the run number so every build has a higher versionCode.
         versionCode = (findProperty("buildNumber") as String?)?.toIntOrNull() ?: 1
-        versionName = "0.1.0-n01"
+        versionName = "0.1.0-n03"
     }
 
     compileOptions {
@@ -43,4 +43,5 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.haze) // N03: backdrop blur, used only inside ui/glass/GlassSurface.kt
 }
