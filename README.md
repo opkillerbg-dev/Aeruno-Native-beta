@@ -4,7 +4,7 @@ A small test app to see whether the "Verdant Glass" look can run smoothly on a r
 
 Plan and rules for everyone working here: [`AGENTS.md`](AGENTS.md). What the old app has: [`docs/BASELINE_LEGACY.md`](docs/BASELINE_LEGACY.md). Tool versions: [`docs/VERSIONS.md`](docs/VERSIONS.md).
 
-**Status:** N01 and N02 done. N03 delivered, waiting for its check: the app now shows a card test (one card, three surfaces A glass / B clear / C solid) to see whether real backdrop blur looks right on the phone. Next: N04 after N03 passes.
+**Status:** N01 to N03 done. N04 delivered, waiting for its check: the app now shows a scrolling test screen with a progressive blur at the top edge (switch A progressive / B no blur). Next: only after N04 passes.
 
 - App id: `com.aeruno.nativeprototype` (temporary, debug builds only).
 - Needs Android 12 or newer (minSdk 31).
