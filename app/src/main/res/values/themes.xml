@@ -2,5 +2,7 @@
 <resources>
     <style name="Theme.AerunoPrototype" parent="@android:style/Theme.Material.Light.NoActionBar">
         <item name="android:windowBackground">@color/aeruno_background</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 </resources>

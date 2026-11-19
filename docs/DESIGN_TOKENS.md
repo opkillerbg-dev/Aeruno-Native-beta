@@ -2,8 +2,14 @@
 
 Source of truth is the code: `ui/theme/Color.kt`, `Dimens.kt`, `Type.kt`, `Theme.kt`. Direction and contrast rules: `AGENTS.md` section 7. Everything here is UNTESTED on a device until the owner checks the specimen screen.
 
-## Colors (`AerunoColors`, unchanged since N01)
-background #F5F2E8, surface #FFFEFA, surfaceAlt #E7E2D6, forest #243D30, deepForest #172A21, olive #729900, sage #DCE5D7, brass #A98542, text #202A23, textMuted #687167, border #D8D9CE, danger #B55345. Olive and brass: fills, lines, icons, large type only.
+## Colors (`AerunoColors`; Palette A "Deep Heritage", owner-selected 2026-11-20)
+Brand: ivory (`Background`) #F3EFE4, deepForest #1F3B30, terracotta #C97855. Neutrals: surface #FFFEFA, surfaceAlt #E7E2D6, sage #DCE5D7, text #202A23, textMuted #646E65, border #D8D9CE. Semantic: danger #B55345. Left over, unused: brass #A98542.
+
+Changes vs N01: olive, old forest and old deepForest removed (deepForest merged); terracotta added; background #F5F2E8 to #F3EFE4; textMuted #687167 to #646E65 (the darker ivory dropped the old value to 4.4).
+
+Material mapping (`Theme.kt`): primary deepForest / onPrimary ivory; secondary terracotta / onSecondary text; tertiary brass; secondaryContainer sage / onSecondaryContainer deepForest.
+
+Contrast (WCAG, computed 2026-11-20): text on ivory 12.9; textMuted on ivory 4.6, surface 5.2; ivory on deepForest 10.6; terracotta on ivory 2.9, on surface 3.3; text on terracotta 4.45; deepForest on terracotta 3.65; danger on ivory 4.3, on surface 4.9. Terracotta is for fills, lines, icons and large decorative display only. Terracotta buttons use text-colored labels (4.45, just under 4.5).
 
 ## Spacing and radii (`Spacing`, `Radii`, unchanged)
 Spacing dp: 4, 8, 12, 16, 20, 24, 32, 40. Radii dp: button 12, chip 14, icon button 16, card 22, hero 28, nav 28, sheet 28.
@@ -18,7 +24,7 @@ Spacing dp: 4, 8, 12, 16, 20, 24, 32, 40. Radii dp: button 12, chip 14, icon but
 Only these weights exist. No Medium or SemiBold, so none is requested (no faked weights).
 
 ## Type scale (`AerunoType`, sp, size/line height)
-heroStat 64/68 (tracking -0.5), displayLarge 52/56, displayMedium 40/44, screenTitle 34/38 (all Big Shoulders Black); accentLarge 40/44, accentMedium 28/32 (Instrument Serif Italic); headline 22/28, cardTitle 18/24 (Inter Bold); bodyLarge 16/24, body 14/20, caption 11/16 (Inter Regular); button 15/20 (Inter Bold); label 12/16 (Inter Bold, tracking 0.8, write text in uppercase); timer 32/36 and statNumber 22/28 (Inter Bold, `tnum`).
+heroStat 64/68 (tracking -0.5), displayLarge 52/56, displayMedium 40/44, screenTitle 34/38 (all Big Shoulders Black); accentLarge 40/44, accentMedium 28/32 (Instrument Serif Italic); headline 22/28, cardTitle 18/24 (Inter Bold); bodyLarge 16/24, body 14/20, caption 11/16 (Inter Regular); button 15/20 (Inter Bold); label 12/16 (Inter Bold, tracking 0.8, write text in uppercase); timer 32/36, statCompact 28/32 and statNumber 22/28 (Inter Bold, `tnum`). statCompact is for small stats beside the 64 sp hero number.
 
 `AerunoTypography` maps these onto the Material text slots, so any Material component also uses AERUNO fonts.
 
@@ -28,5 +34,12 @@ heroStat 64/68 (tracking -0.5), displayLarge 52/56, displayMedium 40/44, screenT
 - Condensed display sizes (52 to 64 sp) are first guesses. Tune after the phone check.
 - Font files came from the legacy app's `web/fonts` (WOFF2) converted to TTF by the owner's previous session. Not byte-compared with upstream.
 
+## Status bar
+`MainActivity` calls `enableEdgeToEdge` with `SystemBarStyle.light(...)` for both bars, and `themes.xml` sets `windowLightStatusBar` and `windowLightNavigationBar`. This gives dark icons on the light screen. The default (auto) follows the phone's dark mode, which caused the white icons seen in N02.
+
 ## Licenses
-SIL Open Font License 1.1, one file per family in `app/src/main/assets/font-licenses/`, so they ship inside the APK. The copyright lines come from each font file's own metadata. For Big Shoulders the line matches the upstream project (checked on the web 2026-11-20). For Instrument Serif and Inter the line comes from the font file only; the upstream license files were not fetched.
+SIL Open Font License 1.1, one file per family in `app/src/main/assets/font-licenses/`, so they ship inside the APK. Copyright lines checked 2026-11-20 against upstream-derived sources:
+- Big Shoulders Display: "Copyright 2019 The Big Shoulders Project Authors (https://github.com/xotypeco/big_shoulders)". Matches the font file and the license text published by Font Squirrel.
+- Instrument Serif: "Copyright 2022 The Instrument Serif Project Authors (https://github.com/Instrument/instrument-serif)". Matches the font file, the upstream `OFL.txt` header as copied in a public repo, and Google Fonts' METADATA.
+- Inter: upstream `LICENSE.txt` header is "Copyright (c) 2016 The Inter Project Authors (https://github.com/rsms/inter)" (seen in a package mirror quoting it). The file now uses that exact line; the font metadata says "Copyright 2016".
+No Reserved Font Name appears in any of these notices. The license body is the standard OFL 1.1 text; the raw upstream files themselves could not be downloaded here, so this was not a byte-for-byte comparison.

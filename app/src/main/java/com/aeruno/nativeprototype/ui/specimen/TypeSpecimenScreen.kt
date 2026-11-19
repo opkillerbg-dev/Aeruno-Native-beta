@@ -88,8 +88,8 @@ private fun Panel(content: @Composable ColumnScope.() -> Unit) {
 private fun PairingSection() {
     Section("N02 type specimen") {
         Column {
-            Text("Today’s plan", style = AerunoType.accentLarge, color = AerunoColors.Olive)
-            Text("LOWER BODY", style = AerunoType.displayLarge, color = AerunoColors.Forest)
+            Text("Today’s plan", style = AerunoType.accentLarge, color = AerunoColors.Terracotta)
+            Text("LOWER BODY", style = AerunoType.displayLarge, color = AerunoColors.DeepForest)
         }
         Text(
             "Serif italic accent over a condensed display. Inter carries everything you read or tap.",
@@ -109,8 +109,8 @@ private fun StatsSection() {
                 verticalAlignment = Alignment.Bottom,
             ) {
                 StatBlock("8,420", "Steps", AerunoType.heroStat)
-                StatBlock("42", "Minutes", AerunoType.displayMedium)
-                StatBlock("4", "Streak", AerunoType.displayMedium)
+                StatBlock("42", "Minutes", AerunoType.statCompact)
+                StatBlock("4", "Streak", AerunoType.statCompact)
             }
         }
     }
@@ -119,7 +119,7 @@ private fun StatsSection() {
 @Composable
 private fun StatBlock(value: String, label: String, valueStyle: TextStyle) {
     Column {
-        Text(value, style = valueStyle, color = AerunoColors.Forest)
+        Text(value, style = valueStyle, color = AerunoColors.DeepForest)
         Text(label.uppercase(), style = AerunoType.label, color = AerunoColors.TextMuted)
     }
 }
@@ -130,6 +130,7 @@ private data class Spec(val name: String, val style: TextStyle, val sample: Stri
 private fun HierarchySection() {
     val specs = listOf(
         Spec("heroStat", AerunoType.heroStat, "8,420", "Big Shoulders 900 · 64/68"),
+        Spec("statCompact", AerunoType.statCompact, "42", "Inter Bold · tnum · 28/32"),
         Spec("displayLarge", AerunoType.displayLarge, "LOWER BODY", "Big Shoulders 900 · 52/56"),
         Spec("displayMedium", AerunoType.displayMedium, "35 MIN", "Big Shoulders 900 · 40/44"),
         Spec("screenTitle", AerunoType.screenTitle, "GOOD MORNING", "Big Shoulders 900 · 34/38"),
@@ -172,7 +173,7 @@ private fun UiSamplesSection() {
                     onClick = {},
                     shape = Radii.button,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = AerunoColors.Forest,
+                        containerColor = AerunoColors.DeepForest,
                         contentColor = AerunoColors.Background,
                     ),
                 ) { Text("Start workout", style = AerunoType.button) }
@@ -180,8 +181,8 @@ private fun UiSamplesSection() {
                     onClick = {},
                     shape = Radii.button,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = AerunoColors.Olive,
-                        contentColor = AerunoColors.DeepForest,
+                        containerColor = AerunoColors.Terracotta,
+                        contentColor = AerunoColors.Text,
                     ),
                 ) { Text("Add set", style = AerunoType.button) }
             }
@@ -192,12 +193,12 @@ private fun UiSamplesSection() {
                 color = AerunoColors.TextMuted,
             )
             listOf("88:88", "11:11", "00:00").forEach { t ->
-                Text(t, style = AerunoType.timer, color = AerunoColors.Forest, modifier = Modifier.background(AerunoColors.Sage))
+                Text(t, style = AerunoType.timer, color = AerunoColors.DeepForest, modifier = Modifier.background(AerunoColors.Sage))
             }
             Text(
                 "11:11",
                 style = AerunoType.timer.copy(fontFeatureSettings = null),
-                color = AerunoColors.Forest,
+                color = AerunoColors.DeepForest,
                 modifier = Modifier.background(AerunoColors.Sage),
             )
             Text(
@@ -227,18 +228,17 @@ private fun GlyphSection() {
 }
 
 private val swatches: List<Pair<String, Color>> = listOf(
-    "background" to AerunoColors.Background,
+    "ivory" to AerunoColors.Background,
+    "deepForest" to AerunoColors.DeepForest,
+    "terracotta" to AerunoColors.Terracotta,
     "surface" to AerunoColors.Surface,
     "surfaceAlt" to AerunoColors.SurfaceAlt,
-    "forest" to AerunoColors.Forest,
-    "deepForest" to AerunoColors.DeepForest,
-    "olive" to AerunoColors.Olive,
     "sage" to AerunoColors.Sage,
-    "brass" to AerunoColors.Brass,
     "text" to AerunoColors.Text,
     "textMuted" to AerunoColors.TextMuted,
     "border" to AerunoColors.Border,
     "danger" to AerunoColors.Danger,
+    "brass" to AerunoColors.Brass,
 )
 
 @Composable
@@ -253,7 +253,7 @@ private fun PaletteSection() {
             }
         }
         Text(
-            "Olive and brass: fills, lines, icons or large type only. Not small text on cream.",
+            "Brand: ivory, deepForest, terracotta (first row). Terracotta: fills, lines, icons, large decorative type only. Not small text on ivory or surface.",
             style = AerunoType.caption,
             color = AerunoColors.TextMuted,
         )
@@ -262,7 +262,10 @@ private fun PaletteSection() {
 
 @Composable
 private fun Swatch(name: String, color: Color, modifier: Modifier) {
-    val onColor = if (color.luminance() > 0.5f) AerunoColors.Text else AerunoColors.Background
+    val lum = color.luminance()
+    val contrastWithText = (maxOf(lum, AerunoColors.Text.luminance()) + 0.05f) / (minOf(lum, AerunoColors.Text.luminance()) + 0.05f)
+    val contrastWithIvory = (maxOf(lum, AerunoColors.Background.luminance()) + 0.05f) / (minOf(lum, AerunoColors.Background.luminance()) + 0.05f)
+    val onColor = if (contrastWithText >= contrastWithIvory) AerunoColors.Text else AerunoColors.Background
     val hex = "#%06X".format(color.toArgb() and 0xFFFFFF)
     Box(
         modifier = modifier
@@ -288,7 +291,7 @@ private fun SpacingSection() {
             steps.forEach { step ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text("s$step", style = AerunoType.caption, color = AerunoColors.TextMuted, modifier = Modifier.width(32.dp))
-                    Box(modifier = Modifier.width(step.dp).height(12.dp).background(AerunoColors.Forest))
+                    Box(modifier = Modifier.width(step.dp).height(12.dp).background(AerunoColors.DeepForest))
                 }
             }
             Spacer(Modifier.height(Spacing.s8))

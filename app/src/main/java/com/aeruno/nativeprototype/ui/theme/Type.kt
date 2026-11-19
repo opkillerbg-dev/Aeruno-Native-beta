@@ -51,6 +51,8 @@ object AerunoType {
 
     // Numbers: Inter with tabular figures (equal-width digits). Big Shoulders has no "tnum" feature.
     val timer = TextStyle(fontFamily = AerunoFonts.Ui, fontWeight = FontWeight.Bold, fontSize = 32.sp, lineHeight = 36.sp, fontFeatureSettings = "tnum")
+    /** Compact stat values next to a hero number (N02 refinement). */
+    val statCompact = TextStyle(fontFamily = AerunoFonts.Ui, fontWeight = FontWeight.Bold, fontSize = 28.sp, lineHeight = 32.sp, fontFeatureSettings = "tnum")
     val statNumber = TextStyle(fontFamily = AerunoFonts.Ui, fontWeight = FontWeight.Bold, fontSize = 22.sp, lineHeight = 28.sp, fontFeatureSettings = "tnum")
 }
 

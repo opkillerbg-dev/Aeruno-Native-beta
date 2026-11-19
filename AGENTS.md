@@ -6,7 +6,7 @@ Created 2026-11-19. Status: N00 and N01 done. N02 delivered, waiting for its gat
 ## 0. Current state (update after every card)
 
 - **Done:** N00 baseline. N01 skeleton + CI: GitHub Actions run "Build debug APK #4" (commit 93a3528) was green and produced the artifact `aeruno-native-debug-apk`; the owner installed it and saw the blank AERUNO screen on his phone (his screenshot). The Gradle build compiled Kotlin 2.3.0, Compose BOM 2026.05.00, AGP 8.13.2, Gradle 8.13 together; the app id and minSdk 31 were checked inside the built APK by the workflow.
-- **N02 (delivered 2026-11-20, UNTESTED):** typography tokens, bundled fonts + OFL licenses, type specimen screen (now the only screen), `docs/DESIGN_TOKENS.md`. Fonts are the owner-approved set Big Shoulders Display 900, Instrument Serif Italic, Inter Regular/Bold (same as the legacy app), replacing the Manrope plan. Not `[x]` until a green build and the owner confirms the specimen on the phone.
+- **N02 (delivered 2026-11-20; owner approved the typography; refinement pass 2026-11-20 UNTESTED):** typography tokens, bundled fonts + OFL licenses, type specimen screen (now the only screen), `docs/DESIGN_TOKENS.md`. Fonts are the owner-approved set Big Shoulders Display 900, Instrument Serif Italic, Inter Regular/Bold (same as the legacy app), replacing the Manrope plan. Refinement: Palette A Deep Heritage applied, status-bar icons set dark, compact stats in Inter Bold tnum, font notices checked. Not `[x]` until a green build and the owner confirms palette and status bar on the phone.
 - **Next:** N03 only after N02's gate passes and the owner says go.
 - **How code reaches the repo:** the owner uploads `update.zip` (changed files, repo paths) to the repo root; the `Apply update` workflow unpacks it and starts a build. Files under `.github/` are skipped by it and are pasted in by hand.
 - **Installing:** every CI build has a fresh debug key, so the owner uninstalls the previous prototype first.
@@ -91,18 +91,25 @@ A card names its lane. Touching another lane needs a note in the log saying why.
 
 Editorial x athletic x premium. Calm, distinctive, minimal without feeling empty. Not a Material demo, not a glassmorphism template, not a dashboard of tiny boxes, not a ported web app. Solid surfaces carry information; blur and translucency add depth only where they earn it. Glass is a candidate technique, not the goal.
 
-**Colors (use only these):**
+**Colors (use only these). Palette A "Deep Heritage", owner-selected 2026-11-20. Brand = ivory + deepForest + terracotta:**
 
-| Token | Hex | Token | Hex |
-|---|---|---|---|
-| background | #F5F2E8 | olive (accent) | #729900 |
-| surface | #FFFEFA | sage | #DCE5D7 |
-| surfaceAlt | #E7E2D6 | brass (sparingly) | #A98542 |
-| forest | #243D30 | text | #202A23 |
-| deepForest | #172A21 | textMuted | #687167 |
-| border | #D8D9CE | danger | #B55345 |
+| Token | Hex | Role |
+|---|---|---|
+| background (ivory) | #F3EFE4 | Brand. Screen background. |
+| deepForest | #1F3B30 | Brand. Primary: buttons, headings, dark surfaces. |
+| terracotta | #C97855 | Brand accent (replaces olive): fills, lines, icons, large decorative type. |
+| surface | #FFFEFA | Neutral. Cards. |
+| surfaceAlt | #E7E2D6 | Neutral. |
+| sage | #DCE5D7 | Neutral. Soft fill. |
+| text | #202A23 | Neutral. |
+| textMuted | #646E65 | Neutral. Darkened from #687167 so it keeps 4.5 on the darker ivory. |
+| border | #D8D9CE | Neutral. |
+| danger | #B55345 | Semantic. |
+| brass | #A98542 | Left from N01, unused. Candidate for removal. |
 
-**Contrast checked (WCAG ratio, computed 2026-11-19):** text on background 13.2; textMuted on background 4.5, on surface 5.0; cream on forest 10.5; deepForest on olive 4.5. **Below 4.5, so not for small text:** olive on cream/surface (3.0 to 3.3), brass on cream/surface (3.1 to 3.4), textMuted on surfaceAlt (3.9) or sage (3.9), danger on background (4.4). Use olive and brass for fills, lines, icons or large type only. Start button: forest fill with cream text (or olive fill with deepForest text). Re-check any new combination.
+Removed in N02 refinement: olive #729900, the old forest #243D30 and the old deepForest #172A21 (merged into the new deepForest).
+
+**Contrast checked (WCAG ratio, computed 2026-11-20):** text on ivory 12.9, on surface 14.7; textMuted on ivory 4.6, on surface 5.2; ivory on deepForest 10.6; surface on deepForest 12.1. **Below 4.5, so not for small text:** terracotta on ivory 2.9, on surface 3.3 (even large type on ivory is just under the 3.0 guide, so use terracotta for fills, lines, icons and decorative display only); text on terracotta 4.45 (terracotta buttons use text-colored labels, just under 4.5); deepForest on terracotta 3.65 and ivory on terracotta 2.9 (do not use); textMuted on surfaceAlt or sage 4.1; danger on ivory 4.3 (on surface 4.9). Primary button: deepForest fill with ivory text. Re-check any new combination.
 
 **Type (Big Shoulders display, Instrument Serif accent, Inter UI; sizes in sp, size/line height):**
 
@@ -122,7 +129,7 @@ Editorial x athletic x premium. Calm, distinctive, minimal without feeling empty
 
 Big Shoulders is condensed, so its sizes run larger than a normal font. Use it for short, big, emphatic text only; Instrument Serif sparingly as an editorial accent, never for body copy. Inter has only Regular and Bold bundled (no Medium or SemiBold). Values are first guesses until the owner checks them on the phone. Source: `Type.kt`; details: `docs/DESIGN_TOKENS.md`.
 
-Rules: numbers visually dominant; tight tracking on big stats; tabular numerals (`fontFeatureSettings = "tnum"`) on timers and small stats (Inter has it; Big Shoulders does not, so its big numbers are not tabular); uppercase only for small labels; never shrink text to fit decoration; workout title prominent.
+Rules: numbers visually dominant; tight tracking on big stats; tabular numerals (`fontFeatureSettings = "tnum"`) on timers and compact stats (Inter has it; Big Shoulders does not, so its big numbers are not tabular). Compact stats next to a hero number use Inter Bold 28 (`statCompact`); uppercase only for small labels; never shrink text to fit decoration; workout title prominent.
 
 **Spacing (dp):** 4, 8, 12, 16, 20, 24, 32, 40. **Radii (dp):** button 12, chip 14, icon button 16, card 22, hero card 28, bottom nav 28, sheet 28.
 
@@ -168,7 +175,7 @@ Order: N00 -> N01 -> N02 -> N03 -> N04 -> N05 -> N06 -> N07 -> N08. Each card en
 ## 11. Known issues in the original brief (resolved here)
 
 - Macrobenchmark was listed as "if feasible": it is not feasible in CI, so the scripted in-app benchmark replaces it.
-- Olive and brass fail the contrast check for small text on light surfaces (section 7).
+- Terracotta (formerly olive) and brass fail the contrast check for small text on light surfaces (section 7).
 - "Same refresh-rate configuration" cannot be forced from the app on every phone: record it, do not assume it.
 - Library versions are not chosen here on purpose; N01 pins and logs them.
 

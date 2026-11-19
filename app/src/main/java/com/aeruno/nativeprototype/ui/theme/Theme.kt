@@ -8,10 +8,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
 
 private val AerunoColorScheme = lightColorScheme(
-    primary = AerunoColors.Forest,
+    primary = AerunoColors.DeepForest,
     onPrimary = AerunoColors.Background,
-    secondary = AerunoColors.Olive,
-    onSecondary = AerunoColors.DeepForest,
+    secondary = AerunoColors.Terracotta,
+    onSecondary = AerunoColors.Text,
     tertiary = AerunoColors.Brass,
     background = AerunoColors.Background,
     onBackground = AerunoColors.Text,
@@ -20,7 +20,7 @@ private val AerunoColorScheme = lightColorScheme(
     surfaceVariant = AerunoColors.SurfaceAlt,
     onSurfaceVariant = AerunoColors.TextMuted,
     secondaryContainer = AerunoColors.Sage,
-    onSecondaryContainer = AerunoColors.Forest,
+    onSecondaryContainer = AerunoColors.DeepForest,
     outline = AerunoColors.Border,
     error = AerunoColors.Danger,
 )
