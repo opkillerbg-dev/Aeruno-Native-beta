@@ -24,7 +24,7 @@ Spacing dp: 4, 8, 12, 16, 20, 24, 32, 40. Radii dp: button 12, chip 14, icon but
 Only these weights exist. No Medium or SemiBold, so none is requested (no faked weights).
 
 ## Type scale (`AerunoType`, sp, size/line height)
-heroStat 64/68 (tracking -0.5), displayLarge 52/56, displayMedium 40/44, screenTitle 34/38 (all Big Shoulders Black); accentLarge 40/44, accentMedium 28/32 (Instrument Serif Italic); headline 22/28, cardTitle 18/24 (Inter Bold); bodyLarge 16/24, body 14/20, caption 11/16 (Inter Regular); button 15/20 (Inter Bold); label 12/16 (Inter Bold, tracking 0.8, write text in uppercase); timer 32/36, statCompact 28/32 and statNumber 22/28 (Inter Bold, `tnum`). statCompact is for small stats beside the 64 sp hero number.
+heroStat 72/66 (tracking -0.5), displayLarge 60/55, displayMedium 44/40 (tracking 0.3), screenTitle 36/33 (tracking 0.3) (all Big Shoulders Black); accentLarge 40/44, accentMedium 28/32 (Instrument Serif Italic); headline 22/28, cardTitle 18/24 (Inter Bold); bodyLarge 16/24, body 14/20, caption 11/16 (Inter Regular); button 15/20 (Inter Bold); label 12/16 (Inter Bold, tracking 0.8, write text in uppercase); timer 32/36, statCompact 28/32 and statNumber 22/28 (Inter Bold, `tnum`). statCompact is for small stats beside the 64 sp hero number.
 
 `AerunoTypography` maps these onto the Material text slots, so any Material component also uses AERUNO fonts.
 
@@ -34,7 +34,16 @@ heroStat 64/68 (tracking -0.5), displayLarge 52/56, displayMedium 40/44, screenT
 - Condensed display sizes (52 to 64 sp) are first guesses. Tune after the phone check.
 - Font files came from the legacy app's `web/fonts` (WOFF2) converted to TTF by the owner's previous session. Not byte-compared with upstream.
 
-## Status bar
+## Display rules (N02 refinement 2)
+- Big Shoulders is already condensed with tall capitals (cap height 0.80 em). We do not stretch or scale it; "taller" means a larger real size, "tighter" means line height about 0.92 em (stacked lines are about 0.12 em apart).
+- Uppercase text, 1 to 3 words. Mixed case, sentences and anything over about 12 characters per line goes in Inter.
+- Widest sample: "LOWER BODY" at 60 sp is about 284 dp (summed glyph advances), which fits a 360 dp phone with 20 dp side padding. Narrower phones wrap it onto two lines, which is fine.
+- Pair with an Instrument Serif italic accent line above, at most one per screen.
+
+## Status bar and insets
+The scroll content carries `safeDrawingPadding()` inside the scroll, so the first screen starts below the status bar and the last item clears the navigation bar. A fixed ivory `Spacer` with `windowInsetsTopHeight(WindowInsets.statusBars)` is drawn above the scroll, so scrolled text passes beneath that cover instead of under the clock and icons. Cause of the overlap: with edge-to-edge, the status bar is transparent and the top padding scrolled away with the content.
+
+### Status bar icons
 `MainActivity` calls `enableEdgeToEdge` with `SystemBarStyle.light(...)` for both bars, and `themes.xml` sets `windowLightStatusBar` and `windowLightNavigationBar`. This gives dark icons on the light screen. The default (auto) follows the phone's dark mode, which caused the white icons seen in N02.
 
 ## Licenses

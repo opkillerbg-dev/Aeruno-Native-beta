@@ -6,7 +6,7 @@ Created 2026-11-19. Status: N00 and N01 done. N02 delivered, waiting for its gat
 ## 0. Current state (update after every card)
 
 - **Done:** N00 baseline. N01 skeleton + CI: GitHub Actions run "Build debug APK #4" (commit 93a3528) was green and produced the artifact `aeruno-native-debug-apk`; the owner installed it and saw the blank AERUNO screen on his phone (his screenshot). The Gradle build compiled Kotlin 2.3.0, Compose BOM 2026.05.00, AGP 8.13.2, Gradle 8.13 together; the app id and minSdk 31 were checked inside the built APK by the workflow.
-- **N02 (delivered 2026-11-20; owner approved the typography; refinement pass 2026-11-20 UNTESTED):** typography tokens, bundled fonts + OFL licenses, type specimen screen (now the only screen), `docs/DESIGN_TOKENS.md`. Fonts are the owner-approved set Big Shoulders Display 900, Instrument Serif Italic, Inter Regular/Bold (same as the legacy app), replacing the Manrope plan. Refinement: Palette A Deep Heritage applied, status-bar icons set dark, compact stats in Inter Bold tnum, font notices checked. Not `[x]` until a green build and the owner confirms palette and status bar on the phone.
+- **N02 (delivered 2026-11-20; owner approved the typography; refinement pass 2026-11-20 UNTESTED):** typography tokens, bundled fonts + OFL licenses, type specimen screen (now the only screen), `docs/DESIGN_TOKENS.md`. Fonts are the owner-approved set Big Shoulders Display 900, Instrument Serif Italic, Inter Regular/Bold (same as the legacy app), replacing the Manrope plan. Refinement 1 (owner approved palette and type): Palette A Deep Heritage, dark status-bar icons, compact stats in Inter Bold tnum, font notices checked. Refinement 2 (UNTESTED): status-bar cover so scrolling content no longer passes under the clock/icons; tighter, larger display styles. Not `[x]` until a green build and the owner confirms palette and status bar on the phone.
 - **Next:** N03 only after N02's gate passes and the owner says go.
 - **How code reaches the repo:** the owner uploads `update.zip` (changed files, repo paths) to the repo root; the `Apply update` workflow unpacks it and starts a build. Files under `.github/` are skipped by it and are pasted in by hand.
 - **Installing:** every CI build has a fresh debug key, so the owner uninstalls the previous prototype first.
@@ -115,9 +115,9 @@ Removed in N02 refinement: olive #729900, the old forest #243D30 and the old dee
 
 | Style | Font | Size |
 |---|---|---|
-| Hero stat | Big Shoulders Black | 64/68, tracking -0.5 |
-| Display large / medium | Big Shoulders Black | 52/56, 40/44 |
-| Screen title | Big Shoulders Black | 34/38 |
+| Hero stat | Big Shoulders Black | 72/66, tracking -0.5 |
+| Display large / medium | Big Shoulders Black | 60/55, 44/40 (tracking 0, 0.3) |
+| Screen title | Big Shoulders Black | 36/33 (tracking 0.3) |
 | Accent large / medium | Instrument Serif Italic | 40/44, 28/32 |
 | Headline | Inter Bold | 22/28 |
 | Card title | Inter Bold | 18/24 |
@@ -127,7 +127,7 @@ Removed in N02 refinement: olive #729900, the old forest #243D30 and the old dee
 | Caption | Inter Regular | 11/16 |
 | Timer / stat numbers | Inter Bold, `tnum` | 32/36, 22/28 |
 
-Big Shoulders is condensed, so its sizes run larger than a normal font. Use it for short, big, emphatic text only; Instrument Serif sparingly as an editorial accent, never for body copy. Inter has only Regular and Bold bundled (no Medium or SemiBold). Values are first guesses until the owner checks them on the phone. Source: `Type.kt`; details: `docs/DESIGN_TOKENS.md`.
+Big Shoulders is already condensed with tall capitals, so it is used at real larger sizes with tight leading (about 0.92 em), never stretched or scaled. Use it for uppercase, 1 to 3 word headings only; Instrument Serif sparingly as an editorial accent, never for body copy. Inter has only Regular and Bold bundled (no Medium or SemiBold). Values are first guesses until the owner checks them on the phone. Source: `Type.kt`; details: `docs/DESIGN_TOKENS.md`.
 
 Rules: numbers visually dominant; tight tracking on big stats; tabular numerals (`fontFeatureSettings = "tnum"`) on timers and compact stats (Inter has it; Big Shoulders does not, so its big numbers are not tabular). Compact stats next to a hero number use Inter Bold 28 (`statCompact`); uppercase only for small labels; never shrink text to fit decoration; workout title prominent.
 

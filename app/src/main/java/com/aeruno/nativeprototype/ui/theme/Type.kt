@@ -29,11 +29,14 @@ object AerunoFonts {
 
 /** Type scale (AGENTS.md section 7, as revised in N02). Sizes are sp. */
 object AerunoType {
-    // Display: Big Shoulders Black. Condensed, so sizes run larger than normal text.
-    val heroStat = TextStyle(fontFamily = AerunoFonts.Display, fontWeight = FontWeight.Black, fontSize = 64.sp, lineHeight = 68.sp, letterSpacing = (-0.5).sp)
-    val displayLarge = TextStyle(fontFamily = AerunoFonts.Display, fontWeight = FontWeight.Black, fontSize = 52.sp, lineHeight = 56.sp)
-    val displayMedium = TextStyle(fontFamily = AerunoFonts.Display, fontWeight = FontWeight.Black, fontSize = 40.sp, lineHeight = 44.sp)
-    val screenTitle = TextStyle(fontFamily = AerunoFonts.Display, fontWeight = FontWeight.Black, fontSize = 34.sp, lineHeight = 38.sp)
+    // Display: Big Shoulders Black. Real size changes only, no stretching or scaling of the letters.
+    // The font is already condensed with tall capitals (cap height 0.80 em), so "taller" comes from
+    // larger sizes and "tighter" from line height about 0.92 em (stacked lines sit about 0.12 em apart).
+    // Use for uppercase text of 1 to 3 words. Sentences and mixed case go in Inter.
+    val heroStat = TextStyle(fontFamily = AerunoFonts.Display, fontWeight = FontWeight.Black, fontSize = 72.sp, lineHeight = 66.sp, letterSpacing = (-0.5).sp)
+    val displayLarge = TextStyle(fontFamily = AerunoFonts.Display, fontWeight = FontWeight.Black, fontSize = 60.sp, lineHeight = 55.sp)
+    val displayMedium = TextStyle(fontFamily = AerunoFonts.Display, fontWeight = FontWeight.Black, fontSize = 44.sp, lineHeight = 40.sp, letterSpacing = 0.3.sp)
+    val screenTitle = TextStyle(fontFamily = AerunoFonts.Display, fontWeight = FontWeight.Black, fontSize = 36.sp, lineHeight = 33.sp, letterSpacing = 0.3.sp)
 
     // Accent: Instrument Serif Italic.
     val accentLarge = TextStyle(fontFamily = AerunoFonts.Accent, fontWeight = FontWeight.Normal, fontStyle = FontStyle.Italic, fontSize = 40.sp, lineHeight = 44.sp)

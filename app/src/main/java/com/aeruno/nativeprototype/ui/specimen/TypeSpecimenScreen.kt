@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +16,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -42,20 +45,35 @@ import com.aeruno.nativeprototype.ui.theme.Spacing
 @Composable
 fun TypeSpecimenScreen() {
     Surface(modifier = Modifier.fillMaxSize(), color = AerunoColors.Background) {
-        Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .safeDrawingPadding()
-                .padding(horizontal = Spacing.s20, vertical = Spacing.s24),
-            verticalArrangement = Arrangement.spacedBy(Spacing.s32),
-        ) {
-            PairingSection()
-            StatsSection()
-            HierarchySection()
-            UiSamplesSection()
-            GlyphSection()
-            PaletteSection()
-            SpacingSection()
+        Box(modifier = Modifier.fillMaxSize()) {
+            // The safe-area padding sits INSIDE the scroll content: the first screen starts below the
+            // status bar, the last item clears the navigation bar, and nothing is cut off.
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .safeDrawingPadding()
+                    .padding(horizontal = Spacing.s20, vertical = Spacing.s24),
+                verticalArrangement = Arrangement.spacedBy(Spacing.s32),
+            ) {
+                PairingSection()
+                DisplaySection()
+                StatsSection()
+                HierarchySection()
+                UiSamplesSection()
+                GlyphSection()
+                PaletteSection()
+                SpacingSection()
+            }
+            // Status-bar cover: same ivory as the screen, exactly the height of the status bar, drawn
+            // above the scrolling content. At the top it is invisible; while scrolling, text passes
+            // beneath it instead of under the clock and icons.
+            Spacer(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .fillMaxWidth()
+                    .windowInsetsTopHeight(WindowInsets.statusBars)
+                    .background(AerunoColors.Background),
+            )
         }
     }
 }
@@ -100,6 +118,27 @@ private fun PairingSection() {
 }
 
 @Composable
+private fun DisplaySection() {
+    Section("Display") {
+        Panel {
+            Text("Heavy day", style = AerunoType.accentMedium, color = AerunoColors.Terracotta)
+            Text("LEG DAY", style = AerunoType.displayLarge, color = AerunoColors.DeepForest)
+            Spacer(Modifier.height(Spacing.s8))
+            Text("LOWER\nBODY", style = AerunoType.displayLarge, color = AerunoColors.DeepForest)
+            Spacer(Modifier.height(Spacing.s8))
+            Text("WEEK 3 · PUSH", style = AerunoType.displayMedium, color = AerunoColors.DeepForest)
+            Text("GOOD MORNING", style = AerunoType.screenTitle, color = AerunoColors.DeepForest)
+            Spacer(Modifier.height(Spacing.s4))
+            Text(
+                "Uppercase, 1 to 3 words, tight leading. Sentences and mixed case stay in Inter.",
+                style = AerunoType.caption,
+                color = AerunoColors.TextMuted,
+            )
+        }
+    }
+}
+
+@Composable
 private fun StatsSection() {
     Section("Numbers") {
         Panel {
@@ -129,11 +168,11 @@ private data class Spec(val name: String, val style: TextStyle, val sample: Stri
 @Composable
 private fun HierarchySection() {
     val specs = listOf(
-        Spec("heroStat", AerunoType.heroStat, "8,420", "Big Shoulders 900 · 64/68"),
+        Spec("heroStat", AerunoType.heroStat, "8,420", "Big Shoulders 900 · 72/66"),
         Spec("statCompact", AerunoType.statCompact, "42", "Inter Bold · tnum · 28/32"),
-        Spec("displayLarge", AerunoType.displayLarge, "LOWER BODY", "Big Shoulders 900 · 52/56"),
-        Spec("displayMedium", AerunoType.displayMedium, "35 MIN", "Big Shoulders 900 · 40/44"),
-        Spec("screenTitle", AerunoType.screenTitle, "GOOD MORNING", "Big Shoulders 900 · 34/38"),
+        Spec("displayLarge", AerunoType.displayLarge, "LOWER BODY", "Big Shoulders 900 · 60/55"),
+        Spec("displayMedium", AerunoType.displayMedium, "35 MIN", "Big Shoulders 900 · 44/40"),
+        Spec("screenTitle", AerunoType.screenTitle, "GOOD MORNING", "Big Shoulders 900 · 36/33"),
         Spec("accentLarge", AerunoType.accentLarge, "Keep it simple", "Instrument Serif Italic · 40/44"),
         Spec("accentMedium", AerunoType.accentMedium, "Strong week ahead", "Instrument Serif Italic · 28/32"),
         Spec("headline", AerunoType.headline, "Warm-up circuit", "Inter Bold · 22/28"),
