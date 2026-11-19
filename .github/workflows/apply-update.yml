@@ -1,0 +1,63 @@
+name: Apply update
+# Upload ONE file named update.zip to the repo root. This workflow unpacks it into the right folders,
+# commits the result, removes update.zip and starts the "Build debug APK" workflow.
+# Needs no secrets. Workflow files (.github/) inside the zip are skipped on purpose:
+# GitHub does not let this built-in token change workflows, so those files are added by hand.
+on:
+  push:
+    paths: ['update.zip']
+permissions:
+  contents: write
+  actions: write
+concurrency: apply-update
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply update.zip
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ ! -f update.zip ]; then echo "No update.zip, nothing to do."; exit 0; fi
+          python3 - <<'PY'
+          import os, re, sys, zipfile
+          bad = re.compile(r'(\.jks|\.keystore|\.p12|\.pfx|\.pem)$|(^|/)(keystore\.properties|local\.properties|google-services\.json|\.env)$', re.I)
+          root = os.path.realpath('.')
+          z = zipfile.ZipFile('update.zip')
+          n = 0
+          for info in z.infolist():
+              name = info.filename
+              if name.endswith('/') or name.startswith('__MACOSX/') or name == 'update.zip':
+                  continue
+              parts = name.split('/')
+              if name.startswith('/') or '..' in parts or '\\' in name or parts[0] == '.git':
+                  print('::error::unsafe path in zip: ' + name); sys.exit(1)
+              if parts[0] == '.github':
+                  print('::warning::skipped, add workflow files by hand: ' + name); continue
+              if bad.search(name):
+                  print('::error::key or secret file in zip, refused: ' + name); sys.exit(1)
+              dest = os.path.realpath(os.path.join(root, name))
+              if not dest.startswith(root + os.sep):
+                  print('::error::unsafe path in zip: ' + name); sys.exit(1)
+              os.makedirs(os.path.dirname(dest), exist_ok=True)
+              with z.open(info) as src, open(dest, 'wb') as out:
+                  out.write(src.read())
+              n += 1
+          if n == 0:
+              print('::error::update.zip had no usable files'); sys.exit(1)
+          print('%d files written' % n)
+          PY
+          git rm -q update.zip
+          git add -A
+          N=$(git diff --cached --name-only | wc -l)
+          git -c user.name="update-bot" -c user.email="actions@users.noreply.github.com" commit -q -m "Apply update.zip ($N files changed) [skip ci]"
+          git push origin HEAD
+          echo "Applied $N files."
+          ok=0
+          for i in 1 2 3; do
+            if gh workflow run build.yml --ref "${GITHUB_REF_NAME}"; then ok=1; break; fi
+            sleep 5
+          done
+          if [ "$ok" = 1 ]; then echo "APK build started."; else echo "::warning::could not start the build; run 'Build debug APK' from the Actions tab."; fi

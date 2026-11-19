@@ -1,1 +1,60 @@
-
+name: Build debug APK
+# Builds a DEBUG apk only. No secrets, no release signing. The apk is saved as the artifact "aeruno-native-debug-apk".
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['**.md', 'docs/**', 'update.zip']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Guard - no keys or secrets in the repo
+        run: |
+          if git ls-files | grep -Ei '(\.jks|\.keystore|\.p12|\.pfx|\.pem)$|(^|/)(keystore\.properties|google-services\.json|\.env)$'; then
+            echo "::error::A key or secret file is committed. Remove it (this repo is public)."; exit 1
+          fi
+          echo "No key or secret files found."
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Make sure the Android platform is installed
+        run: |
+          SM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -d "$ANDROID_HOME/platforms/android-36" ]; then
+            yes | "$SM" --licenses > /dev/null || true
+            "$SM" "platforms;android-36"
+          fi
+          ls "$ANDROID_HOME/platforms"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+      - name: Build debug APK
+        run: gradle --no-daemon --stacktrace -PbuildNumber=${{ github.run_number }} assembleDebug
+      - name: Check the APK (app id, minSdk) and name it
+        run: |
+          APK=app/build/outputs/apk/debug/app-debug.apk
+          test -f "$APK" || { echo "::error::APK not found"; exit 1; }
+          AAPT=$(ls -d "$ANDROID_HOME"/build-tools/*/aapt2 | sort -V | tail -1)
+          "$AAPT" dump badging "$APK" > /tmp/badging.txt
+          grep -m1 "^package:" /tmp/badging.txt
+          grep -q "package: name='com.aeruno.nativeprototype'" /tmp/badging.txt || { echo "::error::wrong application id"; exit 1; }
+          grep -q "^sdkVersion:'31'" /tmp/badging.txt || { echo "::error::minSdk is not 31"; exit 1; }
+          cp "$APK" "AerunoNative-build${GITHUB_RUN_NUMBER}-debug.apk"
+          {
+            echo "### AERUNO Native prototype, build ${GITHUB_RUN_NUMBER} (debug)"
+            echo "- package: \`com.aeruno.nativeprototype\` (checked in the built APK)"
+            echo "- minSdk: 31 (checked in the built APK)"
+            echo "- file: \`AerunoNative-build${GITHUB_RUN_NUMBER}-debug.apk\`"
+            echo "- each build is signed with a fresh debug key: uninstall the previous prototype before installing the next"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aeruno-native-debug-apk
+          path: AerunoNative-build*-debug.apk
+          if-no-files-found: error
