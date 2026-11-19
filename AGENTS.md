@@ -1,7 +1,16 @@
 # AERUNO Native Prototype: plan and rules for every AI
 
 Repo: `opkillerbg-dev/Aeruno-Native-beta` (public). Read this whole file first. Keep it under ~250 lines; when a fact changes, change it here.
-Created 2026-11-19. Status: N00 done and reviewed. N01 delivered, waiting for its first green CI run.
+Created 2026-11-19. Status: N00 and N01 done. Next card: N02.
+
+## 0. Current state (update after every card)
+
+- **Done:** N00 baseline. N01 skeleton + CI: GitHub Actions run "Build debug APK #4" (commit 93a3528) was green and produced the artifact `aeruno-native-debug-apk`; the owner installed it and saw the blank AERUNO screen on his phone (his screenshot). The Gradle build compiled Kotlin 2.3.0, Compose BOM 2026.05.00, AGP 8.13.2, Gradle 8.13 together; the app id and minSdk 31 were checked inside the built APK by the workflow.
+- **Next:** N02 (design tokens, bundled Manrope and Inter fonts, type specimen screen). Do not start before the owner says go.
+- **How code reaches the repo:** the owner uploads `update.zip` (changed files, repo paths) to the repo root; the `Apply update` workflow unpacks it and starts a build. Files under `.github/` are skipped by it and are pasted in by hand.
+- **Installing:** every CI build has a fresh debug key, so the owner uninstalls the previous prototype first.
+- **Not verified yet:** anything about glass, fonts, speed or looks. N01 only proved the build and install.
+- **Legacy source for later phases:** `reference/` (read-only copy, never edited, never built), only if the owner has added it. See `reference/README.md`.
 
 ## 1. What this is (and is not)
 
@@ -54,6 +63,7 @@ The owner is a 19-year-old learning by building. He is not a professional develo
 | BUILD | `build.gradle.kts`, `settings.gradle.kts`, `gradle/`, `.github/`, `.gitignore`, `tools/` |
 | UI | `app/src/main/java/**`, `app/src/main/res/**` |
 | DOCS | `README.md`, `docs/**`, this file |
+| REFERENCE | `reference/**` | Read-only copy of legacy source and plans. No card edits it. It is not part of any build. |
 
 A card names its lane. Touching another lane needs a note in the log saying why. Docs entries under `docs/log/` are always allowed.
 
@@ -131,7 +141,7 @@ A selector switches A / B / C. The test background is static (cream-to-forest gr
 Order: N00 -> N01 -> N02 -> N03 -> N04 -> N05 -> N06 -> N07 -> N08. Each card ends with its gate.
 
 - [x] **N00 Baseline (DOCS)** (done and reviewed 2026-11-19). Inspect the repo (branches, files, workflows). Confirm it is the native prototype repo and empty. Write `docs/BASELINE_LEGACY.md`: what the legacy app has, only from files the owner supplies; mark anything unverified. *Gate: file exists, every line marked verified or unverified.*
-- [ ] **N01 Skeleton + CI (BUILD, UI).** Gradle project, `com.aeruno.nativeprototype`, one blank themed screen, `.gitignore`, workflow building `assembleDebug` and uploading the APK, README with build steps. *Gate: a green GitHub Actions run with the APK artifact (owner screenshot or log). Not "done" before that.*
+- [x] **N01 Skeleton + CI (BUILD, UI)** (done 2026-11-19: Build debug APK #4 green, APK installed and opened on the owner's Android 16 phone). Gradle project, `com.aeruno.nativeprototype`, one blank themed screen, `.gitignore`, workflow building `assembleDebug` and uploading the APK, README with build steps. *Gate: a green GitHub Actions run with the APK artifact (owner screenshot or log). Not "done" before that.*
 - [ ] **N02 Tokens + fonts (UI, DOCS).** Theme with the section 7 tokens, fonts bundled with licenses, a type-specimen screen, `docs/DESIGN_TOKENS.md`. *Gate: green build; specimen looks right on the phone.*
 - [ ] **N03 Card test (UI).** Static background, `GlassSurface` (Haze evaluated, reason logged), variants A/B/C, selector. *Gate: green build; owner confirms A looks like real backdrop blur, not a flat tint.*
 - [ ] **N04 Today screen (UI).** Greeting, date label, avatar button, hero "Lower Body" card (35 min, 6 exercises, Start Workout button), sample stats (8,420 steps; 42 min active; 4 day streak), minimal mock navigation, motion per section 7. Mock data only. *Gate: green build; owner reviews the look.*
@@ -165,7 +175,7 @@ Order: N00 -> N01 -> N02 -> N03 -> N04 -> N05 -> N06 -> N07 -> N08. Each card en
 4. Claude / the DOCS-lane AI keeps the section 9 checkboxes current after a card's gate passes.
 5. Deliveries are an `update.zip` with changed files and their repo paths. The owner may add files by hand if needed.
 
-**Proposed by N01, owner to confirm:**
+**Proposed by N01 (both worked on 2026-11-19; owner has not objected):**
 1. `Apply update` workflow: uploading `update.zip` to the repo root unpacks and commits it (needs no secrets; skips `.github/` files, which are added by hand).
 2. Every CI build is signed with a fresh debug key, so the owner uninstalls the previous prototype before installing the next. Committing a key is forbidden (rule 3). Alternative later if this annoys: keep a generated debug key in the GitHub cache.
 

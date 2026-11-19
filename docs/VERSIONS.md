@@ -1,6 +1,6 @@
 # Pinned versions (N01)
 
-Looked up on 2026-11-19 in the official Android and Gradle release pages. **None of these has been compiled together yet**; compatibility is proven only when the GitHub build is green. If a build fails because of a version, change it here and in `gradle/libs.versions.toml`, and log why.
+Looked up on 2026-11-19 in the official Android and Gradle release pages. **Compiled together successfully** in GitHub Actions run "Build debug APK #4" (2026-11-19, commit 93a3528): `assembleDebug` succeeded, and the APK installed and opened on the owner's Android 16 phone. If a build fails because of a version, change it here and in `gradle/libs.versions.toml`, and log why.
 
 | Tool | Version | Why this one |
 |---|---|---|
@@ -13,7 +13,7 @@ Looked up on 2026-11-19 in the official Android and Gradle release pages. **None
 | compileSdk / targetSdk | 36 | Android 16, which is the owner's phone. AGP 8.13 supports up to 36. |
 | minSdk | 31 | Owner-approved (AGENTS.md section 6). |
 
-GitHub Actions used: `actions/checkout@v4`, `actions/setup-java@v4`, `gradle/actions/setup-gradle@v4` (installs Gradle 8.13), `actions/upload-artifact@v4`. The first two and the last were used by the owner's older project's build and ran fine (with deprecation warnings). `setup-gradle@v4` is new here. Update them together in a later card.
+GitHub Actions used: `actions/checkout@v4`, `actions/setup-java@v4`, `gradle/actions/setup-gradle@v4` (installs Gradle 8.13), `actions/upload-artifact@v4`. The first two and the last were used by the owner's older project's build and ran fine (with deprecation warnings). `setup-gradle@v4` worked in run #4. Update them together in a later card.
 
 Not included on purpose: Gradle wrapper (needs a binary file that cannot be downloaded in the coding sandbox), Haze or any blur library (N03), fonts (N02), tests, release signing.
 
