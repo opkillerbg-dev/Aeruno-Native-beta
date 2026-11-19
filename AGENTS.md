@@ -1,7 +1,7 @@
 # AERUNO Native Prototype: plan and rules for every AI
 
 Repo: `opkillerbg-dev/Aeruno-Native-beta` (public). Read this whole file first. Keep it under ~250 lines; when a fact changes, change it here.
-Created 2026-11-19. Status: PLANNING. No code exists yet (repo holds only an empty README as of creation).
+Created 2026-11-19. Status: N00 baseline written (pending owner review). No code exists yet.
 
 ## 1. What this is (and is not)
 
@@ -17,11 +17,25 @@ The web "V2" glass look lagged badly on the owner's phone (OnePlus Nord CE5, 8 G
 
 | Who | Role |
 |---|---|
-| Owner (not a professional developer) | Makes every decision. Installs the APK, tests on the real phone, says GO / NO-GO. Explain things in plain words. |
+| Owner (19, learning, not a professional developer; see "Talking to the owner") | Makes every decision. Installs the APK, tests on the real phone, says GO / NO-GO. Explain things in plain words. |
 | ChatGPT | Visual direction and taste (section 7). Reviews screenshots and results. Does not own code. |
 | Claude (and any coding AI) | Builds, tests what can be tested, runs the CI, reports honestly. |
 
 Disagreements go to the owner as a short question with two options, never settled silently.
+
+### Talking to the owner (every AI must follow this)
+
+The owner is a 19-year-old learning by building. He is not a professional developer and does not know deep technical words. That is fine and expected; he is doing the real work of deciding and testing, and he should never feel talked down to.
+
+1. **Plain words first.** Explain like to a smart friend who has never coded. If a technical term is unavoidable, give it in one short everyday sentence right there ("a build is the step where GitHub turns the code into an app file").
+2. **Answer first, details after.** Start with what happened and what he needs to do. Technical detail goes in the log files, not the chat reply.
+3. **Short steps, exact taps.** He works mostly from a phone. Say where to tap and what to type or paste. One thing at a time.
+4. **No unexplained labels.** Words like UNTESTED, CI, lane or gate need a plain meaning the first time they appear in a reply.
+5. **Say what could go wrong and what to do then**, in a sentence. Ask for a screenshot when something fails and say which part to capture.
+6. **Decisions as simple choices.** Give two options, say which one you would pick and why, and keep the question to one at a time. Never hide a decision inside technical detail.
+7. **Be honest, be kind.** Never claim something works when it was not tested. Mistakes are normal: say what went wrong and how it is fixed, without drama.
+8. **Offer to teach, don't lecture.** A one-line "want me to explain how this works?" is welcome; long explanations he did not ask for are not.
+9. **Files for the owner come with instructions** on where to put them and how to check they worked.
 
 ## 3. Hard rules (frozen without the owner's explicit OK)
 
@@ -55,7 +69,7 @@ A card names its lane. Touching another lane needs a note in the log saying why.
 ## 6. Tech decisions (proposed, owner may change)
 
 - Kotlin + Jetpack Compose, Material 3 as a base only; custom theme, not a stock Material look.
-- `minSdk 31` for the prototype (real RenderEffect blur starts at Android 12; avoids fallback code paths). The owner's phone should run a newer Android. Owner to confirm the version in Settings > About phone.
+- `minSdk 31` for the prototype (real RenderEffect blur starts at Android 12; avoids fallback code paths). The owner's phone runs Android 16 (owner-confirmed 2026-11-19), so minSdk 31 is accepted.
 - Backdrop blur: evaluate **Haze** (chrisbanes/haze). `Modifier.blur()` on the card itself is foreground blur and does NOT count as glass. Keep the blur behind one `GlassSurface` composable so the library can be removed without touching callers. Pin exact versions; the implementer must check that the chosen versions exist and are compatible (Compose BOM, Kotlin, AGP, Gradle) because versions cannot be verified offline.
 - Fonts bundled in `res/font`, no downloads: Manrope (display) and Inter (UI). Both are SIL OFL; keep their license files next to the fonts.
 - Measurement: platform `FrameMetrics` through `Window.OnFrameMetricsAvailableListener` (no extra dependency). JankStats is optional. Macrobenchmark is NOT used: it needs a connected device or emulator, which the CI does not have.
@@ -115,7 +129,7 @@ A selector switches A / B / C. The test background is static (cream-to-forest gr
 
 Order: N00 -> N01 -> N02 -> N03 -> N04 -> N05 -> N06 -> N07 -> N08. Each card ends with its gate.
 
-- [ ] **N00 Baseline (DOCS).** Inspect the repo (branches, files, workflows). Confirm it is the native prototype repo and empty. Write `docs/BASELINE_LEGACY.md`: what the legacy app has, only from files the owner supplies; mark anything unverified. *Gate: file exists, every line marked verified or unverified.*
+- [x] **N00 Baseline (DOCS)** (done 2026-11-19, pending owner review). Inspect the repo (branches, files, workflows). Confirm it is the native prototype repo and empty. Write `docs/BASELINE_LEGACY.md`: what the legacy app has, only from files the owner supplies; mark anything unverified. *Gate: file exists, every line marked verified or unverified.*
 - [ ] **N01 Skeleton + CI (BUILD, UI).** Gradle project, `com.aeruno.nativeprototype`, one blank themed screen, `.gitignore`, workflow building `assembleDebug` and uploading the APK, README with build steps. *Gate: a green GitHub Actions run with the APK artifact (owner screenshot or log). Not "done" before that.*
 - [ ] **N02 Tokens + fonts (UI, DOCS).** Theme with the section 7 tokens, fonts bundled with licenses, a type-specimen screen, `docs/DESIGN_TOKENS.md`. *Gate: green build; specimen looks right on the phone.*
 - [ ] **N03 Card test (UI).** Static background, `GlassSurface` (Haze evaluated, reason logged), variants A/B/C, selector. *Gate: green build; owner confirms A looks like real backdrop blur, not a flat tint.*
@@ -141,12 +155,16 @@ Order: N00 -> N01 -> N02 -> N03 -> N04 -> N05 -> N06 -> N07 -> N08. Each card en
 - "Same refresh-rate configuration" cannot be forced from the app on every phone: record it, do not assume it.
 - Library versions are not chosen here on purpose; N01 pins and logs them.
 
-## 12. Open questions for the owner
+## 12. Decisions and open questions
 
-1. Android version of the phone (affects `minSdk 31`)?
-2. Is `com.aeruno.nativeprototype` fine as the temporary id?
-3. Repo is public: is that still OK once the design is committed?
-4. Who keeps the status checkboxes in section 9 current: the owner, or the DOCS-lane AI after each card?
+**Decided by the owner (2026-11-19):**
+1. The phone runs Android 16. `minSdk 31` is accepted.
+2. `Aeruno-Native-beta` stays public.
+
+**Still open (ask the owner before N01 needs them):**
+1. Is `com.aeruno.nativeprototype` fine as the temporary app id?
+2. Who keeps the status checkboxes in section 9 current: the owner, or the DOCS-lane AI after each card?
+3. How do files reach this repo? The legacy repo has an unpack-and-commit workflow; this one has no workflows yet. Until N01 decides, files are added by hand (GitHub web: Add file > Create new file, type the path, paste the content).
 
 ## 13. Definition of done for the prototype
 
