@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Same value as AerunoColors.Background; used so the window is cream before Compose draws. -->
+    <color name="aeruno_background">#F5F2E8</color>
+</resources>

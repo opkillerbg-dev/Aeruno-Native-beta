@@ -1,0 +1,24 @@
+# Gradle / Android build output
+.gradle/
+build/
+/captures/
+.externalNativeBuild/
+.cxx/
+local.properties
+*.iml
+.idea/
+.DS_Store
+
+# Built apps
+*.apk
+*.aab
+
+# Never commit keys or secrets (this repo is public)
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+keystore.properties
+google-services.json
+.env

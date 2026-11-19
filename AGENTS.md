@@ -1,7 +1,7 @@
 # AERUNO Native Prototype: plan and rules for every AI
 
 Repo: `opkillerbg-dev/Aeruno-Native-beta` (public). Read this whole file first. Keep it under ~250 lines; when a fact changes, change it here.
-Created 2026-11-19. Status: N00 baseline written (pending owner review). No code exists yet.
+Created 2026-11-19. Status: N00 done and reviewed. N01 delivered, waiting for its first green CI run.
 
 ## 1. What this is (and is not)
 
@@ -73,6 +73,7 @@ A card names its lane. Touching another lane needs a note in the log saying why.
 - Backdrop blur: evaluate **Haze** (chrisbanes/haze). `Modifier.blur()` on the card itself is foreground blur and does NOT count as glass. Keep the blur behind one `GlassSurface` composable so the library can be removed without touching callers. Pin exact versions; the implementer must check that the chosen versions exist and are compatible (Compose BOM, Kotlin, AGP, Gradle) because versions cannot be verified offline.
 - Fonts bundled in `res/font`, no downloads: Manrope (display) and Inter (UI). Both are SIL OFL; keep their license files next to the fonts.
 - Measurement: platform `FrameMetrics` through `Window.OnFrameMetricsAvailableListener` (no extra dependency). JankStats is optional. Macrobenchmark is NOT used: it needs a connected device or emulator, which the CI does not have.
+- Pinned versions and why: `docs/VERSIONS.md` (AGP 8.13.2, Gradle 8.13, Kotlin 2.3.0, Compose BOM 2026.05.00, compileSdk 36). Not proven until CI is green.
 - CI: GitHub Actions workflow builds `assembleDebug` and uploads the APK as an artifact. No secrets, no signing.
 
 ## 7. Design direction: AERUNO, Verdant Glass
@@ -129,7 +130,7 @@ A selector switches A / B / C. The test background is static (cream-to-forest gr
 
 Order: N00 -> N01 -> N02 -> N03 -> N04 -> N05 -> N06 -> N07 -> N08. Each card ends with its gate.
 
-- [x] **N00 Baseline (DOCS)** (done 2026-11-19, pending owner review). Inspect the repo (branches, files, workflows). Confirm it is the native prototype repo and empty. Write `docs/BASELINE_LEGACY.md`: what the legacy app has, only from files the owner supplies; mark anything unverified. *Gate: file exists, every line marked verified or unverified.*
+- [x] **N00 Baseline (DOCS)** (done and reviewed 2026-11-19). Inspect the repo (branches, files, workflows). Confirm it is the native prototype repo and empty. Write `docs/BASELINE_LEGACY.md`: what the legacy app has, only from files the owner supplies; mark anything unverified. *Gate: file exists, every line marked verified or unverified.*
 - [ ] **N01 Skeleton + CI (BUILD, UI).** Gradle project, `com.aeruno.nativeprototype`, one blank themed screen, `.gitignore`, workflow building `assembleDebug` and uploading the APK, README with build steps. *Gate: a green GitHub Actions run with the APK artifact (owner screenshot or log). Not "done" before that.*
 - [ ] **N02 Tokens + fonts (UI, DOCS).** Theme with the section 7 tokens, fonts bundled with licenses, a type-specimen screen, `docs/DESIGN_TOKENS.md`. *Gate: green build; specimen looks right on the phone.*
 - [ ] **N03 Card test (UI).** Static background, `GlassSurface` (Haze evaluated, reason logged), variants A/B/C, selector. *Gate: green build; owner confirms A looks like real backdrop blur, not a flat tint.*
@@ -160,11 +161,15 @@ Order: N00 -> N01 -> N02 -> N03 -> N04 -> N05 -> N06 -> N07 -> N08. Each card en
 **Decided by the owner (2026-11-19):**
 1. The phone runs Android 16. `minSdk 31` is accepted.
 2. `Aeruno-Native-beta` stays public.
+3. Temporary app id `com.aeruno.nativeprototype` is approved.
+4. Claude / the DOCS-lane AI keeps the section 9 checkboxes current after a card's gate passes.
+5. Deliveries are an `update.zip` with changed files and their repo paths. The owner may add files by hand if needed.
 
-**Still open (ask the owner before N01 needs them):**
-1. Is `com.aeruno.nativeprototype` fine as the temporary app id?
-2. Who keeps the status checkboxes in section 9 current: the owner, or the DOCS-lane AI after each card?
-3. How do files reach this repo? The legacy repo has an unpack-and-commit workflow; this one has no workflows yet. Until N01 decides, files are added by hand (GitHub web: Add file > Create new file, type the path, paste the content).
+**Proposed by N01, owner to confirm:**
+1. `Apply update` workflow: uploading `update.zip` to the repo root unpacks and commits it (needs no secrets; skips `.github/` files, which are added by hand).
+2. Every CI build is signed with a fresh debug key, so the owner uninstalls the previous prototype before installing the next. Committing a key is forbidden (rule 3). Alternative later if this annoys: keep a generated debug key in the GitHub cache.
+
+**Still open:** none.
 
 ## 13. Definition of done for the prototype
 
