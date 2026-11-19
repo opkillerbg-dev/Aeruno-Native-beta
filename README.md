@@ -4,7 +4,7 @@ A small test app to see whether the "Verdant Glass" look can run smoothly on a r
 
 Plan and rules for everyone working here: [`AGENTS.md`](AGENTS.md). What the old app has: [`docs/BASELINE_LEGACY.md`](docs/BASELINE_LEGACY.md). Tool versions: [`docs/VERSIONS.md`](docs/VERSIONS.md).
 
-**Status:** N01 done (empty skeleton app + automatic build). Build #4 was green and the app installed and opened on an Android 16 phone. It shows one blank screen that says "AERUNO". Next: N02.
+**Status:** N01 done (skeleton app + automatic build; build #4 green, installed on an Android 16 phone). N02 delivered, waiting for its check: the app now shows a type specimen screen (fonts, colors, spacing). Next: N03 after N02 passes.
 
 - App id: `com.aeruno.nativeprototype` (temporary, debug builds only).
 - Needs Android 12 or newer (minSdk 31).

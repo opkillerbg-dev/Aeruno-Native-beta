@@ -1,12 +1,13 @@
 # AERUNO Native Prototype: plan and rules for every AI
 
 Repo: `opkillerbg-dev/Aeruno-Native-beta` (public). Read this whole file first. Keep it under ~250 lines; when a fact changes, change it here.
-Created 2026-11-19. Status: N00 and N01 done. Next card: N02.
+Created 2026-11-19. Status: N00 and N01 done. N02 delivered, waiting for its gate (green build + owner check on phone).
 
 ## 0. Current state (update after every card)
 
 - **Done:** N00 baseline. N01 skeleton + CI: GitHub Actions run "Build debug APK #4" (commit 93a3528) was green and produced the artifact `aeruno-native-debug-apk`; the owner installed it and saw the blank AERUNO screen on his phone (his screenshot). The Gradle build compiled Kotlin 2.3.0, Compose BOM 2026.05.00, AGP 8.13.2, Gradle 8.13 together; the app id and minSdk 31 were checked inside the built APK by the workflow.
-- **Next:** N02 (design tokens, bundled Manrope and Inter fonts, type specimen screen). Do not start before the owner says go.
+- **N02 (delivered 2026-11-20, UNTESTED):** typography tokens, bundled fonts + OFL licenses, type specimen screen (now the only screen), `docs/DESIGN_TOKENS.md`. Fonts are the owner-approved set Big Shoulders Display 900, Instrument Serif Italic, Inter Regular/Bold (same as the legacy app), replacing the Manrope plan. Not `[x]` until a green build and the owner confirms the specimen on the phone.
+- **Next:** N03 only after N02's gate passes and the owner says go.
 - **How code reaches the repo:** the owner uploads `update.zip` (changed files, repo paths) to the repo root; the `Apply update` workflow unpacks it and starts a build. Files under `.github/` are skipped by it and are pasted in by hand.
 - **Installing:** every CI build has a fresh debug key, so the owner uninstalls the previous prototype first.
 - **Not verified yet:** anything about glass, fonts, speed or looks. N01 only proved the build and install.
@@ -81,7 +82,7 @@ A card names its lane. Touching another lane needs a note in the log saying why.
 - Kotlin + Jetpack Compose, Material 3 as a base only; custom theme, not a stock Material look.
 - `minSdk 31` for the prototype (real RenderEffect blur starts at Android 12; avoids fallback code paths). The owner's phone runs Android 16 (owner-confirmed 2026-11-19), so minSdk 31 is accepted.
 - Backdrop blur: evaluate **Haze** (chrisbanes/haze). `Modifier.blur()` on the card itself is foreground blur and does NOT count as glass. Keep the blur behind one `GlassSurface` composable so the library can be removed without touching callers. Pin exact versions; the implementer must check that the chosen versions exist and are compatible (Compose BOM, Kotlin, AGP, Gradle) because versions cannot be verified offline.
-- Fonts bundled in `res/font`, no downloads: Manrope (display) and Inter (UI). Both are SIL OFL; keep their license files next to the fonts.
+- Fonts bundled in `res/font`, no downloads (owner-approved 2026-11-20, replacing Manrope): Big Shoulders Display Black (display), Instrument Serif Italic (accent), Inter Regular + Bold (UI). All SIL OFL. Android cannot keep text files in `res/font`, so the license files live in `app/src/main/assets/font-licenses/` (packed into the APK).
 - Measurement: platform `FrameMetrics` through `Window.OnFrameMetricsAvailableListener` (no extra dependency). JankStats is optional. Macrobenchmark is NOT used: it needs a connected device or emulator, which the CI does not have.
 - Pinned versions and why: `docs/VERSIONS.md` (AGP 8.13.2, Gradle 8.13, Kotlin 2.3.0, Compose BOM 2026.05.00, compileSdk 36). Not proven until CI is green.
 - CI: GitHub Actions workflow builds `assembleDebug` and uploads the APK as an artifact. No secrets, no signing.
@@ -103,20 +104,25 @@ Editorial x athletic x premium. Calm, distinctive, minimal without feeling empty
 
 **Contrast checked (WCAG ratio, computed 2026-11-19):** text on background 13.2; textMuted on background 4.5, on surface 5.0; cream on forest 10.5; deepForest on olive 4.5. **Below 4.5, so not for small text:** olive on cream/surface (3.0 to 3.3), brass on cream/surface (3.1 to 3.4), textMuted on surfaceAlt (3.9) or sage (3.9), danger on background (4.4). Use olive and brass for fills, lines, icons or large type only. Start button: forest fill with cream text (or olive fill with deepForest text). Re-check any new combination.
 
-**Type (Manrope display, Inter UI):**
+**Type (Big Shoulders display, Instrument Serif accent, Inter UI; sizes in sp, size/line height):**
 
 | Style | Font | Size |
 |---|---|---|
-| Hero stat | Manrope ExtraBold | 40 sp |
-| Display large / medium | Manrope ExtraBold / Bold | 36 / 32 sp |
-| Screen title | Manrope Bold | 28 sp |
-| Headline | Manrope Bold | 22 sp |
-| Card title | Manrope SemiBold | 18 sp |
-| Body large / body | Inter Medium / Regular | 16 / 14 sp |
-| Label | Inter SemiBold | 12 sp (small caps-style uppercase, slight tracking) |
-| Caption | Inter Medium | 11 sp |
+| Hero stat | Big Shoulders Black | 64/68, tracking -0.5 |
+| Display large / medium | Big Shoulders Black | 52/56, 40/44 |
+| Screen title | Big Shoulders Black | 34/38 |
+| Accent large / medium | Instrument Serif Italic | 40/44, 28/32 |
+| Headline | Inter Bold | 22/28 |
+| Card title | Inter Bold | 18/24 |
+| Body large / body | Inter Regular | 16/24, 14/20 |
+| Button | Inter Bold | 15/20 |
+| Label | Inter Bold | 12/16 (uppercase, tracking 0.8) |
+| Caption | Inter Regular | 11/16 |
+| Timer / stat numbers | Inter Bold, `tnum` | 32/36, 22/28 |
 
-Rules: numbers visually dominant; tight tracking on big stats; tabular numerals (`fontFeatureSettings = "tnum"`) on stats and timers (if a font lacks the feature the setting does nothing: verify on screen); uppercase only for small labels; never shrink text to fit decoration; workout title prominent.
+Big Shoulders is condensed, so its sizes run larger than a normal font. Use it for short, big, emphatic text only; Instrument Serif sparingly as an editorial accent, never for body copy. Inter has only Regular and Bold bundled (no Medium or SemiBold). Values are first guesses until the owner checks them on the phone. Source: `Type.kt`; details: `docs/DESIGN_TOKENS.md`.
+
+Rules: numbers visually dominant; tight tracking on big stats; tabular numerals (`fontFeatureSettings = "tnum"`) on timers and small stats (Inter has it; Big Shoulders does not, so its big numbers are not tabular); uppercase only for small labels; never shrink text to fit decoration; workout title prominent.
 
 **Spacing (dp):** 4, 8, 12, 16, 20, 24, 32, 40. **Radii (dp):** button 12, chip 14, icon button 16, card 22, hero card 28, bottom nav 28, sheet 28.
 
@@ -142,7 +148,7 @@ Order: N00 -> N01 -> N02 -> N03 -> N04 -> N05 -> N06 -> N07 -> N08. Each card en
 
 - [x] **N00 Baseline (DOCS)** (done and reviewed 2026-11-19). Inspect the repo (branches, files, workflows). Confirm it is the native prototype repo and empty. Write `docs/BASELINE_LEGACY.md`: what the legacy app has, only from files the owner supplies; mark anything unverified. *Gate: file exists, every line marked verified or unverified.*
 - [x] **N01 Skeleton + CI (BUILD, UI)** (done 2026-11-19: Build debug APK #4 green, APK installed and opened on the owner's Android 16 phone). Gradle project, `com.aeruno.nativeprototype`, one blank themed screen, `.gitignore`, workflow building `assembleDebug` and uploading the APK, README with build steps. *Gate: a green GitHub Actions run with the APK artifact (owner screenshot or log). Not "done" before that.*
-- [ ] **N02 Tokens + fonts (UI, DOCS).** Theme with the section 7 tokens, fonts bundled with licenses, a type-specimen screen, `docs/DESIGN_TOKENS.md`. *Gate: green build; specimen looks right on the phone.*
+- [ ] **N02 Tokens + fonts (UI, DOCS)** (delivered 2026-11-20, gate pending). Theme with the section 7 tokens, fonts bundled with licenses, a type-specimen screen, `docs/DESIGN_TOKENS.md`. *Gate: green build; specimen looks right on the phone.*
 - [ ] **N03 Card test (UI).** Static background, `GlassSurface` (Haze evaluated, reason logged), variants A/B/C, selector. *Gate: green build; owner confirms A looks like real backdrop blur, not a flat tint.*
 - [ ] **N04 Today screen (UI).** Greeting, date label, avatar button, hero "Lower Body" card (35 min, 6 exercises, Start Workout button), sample stats (8,420 steps; 42 min active; 4 day streak), minimal mock navigation, motion per section 7. Mock data only. *Gate: green build; owner reviews the look.*
 - [ ] **N05 Benchmark (UI).** Benchmark mode: scripted scroll sequence (same distance, same timing every run) over the same content for a fixed duration, per variant; `FrameMetrics` collection; refresh rate recorded at start and end; battery temperature at start and end; results screen with a copy-to-clipboard text report. Optional live overlay (variant, mode, frame time, FPS estimate, slow-frame flag), updated at most twice per second, hidden in benchmark mode. *Gate: green build; a run finishes and shows the report.*

@@ -32,14 +32,15 @@ private val AerunoShapes = Shapes(
 )
 
 /**
- * Theme foundation only (N01): colors, shapes, spacing and radii exist.
- * Typography still uses the Material defaults; Manrope and Inter arrive in N02.
+ * AERUNO theme: colors, shapes, spacing, radii (N01) and typography (N02:
+ * Big Shoulders Display, Instrument Serif Italic, Inter; see Type.kt).
  */
 @Composable
 fun AerunoTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = AerunoColorScheme,
         shapes = AerunoShapes,
+        typography = AerunoTypography,
         content = content,
     )
 }
