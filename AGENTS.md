@@ -1,7 +1,31 @@
+# AGENTS.md: rules for any AI working in this repository
+
+Read `START_HERE.md` and the documents in `AERUNO_HANDOFF/` before suggesting or changing anything. This file has two parts: **Part 1** general rules (this section), **Part 2** the native prototype's own plan and protocol (the original AGENTS.md, kept intact below).
+
+## Part 1. General rules (all AI assistants)
+
+1. **Inspect before you act.** Open the real files. Repo documentation can be stale; the source and the `AERUNO_HANDOFF/` evidence tags tell you how far to trust a statement.
+2. **Evidence honesty.** Never say "tested", "works", "smooth" or "fast" without naming what was run and where. A sandbox run is not a phone test. See the tags in `START_HERE.md`.
+3. **The owner decides.** Architecture, identity, signing, design direction. Offer two options and a recommendation; never settle a disagreement silently.
+4. **Current phase (2026-11-20): understanding and architecture decision.** The owner restarted AERUNO as a complete UI/UX redesign. Neither Path A (native Compose) nor Path B (WebView rebuild) is approved (`AERUNO_HANDOFF/ARCHITECTURE_DECISIONS.md`). Do not begin the redesign, migrate data or change native services until the owner decides.
+5. **Two codebases, do not mix them up.** The legacy app (`AERUNO_HANDOFF/legacy-reference/`, a read-only copy at v150) is the functional asset. The native prototype (`app/`) is an experiment. Never edit `AERUNO_HANDOFF/legacy-reference/`; if legacy needs changing, that happens in the legacy repository and only with the owner's explicit OK.
+6. **Frozen without explicit OK:** legacy app id (`com.arya.fit3`) and signing key, storage key `aryaApp2`, storage schema and backup format, native service architecture. The prototype's own id (`com.aeruno.nativeprototype`) is temporary.
+7. **Security.** The repo is public. No keystores, passwords, tokens, API keys, personal data or backups. The legacy `debug.keystore` was deliberately not copied here.
+8. **Scope.** Small, reviewable phases. No unrelated changes, no new dependencies without a one-line reason, no big rewrites in one step.
+9. **Design.** Use the established identity in `AERUNO_HANDOFF/DESIGN_SYSTEM.md` (Old Money x Liquid Glass; fixed palette and fonts). Visual decisions belong to the owner with ChatGPT's direction; implement them, raise technical concerns.
+10. **Talk to the owner in plain words** (see Part 2, "Talking to the owner"). He tests on a real Android phone.
+11. **Record what you do** in `docs/log/` (prototype) and say what is untested.
+
+---
+
+## Part 2. Native prototype plan and rules (original AGENTS.md)
+
+Note: the card list below was written for the prototype before the 2026-11-20 redesign reset. It is **on hold** until the architecture decision. Card numbers N04 and later changed meaning once (see `AERUNO_HANDOFF/PROTOTYPE_HISTORY.md`).
+
 # AERUNO Native Prototype: plan and rules for every AI
 
 Repo: `opkillerbg-dev/Aeruno-Native-beta` (public). Read this whole file first. Keep it under ~250 lines; when a fact changes, change it here.
-Created 2026-11-19. Status: N00 to N03 done. N04 (top progressive blur, owner-defined 2026-11-20) delivered, waiting for its gate.
+Created 2026-11-19. Status: N00 to N03 done. N04 (top progressive blur, owner-defined 2026-11-20) delivered, gate not confirmed. 2026-11-20: owner restarted AERUNO as a full UI/UX redesign; handoff package added (`START_HERE.md`, `AERUNO_HANDOFF/`); architecture undecided; cards on hold.
 
 ## 0. Current state (update after every card)
 
@@ -13,7 +37,7 @@ Created 2026-11-19. Status: N00 to N03 done. N04 (top progressive blur, owner-de
 - **How code reaches the repo:** the owner uploads `update.zip` (changed files, repo paths) to the repo root; the `Apply update` workflow unpacks it and starts a build. Files under `.github/` are skipped by it and are pasted in by hand.
 - **Installing:** every CI build has a fresh debug key, so the owner uninstalls the previous prototype first.
 - **Not verified yet:** that the N04 code builds, that the top blur looks right, speed. Fonts, palette and status bar were confirmed by the owner in N02.
-- **Legacy source for later phases:** `reference/` (read-only copy, never edited, never built), only if the owner has added it. See `reference/README.md`.
+- **Legacy source:** `AERUNO_HANDOFF/legacy-reference/` (read-only copy of legacy repo v150, never edited, never built; see `AERUNO_HANDOFF/SOURCE_MANIFEST.md`). The older `reference/` folder, if the owner added it, is a smaller frozen subset and is superseded.
 
 ## 1. What this is (and is not)
 

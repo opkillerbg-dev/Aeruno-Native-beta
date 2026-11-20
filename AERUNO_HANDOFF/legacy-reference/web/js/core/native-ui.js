@@ -1,0 +1,46 @@
+/* v64 native insets bridge (MainActivity exposes window.AxInsets; absent in browser/PWA, then env() alone is used) */
+document.addEventListener("contextmenu",function(e){if(!/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))e.preventDefault()});
+/* v67 floating controls: menu drawer, start, quick actions */
+var AXI={home:'<path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>',plan:'<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/>',ok:'<circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/>',swap:'<path d="M7 7h12l-3-3M17 17H5l3 3"/>',save:'<path d="M12 4v11M7.5 11l4.5 4.5 4.5-4.5M5 19h14"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>',info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>',plus:'<path d="M12 5v14M5 12h14"/>',heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.4A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>'};
+function axDrItem(id,ic,t,sub){return '<button class="ax-dr-it" id="'+id+'" type="button"><svg viewBox="0 0 24 24">'+AXI[ic]+'</svg><span><b>'+t+'</b>'+(sub?'<em>'+esc(sub)+'</em>':'')+'</span></button>'}
+function axDrawer(on){var d=$("ax-drawer"),sc=$("ax-dscrim");if(!d)return;
+  if(on){axDrawerFill();axGuard();hx("soft")}
+  d.classList.toggle("on",!!on);sc.classList.toggle("on",!!on);d.setAttribute("aria-hidden",on?"false":"true");document.body.classList.toggle("ax-drawer-open",!!on)}
+function axDrawerFill(){var td=todayIdx(),inP=td>=0&&td<ND,nm=(P&&P.name)||"Your plan",who=(P&&P.athlete)||"",xs=st["x"+Dn()];
+  var tag=td<0?"Starts soon":td>ND-1?"Plan complete":"Day "+(td+1)+" of "+ND;
+  var h='<div class="ax-dr-head"><span class="ax-dr-mark"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M14.59 11.04L14.56 11.04 14.56 11.04 14.37 10.68 13.62 9.25 13.53 9.06 13.52 9.02 13.93 8.31 13.99 8.21 14.14 8.05 14.25 7.95 14.40 7.85 14.53 7.78 14.76 7.71 14.92 7.68 15.08 7.67 22.32 7.67 22.48 7.67 22.50 7.69 22.03 8.47 21.78 8.86 21.68 9.06 21.49 9.35 21.42 9.48 21.38 9.54 21.26 9.67 21.12 9.81 20.99 9.90 20.86 9.97 20.70 10.04 20.59 10.06 20.47 10.08 20.37 10.08 15.79 10.09 15.66 10.09 15.50 10.11 15.37 10.15 15.24 10.21 15.08 10.32 15.01 10.38 14.94 10.48ZM8.68 16.33L5.60 16.33 5.62 16.30 5.86 16.25 7.74 15.95 8.46 15.83 9.59 15.65 9.85 15.61 10.18 15.56 10.86 15.45 11.22 15.39 11.48 15.34 12.19 15.23 12.45 15.18 12.77 15.14 12.90 15.11 12.92 15.09 12.91 15.06 12.30 13.89 12.18 13.67 11.98 13.28 11.63 12.63 11.55 12.47 11.37 12.14 11.19 11.78 10.75 10.97 10.60 10.68 10.51 10.52 10.44 10.42 10.37 10.36 10.28 10.29 10.15 10.22 10.02 10.18 9.92 10.17 6.77 10.17 6.73 10.16 6.73 10.13 6.98 9.71 7.18 9.35 7.68 8.50 7.83 8.25 7.95 8.08 8.07 7.97 8.20 7.88 8.33 7.81 8.52 7.75 8.69 7.73 8.78 7.72 11.64 7.73 11.87 7.75 12.00 7.78 12.09 7.81 12.26 7.89 12.35 7.95 12.48 8.05 12.58 8.15 12.68 8.28 12.73 8.34 13.67 10.13 13.97 10.71 14.08 10.91 14.26 11.26 15.16 12.98 15.27 13.21 15.44 13.54 15.82 14.28 15.96 14.54 16.06 14.80 16.09 14.93 16.10 15.06 16.11 15.19 16.10 15.32 16.06 15.48 16.03 15.58 15.96 15.73 15.86 15.87 15.78 15.97 15.66 16.07 15.50 16.18 15.37 16.24 15.18 16.30 15.08 16.31 14.95 16.32 14.59 16.33ZM4.76 16.33L2.16 16.33 1.97 16.31 1.84 16.27 1.74 16.21 1.66 16.13 1.59 16.04 1.56 15.97 1.53 15.87 1.50 15.74 1.50 15.58 1.52 15.42 1.56 15.29 1.60 15.19 1.78 14.90 1.95 14.58 2.04 14.45 2.24 14.09 2.40 13.83 2.54 13.57 2.66 13.37 3.16 12.50 3.43 12.04 3.48 11.95 3.67 11.62 3.71 11.56 3.78 11.46 3.88 11.36 4.04 11.22 4.27 11.09 4.43 11.03 4.53 11.00 4.76 10.96 9.69 10.96 10.15 10.96 10.24 10.97 10.20 11.00 10.18 11.01 10.05 11.03 8.78 11.32 8.62 11.37 8.26 11.45 8.04 11.52 7.81 11.62 7.68 11.68 7.55 11.77 7.39 11.91 7.24 12.08 7.13 12.25 6.78 12.85 6.38 13.54 6.26 13.76 5.56 14.96 5.25 15.52 5.17 15.65 4.82 16.26 4.79 16.31ZM17.97 13.34L17.77 13.36 15.92 13.36 15.79 13.36 15.76 13.35 15.68 13.21 15.60 13.05 15.39 12.66 15.10 12.11 15.05 12.01 15.06 11.98 15.32 11.52 15.40 11.43 15.47 11.36 15.60 11.25 15.76 11.15 15.83 11.12 15.99 11.06 16.12 11.03 16.22 11.02 16.35 11.02 19.69 11.02 19.85 11.02 19.88 11.04 19.87 11.07 19.65 11.43 19.54 11.62 19.00 12.50 18.81 12.82 18.77 12.89 18.57 13.08 18.42 13.19 18.29 13.26 18.20 13.29 18.10 13.32Z"/></svg></span><div><b>AERUNO</b><em>'+esc(who||"Your training")+'</em></div></div><p class="ax-dr-plan">'+esc(nm)+' · '+esc(tag)+'</p>'
+   +axDrItem("ax-dr-home","home","Home","Today at a glance")+axDrItem("ax-dr-plan","plan","Today's plan","Open and tick today's activities")
+   +(inP?axDrItem("ax-dr-close","ok",xs?"Reopen today":"Finish today",xs?"Day is finished":"Mark done, or take a rest day"):"")
+   +'<div class="ax-dr-sep"></div>'+axDrItem("ax-dr-plans","swap","Plans","Switch, import or export a plan")+axDrItem("ax-dr-add","plus","Add exercise","To a day of the current plan")
+   +axDrItem("ax-dr-exp","save","Export backup","Save everything to a file")
+   +'<div class="ax-dr-sep"></div>'+axDrItem("ax-dr-set","gear","Settings")+axDrItem("ax-dr-about","info","About and credits");
+  $("ax-drawer").innerHTML=h;
+  var b=function(id,fn){var e=$(id);if(e)e.onclick=function(){axDrawer(false);setTimeout(fn,60)}};
+  b("ax-dr-home",function(){go("home")});b("ax-dr-plan",function(){cur=Dn();go("plan");render()});
+  b("ax-dr-close",function(){cur=Dn();go("plan");render();axClose()});
+  b("ax-dr-plans",function(){go("plans")});b("ax-dr-add",function(){cur=Dn();go("plan");render();axAdd()});
+  b("ax-dr-exp",function(){$("ex").click()});b("ax-dr-set",function(){go("set")});
+  b("ax-dr-about",function(){go("set");var c=$("ax-credits");if(c){c.open=true;setTimeout(function(){c.scrollIntoView({behavior:"smooth",block:"start"})},140)}})}
+function axTopMore(){var td=todayIdx(),inP=td>=0&&td<ND,xs=st["x"+Dn()];
+  axSheet("Quick actions",(inP?'<button class="ax-opt" id="ax-q1"><b>'+(xs?"Reopen today":"Finish today")+'</b><span>'+(xs?"Day is finished":"Mark done, or take a rest day")+'</span></button>':'')
+   +'<button class="ax-opt" id="ax-q2"><b>Daily check-in</b><span>Sleep, energy and soreness</span></button>');
+  var q=function(id,fn){var e=$(id);if(e)e.onclick=function(){axSheetX();setTimeout(fn,60)}};
+  q("ax-q1",function(){cur=Dn();go("plan");render();axClose()});
+  q("ax-q2",function(){go("home");window.axBrainOpen&&axBrainOpen();var e=$("ax-hbrain");if(e)e.scrollIntoView({behavior:"smooth",block:"center"})});
+}
+$("ax-tmenu").onclick=function(){axDrawer(true)};
+/* v144: the left drawer duplicated the tabs. Kept in the code for one release; flip AX_DRAWER to bring the button back. */
+var AX_DRAWER=false;if(!AX_DRAWER){var tm=$("ax-tmenu");tm.hidden=true;tm.style.display="none"}$("ax-dscrim").onclick=function(){axDrawer(false)};
+$("ax-tmore").onclick=axTopMore;
+function axSI(t,r,b,l){var st=document.documentElement.style;try{syncSystemBarStyle()}catch(e){}st.setProperty("--ax-si-t",(+t||0)+"px");st.setProperty("--ax-si-b",(+b||0)+"px");requestAnimationFrame(function(){try{axNavH()}catch(e){}})}
+function axSIPull(){try{if(window.AxInsets){var v=String(AxInsets.get()).split(",");axSI(v[0],v[1],v[2],v[3])}}catch(e){}}
+window.axSI=axSI;axSIPull();window.addEventListener("resize",axSIPull);document.addEventListener("visibilitychange",axSIPull);
+function axIsDark(){try{var rs=getComputedStyle(document.documentElement);if(!String(rs.getPropertyValue("--bg")).trim())return null;
+  var e=document.createElement("i");e.style.cssText="position:absolute;width:0;height:0;visibility:hidden;color:var(--bg)";document.body.appendChild(e);var c=getComputedStyle(e).color;e.remove();
+  var n=String(c).match(/-?[\d.]+/g);if(!n||n.length<3)return null;var f=/^color\(/.test(c)?255:1;return(0.299*n[0]*f+0.587*n[1]*f+0.114*n[2]*f)<128}catch(x){return null}}
+/* Status bar and navigation bar icons: black on light themes, white on dark themes. Decided from the real page background colour, not from the OS setting. */
+function syncSystemBarStyle(){var h=document.documentElement,dark=axIsDark();
+  if(dark===null){var sk=h.getAttribute("data-skin")||"classic";dark=h.getAttribute("data-theme")==="dark"||(!h.hasAttribute("data-theme")&&!!(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches))||sk==="midnight"||sk==="sunset"||!!PR.amo}
+  try{var mt=document.querySelector('meta[name="theme-color"]');if(mt){var bc=getComputedStyle(h).getPropertyValue("--bg").trim();if(bc)mt.setAttribute("content",bc)}}catch(e0){}
+  try{var cap=window.Capacitor,bar=cap&&cap.Plugins&&cap.Plugins.StatusBar;if(bar){var q=function(r){if(r&&r.catch)r.catch(function(){})};q(bar.setOverlaysWebView({overlay:true}));/* Capacitor Style.Dark = light icons for dark backgrounds */q(bar.setStyle({style:dark?"DARK":"LIGHT"}))}}catch(e1){}
+  try{if(window.AxInsets)AxInsets.style(!!dark)}catch(e2){}}

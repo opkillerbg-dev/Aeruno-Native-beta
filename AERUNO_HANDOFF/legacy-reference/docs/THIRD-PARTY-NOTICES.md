@@ -1,0 +1,38 @@
+# Third-party notices
+
+## Arya Fit V2 fonts
+
+Big Shoulders Display, Instrument Serif, and Inter are bundled as Latin-subset WOFF2 files in `web/fonts/`. Each is licensed under the SIL Open Font License, Version 1.1. Source: Google Fonts. The app uses the unmodified typefaces with local fallback fonts for other scripts.
+
+## Body muscle artwork (Progress > Body)
+
+The front and back male body outline and muscle region paths in `index.html` (variables `BHF`, `BHB`, `BHOF`, `BHOB`) come from **react-native-body-highlighter** by ELABBASSI Hicham, https://github.com/HichamELBSI/react-native-body-highlighter , used under the MIT License. The paths were joined per muscle group and recolored; the shapes are unchanged.
+
+```
+MIT License
+
+Copyright (c) 2022 ELABBASSI Hicham
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+## Online exercise library (Settings > Online exercise library)
+
+Optional download of exercise names, muscles, equipment and level from **free-exercise-db** (github.com/yuhonas/free-exercise-db), released into the public domain (Unlicense). The data is fetched only when the user taps Download and is stored on the device. Check the project's LICENSE if this changes.
+- Liquid glass refraction (web/js/ui/v2-liquid.js, web/css/v2/liquid.css): code copied from archisvaze/liquid-glass, MIT, (c) 2026 Archis Vaze, https://github.com/archisvaze/liquid-glass. Licence text: docs/licenses/liquid-glass-LICENSE.txt

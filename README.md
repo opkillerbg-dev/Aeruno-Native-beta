@@ -1,5 +1,7 @@
 # AERUNO Native (prototype)
 
+> **New here (human or AI)?** Read `START_HERE.md` first. The `AERUNO_HANDOFF/` folder explains the whole AERUNO project, including a copy of the legacy app source for reference.
+
 A small test app to see whether the "Verdant Glass" look can run smoothly on a real phone. It is **not** the real AERUNO app; the real one lives in a different repo and is not touched here.
 
 Plan and rules for everyone working here: [`AGENTS.md`](AGENTS.md). What the old app has: [`docs/BASELINE_LEGACY.md`](docs/BASELINE_LEGACY.md). Tool versions: [`docs/VERSIONS.md`](docs/VERSIONS.md).

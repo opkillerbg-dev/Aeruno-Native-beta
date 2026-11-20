@@ -1,0 +1,57 @@
+# AERUNO 
+
+A personal workout app: plans, strength days, run/walk intervals, step counter, progress, and a plan builder.
+Plain HTML/CSS/JS (no framework) wrapped as an Android app with Capacitor 6. GitHub Actions builds the APK.
+
+## Repo layout
+
+```
+web/                  the whole app, served as-is (Capacitor webDir)
+  index.html          markup only (+ 2 tiny theme-preload scripts); loads css/ and js/ below
+  sw.js, manifest.webmanifest
+  css/                base, boot, run-polish, perf-fallback, liquid, heavy-glass-nav (load order = index.html order)
+  js/core/            core app split from the old inline script, in load order: state, exercise-media, plan-ui,
+                      timers-run, body-map, run-extras, native-ui, progress-share, sheets-views, data-io,
+                      steps-progress, lifecycle (runs init), adaptive-glass. Classic scripts, shared global scope.
+  js/boot.js          loading screen, loaded last
+  js/ui/              settings hub, home layout, motion
+  js/features/        one file per feature (readiness, progression, hands-free, animate,
+                      weekly card, body heatmap, swap, backup, library, route map, plan builder)
+  icons/              app icons (192, 512, maskable)
+  images/             hero, anatomy atlas, exercise pictures + masks
+native/               Android side, copied into the generated project by CI
+  java/               MainActivity, RunService, RunEnginePlugin, StepsPlugin
+  res/                splash and adaptive-icon resources
+tools/                CI helpers: check-web.py, android-setup.sh, patch-manifest.sh, patch_splash.py, patch_icons.py
+                      icons/ = logo generator (make_icons.py + variants.json), run it to rebuild all icons
+signing/debug.keystore  fixed debug key so every build has the same signature (do not delete or replace)
+signing/EXPECTED_SHA256.txt  fingerprint of that key; the build fails if the APK is signed with anything else
+docs/                 CURRENT.md (start here), WORKFLOW.md, tasks/ (backlog), log/, PERMISSIONS.md, DEVICE_TEST.md,
+                      v1-simplify/, onboarding/, archive/ (old history), THIRD-PARTY-NOTICES.md
+.github/workflows/build.yml   builds the APK on every push
+```
+
+## Update the repo (one file)
+
+Upload a single `update.zip` (repo files at the zip root, optional `DELETE.txt` listing paths to remove) to the repo root. `.github/workflows/apply-update.yml` unpacks it into the right folders, commits, deletes the zip and starts the build with the newest `build.yml`. Workflow files (`.github/workflows/*.yml`) can be inside the zip too: they are validated as YAML first, then applied. This needs the repo secret `ARYA_PAT` (a personal access token with the `workflow` permission); without it, `.github/` in the zip is skipped with a warning. `apply-update.yml` itself can never be deleted by `DELETE.txt`.
+
+## Build
+
+Push to `main`. Actions > latest run > Artifacts > `arya-fit-apk`. Install over the old app (export a backup first: Settings > Data & backup).
+`android/` is generated in CI and is not committed.
+
+## Add a feature
+
+1. Put the file in `web/js/features/` (or `web/js/ui/`).
+2. Add one `<script src="js/features/yourfile.js"></script>` line to `web/index.html`, before `boot.js`. Order matters.
+3. Nothing else: the build copies all of `web/`, and `tools/check-web.py` fails the build with a clear message if `index.html`, `sw.js` or the manifest point at a missing file.
+
+Bump the cache name in `web/sw.js` (`arya-vNN`) and the version label in `index.html` when you ship.
+
+## Licenses
+
+See `docs/THIRD-PARTY-NOTICES.md`.
+
+
+## Tests
+`node tests/store.test.js` (unit, no deps) and `python3 tests/browser_test.py` (needs `pip install playwright` and Chrome). CI runs both; only the unit tests block the APK.
