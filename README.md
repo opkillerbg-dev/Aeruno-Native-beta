@@ -1,37 +1,41 @@
-# AERUNO Native (prototype)
+# AERUNO Native (prototype repository)
 
-> **New here (human or AI)?** Read `START_HERE.md` first. The `AERUNO_HANDOFF/` folder explains the whole AERUNO project, including a copy of the legacy app source for reference.
+> **New here?** Read `START_HERE.md` first. It points to the current project state and design archive.
 
-A small test app to see whether the "Verdant Glass" look can run smoothly on a real phone. It is **not** the real AERUNO app; the real one lives in a different repo and is not touched here.
+This repository contains a small native Kotlin/Jetpack Compose prototype and a read-only copy of the legacy AERUNO source for reference. It is not yet the production AERUNO app. The functional legacy app remains in its separate repository and must not be modified from this repository.
 
-Plan and rules for everyone working here: [`AGENTS.md`](AGENTS.md). What the old app has: [`docs/BASELINE_LEGACY.md`](docs/BASELINE_LEGACY.md). Tool versions: [`docs/VERSIONS.md`](docs/VERSIONS.md).
+**Current project phase:** Round 2 visual design is complete and archived in `design/round-02/`. The next phase is Design Foundation. Architecture (native Compose vs rebuilt WebView), app implementation and migration remain undecided/not approved. See [`AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md`](AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md).
 
-**Status:** N01 to N03 done. N04 delivered, waiting for its check: the app now shows a scrolling test screen with a progressive blur at the top edge (switch A progressive / B no blur). Next: only after N04 passes.
+Working rules: [`AGENTS.md`](AGENTS.md). Project handoff: [`AERUNO_HANDOFF/`](AERUNO_HANDOFF/). Legacy baseline: [`docs/BASELINE_LEGACY.md`](docs/BASELINE_LEGACY.md). Tool versions: [`docs/VERSIONS.md`](docs/VERSIONS.md).
 
-- App id: `com.aeruno.nativeprototype` (temporary, debug builds only).
-- Needs Android 12 or newer (minSdk 31).
-- No keys, passwords or secrets live in this repo, and none are needed.
+## Prototype status
 
-## How the app gets built (nothing to install on your computer)
+The native prototype is a visual/technical experiment. Its existing theme, fonts and glass tests are not the finished app and do not establish performance. Continue only within the owner's approved phase and the rules in `AGENTS.md`. The previous N04/N05 prototype task sequence remains on hold unless explicitly resumed.
 
-GitHub builds it for you. The workflow `Build debug APK` runs on every push to `main`, or when you start it by hand: **Actions tab > Build debug APK > Run workflow**.
+- Prototype app id: `com.aeruno.nativeprototype` (temporary, debug builds only).
+- Minimum Android version: Android 12 (minSdk 31).
+- No keys, passwords or secrets belong in this public repository.
+
+## How the app gets built
+
+GitHub builds it. The workflow `Build debug APK` runs on pushes to `main`, or manually: **Actions tab > Build debug APK > Run workflow**.
 
 ## Get the app onto your phone
 
-1. Open the repo in your phone browser, tap **Actions**, then tap the newest **Build debug APK** run. A green tick means it worked.
-2. Scroll to **Artifacts** and tap **aeruno-native-debug-apk**. A zip file downloads (you must be logged in to GitHub).
-3. Open the zip in your Files app and extract it. Tap the `.apk` inside.
-4. Android will ask to allow installs from that app (Files or Chrome). Allow it, then tap Install.
-5. **Before installing a newer build, uninstall the previous "AERUNO Native (proto)".** Every build is signed with a fresh debug key, so Android refuses to update over an older one. Nothing is lost: there is no data in the prototype.
+1. Open the repo, tap **Actions**, then the newest **Build debug APK** run. A green tick means the build succeeded.
+2. Open **Artifacts** and download `aeruno-native-debug-apk`.
+3. Extract the downloaded ZIP and tap the `.apk`.
+4. Allow installs from the app you used to download/open it, then install.
+5. Before installing a newer prototype build, uninstall the previous `AERUNO Native (proto)`. Each build uses a fresh debug key, so Android won't update over the previous one. The prototype has no user data.
 
-If the run is red, tap it, tap the red **Build debug APK** job, and screenshot the first red error line.
+If a run fails, open it, tap the failed **Build debug APK** job, and capture the first red error line.
 
 ## How changes get into this repo
 
-Easiest way: upload one file named `update.zip` to the top folder of the repo (Add file > Upload files). The workflow `Apply update` unpacks it into the right folders, deletes the zip, commits, and starts a build.
+Upload one file named `update.zip` to the repository root (**Add file > Upload files**). The `Apply update` workflow unpacks the paths, commits them, removes the ZIP and attempts to start the debug build.
 
-Workflow files (anything inside `.github/`) are **skipped** in a zip on purpose; GitHub does not let the built-in token change them. Add those by hand: Add file > Create new file, type the path (for example `.github/workflows/build.yml`), paste the content, commit.
+Files inside `.github/` are skipped by the workflow and must be added manually.
 
-## Building on your own computer (optional)
+## Building locally (optional)
 
-You need JDK 17 and Gradle 8.13. This repo does not include the Gradle wrapper, so run `gradle assembleDebug` yourself (not `./gradlew`). The APK appears in `app/build/outputs/apk/debug/`.
+Requires JDK 17 and Gradle 8.13. The repository does not include the Gradle wrapper; use `gradle assembleDebug`. The APK appears in `app/build/outputs/apk/debug/`.
