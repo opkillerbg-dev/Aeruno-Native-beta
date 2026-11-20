@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AERUNO Foundation v0.2</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Big+Shoulders+Display:wght@900&family=Instrument+Serif:ital@1&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--ivory:#F3EFE4;--forest:#1F3B30;--terra:#C97855;--surface:#FFFEFA;--alt:#E7E2D6;--sage:#DCE5D7;--text:#202A23;--muted:#646E65;--border:#D8D9CE;
+--disp:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;--serif:'Instrument Serif',Georgia,serif;--ui:'Inter',system-ui,sans-serif;
+color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--ivory);color:var(--text);font:400 14px/20px var(--ui)}
+main{max-width:520px;margin:0 auto;padding:24px 16px 56px}
+h1{font:900 44px/40px var(--disp);color:var(--forest);margin:4px 0;text-transform:uppercase;letter-spacing:.3px}
+h2{font:700 12px/16px var(--ui);letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin:44px 0 12px}
+.lab{font:700 12px/16px var(--ui);letter-spacing:.8px;text-transform:uppercase;color:var(--muted)}
+.note{color:var(--muted);font-size:12px;line-height:17px;margin:10px 0 0}
+.lead{font:italic 28px/32px var(--serif);color:var(--forest);margin:0}
+.badge{display:inline-block;font:700 11px/16px var(--ui);letter-spacing:.8px;text-transform:uppercase;background:var(--sage);color:var(--forest);padding:4px 10px;border-radius:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:16px}
+.cq{container-type:inline-size}
+.D{font-family:var(--disp);font-weight:900;text-transform:uppercase;white-space:nowrap}
+.stk{display:block;transform-origin:0 100%}
+.btn{display:inline-flex;align-items:center;gap:10px;font:700 15px/20px var(--ui);background:var(--forest);color:var(--ivory);border-radius:12px;padding:6px 6px 6px 16px;min-height:48px}
+.btn i{width:36px;height:36px;border-radius:50%;background:var(--terra);color:var(--text);display:grid;place-items:center;font-style:normal}
+/* A: sunk title behind ledge */
+.hA{position:relative;overflow:hidden;background:var(--forest);border-radius:28px;padding:20px 0 12px}
+.hA .topo{position:absolute;right:-10cqw;top:-6cqw;width:78cqw;opacity:.4}
+.kick{font:700 12px/16px var(--ui);letter-spacing:.8px;text-transform:uppercase;color:var(--ivory);opacity:.85;padding:0 20px;position:relative}
+.hA .ttl{position:relative;z-index:1;color:var(--ivory);font-size:37cqw;line-height:.78;padding:0 0 0 18px;margin-top:11cqw}
+.hA .ttl span{transform:scaleY(1.14)}
+.ledge{position:relative;z-index:2;background:var(--ivory);border-radius:20px;margin:-9cqw 12px 0;padding:12px 12px 12px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ledge .lab{color:var(--text);font-size:11px;line-height:15px}
+/* B: number tucked behind card, peeking above */
+.pk{position:relative;padding-top:27cqw}
+.pk .big{position:absolute;left:12px;top:-1cqw;z-index:0;font-size:62cqw;line-height:.8;color:var(--forest)}
+.pk .card{position:relative;z-index:1;padding:20px 16px 16px;border-radius:28px}
+.pk .grid{display:flex;margin-top:16px}.pk .grid>div{flex:1;border-left:1px solid var(--border);padding-left:12px}.pk .grid>div:first-child{border:0;padding:0}
+.pk .grid b{display:block;font:900 36px/33px var(--disp);color:var(--forest)}
+/* C: route passes in front of the word */
+.hC{position:relative;overflow:hidden;background:var(--forest);border-radius:28px;padding:20px 0 16px;color:var(--ivory)}
+.hC .ttl{position:relative;color:var(--ivory);font-size:41cqw;line-height:.8;padding-left:16px;margin-top:6cqw}
+.hC .ttl span{transform:scaleY(1.14)}
+.hC svg.route{position:absolute;left:0;right:0;top:20cqw;width:100%;z-index:2;pointer-events:none}
+.hC .meta{display:flex;gap:20px;padding:0 20px;margin-top:11cqw;position:relative;z-index:3}
+.hC .meta b{display:block;font:900 44px/40px var(--disp);letter-spacing:.3px}
+.hC .meta .lab{color:var(--ivory);opacity:.7}
+.hC .foot{padding:16px 12px 0 20px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:3}
+/* numbers */
+.num{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:20px 16px}
+.num .ghost{position:absolute;right:-6cqw;bottom:-14cqw;font-size:78cqw;line-height:.8;color:var(--alt);z-index:0}
+.num>*:not(.ghost){position:relative;z-index:1}
+.num .hs{font-size:36cqw;line-height:.82;color:var(--forest)}
+.bar{height:4px;background:var(--alt);border-radius:2px;margin:10px 0 6px;width:60%}.bar i{display:block;height:100%;width:62%;background:var(--terra);border-radius:2px}
+.row3{display:flex;margin-top:18px}.row3>div{flex:1;border-left:1px solid var(--border);padding-left:12px}.row3>div:first-child{border:0;padding:0}
+.row3 b{display:block;font:900 48px/44px var(--disp);color:var(--forest)}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}.tbl td{padding:9px 0;border-bottom:1px solid var(--border);vertical-align:top}.tbl td:first-child{font-weight:700;width:42%;padding-right:10px}
+.y{color:var(--forest)}.n{color:#B55345}
+.st{color:var(--forest);font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:64px;line-height:.8;white-space:nowrap}
+.cmp{display:grid;gap:10px}
+</style></head><body><main>
+<span class="badge">Exploration · not approved</span>
+<h1>Foundation v0.2</h1>
+<p class="lead">Taller type. Layered cards.</p>
+<p class="note">Refines v0.1. Palette, glass placement, contrast, spacing, touch and motion rules unchanged. Everything here is a proposal. No code touched.</p>
+
+<h2>1 · Tall display type</h2>
+<div class="card">
+<div class="lab">Same word, same size (64px) — vertical scale only</div>
+<div style="margin:14px 0 6px"><div class="st">Lower ×1.00</div></div>
+<div style="margin:26px 0 6px"><div class="st" style="transform:scaleY(1.15);transform-origin:0 100%">Lower ×1.15</div></div>
+<div style="margin:34px 0 6px"><div class="st" style="transform:scaleY(1.3);transform-origin:0 100%">Lower ×1.30</div></div>
+<div style="margin:30px 0 4px"><div class="st" style="font-family:Anton,Impact,sans-serif;font-weight:400;letter-spacing:.5px;font-size:58px">Lower · Anton</div></div>
+<p class="note"><b>Verified:</b> the bundled Big Shoulders TTF is static, no width axis. It is already condensed (cap height 0.80 em). Taller = bigger size + tight leading, or a vertical scale.<br><b>Proposal:</b> keep Big Shoulders; allow ×1.10–1.15 vertical scale on display roles only (hero titles, hero stats). ×1.30 thickens horizontal strokes visibly: too far. Anton is a heavier look and a new family: not recommended.<br><b>Conflict:</b> AGENTS.md says “never stretched or scaled”. This needs your explicit OK.</p>
+</div>
+
+<h2>2 · Ordinary vs expressive</h2>
+<div class="cmp">
+<div class="card"><div class="lab">Ordinary · Inter Bold 28 / v0.1 scale</div><div style="font:700 28px/32px var(--ui);margin-top:8px">Lower body</div><div class="lab" style="margin-top:6px;text-transform:none;letter-spacing:0;font-weight:400">Readable. Reads like every fitness app.</div></div>
+<div class="card" style="background:var(--forest);border-color:var(--forest);color:var(--ivory)"><div class="lab" style="color:var(--ivory);opacity:.8">v0.1 · Big Shoulders 44</div><div class="D" style="font-size:44px;line-height:40px;margin-top:8px;letter-spacing:.3px">Lower body</div></div>
+<div class="card cq" style="background:var(--forest);border-color:var(--forest);color:var(--ivory);padding:16px 16px 20px;overflow:hidden"><div class="lab" style="color:var(--ivory);opacity:.8">v0.2 · 36cqw stacked, ×1.14</div><div class="D" style="font-size:36cqw;line-height:.78;margin-top:9cqw"><span class="stk" style="transform:scaleY(1.14)">Lower<br>Body</span></div></div>
+</div>
+
+<h2>3 · Depth A — title sinks behind a ledge</h2>
+<div class="hA cq">
+<svg class="topo" viewBox="0 0 260 200" fill="none" stroke="#DCE5D7" stroke-opacity=".6"><ellipse cx="150" cy="80" rx="40" ry="22"/><ellipse cx="150" cy="80" rx="80" ry="44"/><ellipse cx="150" cy="80" rx="120" ry="66"/><ellipse cx="150" cy="80" rx="160" ry="88"/><circle cx="130" cy="70" r="6" fill="#C97855" stroke="none"/></svg>
+<div class="kick">Week 2 · Day 3</div>
+<div class="ttl D"><span class="stk">Lower<br>Body</span></div>
+<div class="ledge"><div class="lab">35 min<br>6 exercises</div><div class="btn">Start workout<i>→</i></div></div>
+</div>
+<p class="note">Depth = occlusion only. The lower ~20% of BODY is covered by a solid ivory ledge. No drop shadows, no 3D. Full word stays identifiable; real text, so screen readers get “Lower Body”.</p>
+
+<h2>4 · Depth B — number tucked behind a card</h2>
+<div class="pk cq">
+<div class="big D" aria-hidden="true">18</div>
+<div class="card"><div class="lab">November · sessions</div><div class="t" style="font:700 18px/24px var(--ui);margin-top:6px">18 sessions, 3 more than October</div>
+<div class="grid"><div><b>41.2</b><span class="lab">km run</span></div><div><b>12h</b><span class="lab">active</span></div><div><b>4</b><span class="lab">PRs</span></div></div></div>
+</div>
+<p class="note">The numeral extends above the card and is covered by it. Decorative echo of a figure that is also stated in text inside the card (accessibility: hidden from screen readers). For weekly/monthly summaries only.</p>
+
+<h2>5 · Depth C — route crosses in front of the word</h2>
+<div class="hC cq">
+<div class="kick">Run · Week 2 · Day 4</div>
+<div class="ttl D"><span class="stk">Tempo</span></div>
+<svg class="route" viewBox="0 0 360 120" fill="none" stroke-linecap="round"><path d="M-10 95 C60 40 110 110 180 62 S300 20 372 70" stroke="#1F3B30" stroke-width="9"/><path d="M-10 95 C60 40 110 110 180 62 S300 20 372 70" stroke="#C97855" stroke-width="3"/><circle cx="62" cy="62" r="6" fill="#C97855"/></svg>
+<div class="meta"><div><b>5.0</b><span class="lab">km</span></div><div><b>32</b><span class="lab">min</span></div><div><b>6:24</b><span class="lab">/km</span></div></div>
+<div class="foot"><span class="lab" style="color:var(--ivory);opacity:.8">Warm-up · Tempo · Cool-down</span><div class="btn" style="background:var(--ivory);color:var(--forest)">Start run<i>→</i></div></div>
+</div>
+<p class="note">Word bleeds off the right edge (last letter cropped ~8%). A forest casing under the terracotta route cuts a gap through the letters, so the route reads as a layer above the type.</p>
+
+<h2>6 · Numbers treatment</h2>
+<div class="num cq">
+<div class="ghost D" aria-hidden="true">20</div>
+<div class="lab">This week · goal 20 km</div>
+<div style="display:flex;align-items:flex-end;gap:10px;margin-top:10px"><div class="hs D"><span class="stk" style="transform:scaleY(1.12)">12.4</span></div><span class="lab" style="padding-bottom:4px">km</span></div>
+<div class="bar"><i></i></div>
+<div class="row3"><div><b>6:24</b><span class="lab">pace /km</span></div><div><b>3</b><span class="lab">runs</span></div><div><b>4</b><span class="lab">day streak</span></div></div>
+</div>
+<p class="note">One hero number per card at ~36cqw. Supporting numbers stay at 48px, hairline dividers, no boxes. The ghost “20” (Alt tone, cropped) is decoration only: the goal is also in the label.</p>
+
+<h2>7 · Where to use it</h2>
+<div class="card"><table class="tbl">
+<tr><td class="y">Expressive</td><td>Workout hero · running hero · monthly/weekly summary · one hero stat per screen · PR / completion moment · Progress screen title</td></tr>
+<tr><td class="n">Stays flat</td><td>Lists and rows · exercise names · forms · settings · nav and session pill · sheets · buttons · chips · timers · body text · anything under 28px</td></tr>
+<tr><td>Limits</td><td>One depth composition per screen · crop ≤ 20% of any word · ≥ 80% of each glyph visible · depth by occlusion and tone only, no shadows · decorative numerals are aria-hidden and duplicated in text · no animation of the layering · reduce-motion = static</td></tr>
+<tr><td>Compose (untested)</td><td>Layering = Box z-order · crop = clipToBounds · stretch = graphicsLayer scaleY · cqw → fractions of BoxWithConstraints width. No new dependency.</td></tr>
+</table></div>
+
+<h2>8 · Your calls</h2>
+<div class="card"><table class="tbl">
+<tr><td>Stretch</td><td>A: ×1.14 on display roles. B: stay at ×1.00, use size only. I'd pick A.</td></tr>
+<tr><td>Depth</td><td>Which of A, B, C to keep, drop or merge.</td></tr>
+<tr><td>Ghost numerals</td><td>Keep (section 6) or flat only.</td></tr>
+</table></div>
+</main></body></html>

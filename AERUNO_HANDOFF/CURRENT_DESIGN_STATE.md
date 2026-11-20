@@ -1,67 +1,81 @@
 # AERUNO Current Design State — 2026-11-20
 
-**Current phase: Design Foundation.** The Round 2 visual baseline is complete and archived. No app implementation, migration, native/WebView architecture decision, or performance benchmark has been completed or approved.
+**Current phase: Design Foundation refinement (v0.2 review).** Round 2 visual screens are complete and archived. Foundation v0.1 established the first token/component board. Foundation v0.2 is now archived as a visual exploration; it is not yet fully approved. No app implementation, migration, native/WebView architecture decision, or performance benchmark has been completed or approved.
 
 ## Source-of-truth order
 
-1. This file is the current design/project status.
-2. `design/round-02/claude-artifact-export.html` is the standalone HTML export containing the latest three boards.
-3. `design/round-02/claude-artifact-export.pdf` is the matching three-page visual export.
-4. `design/round-02/boards/` contains clean rendered page images from that PDF.
-5. `design/round-02/phone-captures/` contains the owner's phone screenshots of the same three boards.
+1. This file is the authoritative current project/design status.
+2. `AERUNO_HANDOFF/FOUNDATION_V02_REVIEW.md` records the owner's current preferences and what remains open.
+3. `design/foundation-v02/aeruno-foundation-v02.html` is the original HTML export of Foundation v0.2.
+4. `design/round-02/` contains the approved Round 2 Today strength, navigation and Today running visual baseline (HTML/PDF exports, page images and phone captures).
+5. `AERUNO_HANDOFF/DESIGN_SYSTEM.md` contains the established brand direction, palette, approved font families and prior token guidance.
 
-**Important metadata correction:** The downloaded files were named `AERUNO shell and Today (design round 1).html` and `.pdf`, and the HTML document's `<title>` also says `design round 1`. That label is stale. It does NOT describe the embedded board content. The HTML and PDF were checked directly and both contain the latest Round 2 state described below. Do not place these exports in `design/round-01/`.
+The Foundation v0.2 file is correctly named and titled `AERUNO Foundation v0.2`. Treat its content as the latest exploration, but do not treat every proposal in it as approved.
 
-## Round 2 deliverables (verified)
+## Completed visual baseline — Round 2
 
-### Board 1 — Today: strength day (PDF page 1)
-- Date label: Tuesday · 20 Nov.
-- Greeting: Good morning.
-- Hero: Week 2 · Day 3; LOWER BODY; 35 min; 6 exercises; Start workout.
+### Board 1 — Today: strength day
+- Week 2 · Day 3; LOWER BODY; 35 min; 6 exercises; Start workout.
 - Stats: 8,420 steps / goal 10,000; 42 min active; 4 day streak.
-- Up Next: Back squat (4 × 8 · 60 kg), Romanian deadlift (3 × 10 · 50 kg), Walking lunge (3 × 12 · 20 kg).
-- Visual hierarchy uses the ivory canvas, forest hero, topographic contours, terracotta focal dot, serif greeting and large display type.
+- Up Next: Back squat, Romanian deadlift and Walking lunge.
+- Ivory canvas, forest hero, topographic contours, terracotta focal dot, serif greeting and large display typography.
 
-### Board 2 — Floating navigation states (PDF page 2)
+### Board 2 — Floating navigation states
 - Five destinations: **Today, Plan, Train, Progress, Me**.
-- Resting state shown with **Train** active.
-- Live workout state: session pill with 12:48 timer, Back squat, Set 2 of 4, “tap to reopen”, and pause control.
-- Paused state: timer dims, label changes to “Paused · tap to reopen”, control becomes Resume.
-- Scrolling down: nav retreats to a compact 48 px dock; it returns on scroll up and is never fully hidden.
-- Board spec: nav height 64; side margin 16; radius 28; blur 16; white 62%; border white 55%; active forest pill; 220 ms slide; bottom content inset 112 px; retreat 220 ms ease-out to 48 px dock.
+- Live session pill with timer, exercise/set, tap-to-reopen and pause control.
+- Paused state with dimmed timer and resume control.
+- Navigation retreats to a compact dock while scrolling down, returns on scroll up and is never fully hidden.
+- Round 2 board specifies 64 px nav height, 16 px side margin, 28 px radius, 16 px blur, 62% white, 55% white border, 220 ms transition and 112 px bottom content inset.
 
-### Board 3 — Today: running day (PDF page 3)
-- Date label: Thursday · 22 Nov · 16° clear.
-- Hero: Run · Week 2 · Day 4; TEMPO RUN; 5.0 km; 32 min; 6:24/km; Start run.
+### Board 3 — Today: running day
+- Tempo Run; 5.0 km; 32 min; 6:24/km; Start run.
 - Stats: 12.4 km this week / goal 20; pace 6:24/km; 4 day streak.
-- Today's run: Warm-up (5 min · easy · 7:00/km), Tempo (3.0 km · 6:05/km), Cool-down (5 min · easy).
-- Running hero extends the same topographic motif with a route/path line.
+- Warm-up, tempo and cool-down rows; route line extends the topographic visual language.
 
 ## Approved visual direction
 
-- Aesthetic: **Old Money × Liquid Glass**. Solid surfaces carry content; glass is selective and functional, not applied everywhere.
+- Aesthetic: **Old Money × Liquid Glass**. Solid surfaces carry content; glass is selective and functional.
 - Palette: Ivory `#F3EFE4`; Deep Forest `#1F3B30`; Terracotta `#C97855`; Surface `#FFFEFA`; Surface Alt `#E7E2D6`; Sage `#DCE5D7`; Text `#202A23`; Muted `#646E65`.
-- Typography: Big Shoulders Display Black, Instrument Serif Italic, Inter.
-- Today layout: date/greeting/profile header; strong workout hero; large divider-separated stats; concise next-activity rows.
-- Navigation: five tabs and contextual session-pill states as above.
+- Font families: Big Shoulders Display Black, Instrument Serif Italic and Inter.
+- Navigation: Today, Plan, Train, Progress, Me, plus contextual live/paused session states.
+
+## Foundation v0.2 — current review state
+
+The v0.2 HTML is in `design/foundation-v02/`. It explores tall typography, ordinary-vs-expressive type, three depth compositions, number styling and usage rules. See `AERUNO_HANDOFF/FOUNDATION_V02_REVIEW.md` for detailed owner feedback.
+
+**Strongly preferred and to be retained:**
+- **Depth B (v0.2 section 4):** oversized decorative number tucked behind a summary card. Use selectively for weekly/monthly summaries; keep the real statistic stated in readable text.
+- **Depth C (v0.2 section 5):** route line crossing in front of oversized running typography. Preserve the route-over-type interaction for running hero exploration.
+
+**Direction wanted, details still open:**
+- Selective tall/elongated display typography. The owner wants this in selected high-impact places, not throughout the UI. Exact technique and scale are undecided. The v0.2 suggestion of `scaleY` around 1.10–1.15 is a proposal, not an approved code token. The 1.30 sample is not recommended. Anton is an unapproved alternative-font specimen only.
+
+**Needs refinement:**
+- Depth A (title sinking behind a ledge): not selected as-is; refine overlap and ensure the full title remains identifiable.
+- Ghost numeral treatment: refine size, tone and placement so it does not compete with the primary metric.
+- Ordinary-vs-expressive type comparison and usage rules: make them clearer and test at mobile sizes.
+
+The v0.2 HTML uses Google Fonts for its browser preview. The Android app must keep using locally bundled approved fonts; do not add a network-font dependency based on this artifact.
 
 ## Decisions still open
 
-- Exact compact-dock expansion interaction and how all five destinations remain reachable from that compact state.
+- Final implementation approach for selective tall display typography (larger native size/tighter leading versus a restrained vertical transform).
+- Final treatment for Depth A and the ghost-number treatment.
+- Exact limits for text cropping and how to keep every essential word/readout accessible.
+- Compact-dock expansion interaction; tap-to-expand is a preferred proposal but is not yet recorded as an explicit owner decision in the archived Round 2 board.
 - Rest-day and recovery-day Today variants.
 - Full screen designs for Plan, Train, Progress and Me.
-- Detailed reusable component specs and final motion/accessibility rules.
+- Final reusable component specifications and motion/accessibility rules.
 - Architecture choice: native Kotlin/Compose versus rebuilt WebView remains undecided.
-- Glass performance benchmark remains unperformed. The boards are visual designs, not evidence of app performance.
+- Glass performance benchmark remains unperformed. Design boards do not establish app performance.
 
-## Next phase: Design Foundation
+## Next phase task
 
-Define the reusable design tokens, spacing, typography roles, surface treatments, buttons, cards, navigation, sheets, interactions, motion and accessibility rules. Continue design work before implementation.
+Refine Foundation v0.2, not restart it:
+1. Retain and polish Depth B and Depth C.
+2. Explore selective tall display type and compare native size/leading against mild vertical scaling; do not lock the exact scaling value without owner review.
+3. Refine Depth A and ghost-number composition.
+4. Clarify use/avoidance rules and accessibility safeguards.
+5. Produce a clean, mobile-readable visual board for owner review.
 
 Do not change app IDs, signing, storage keys/schema, backup format, services, or the legacy app. Do not start implementation or migration until the owner explicitly approves the architecture and implementation phase.
-
-## Export integrity
-
-- HTML original bytes SHA-256: `0d620656dceb43e10529ad323f03091bba8a723ec151c743de9126a83e698f73`
-- PDF original bytes SHA-256: `e9e31c71b5d41cfcd484526e3baea11e33641089edc11f99ebceaba249e19dd4`
-- Both source exports are stored in `design/round-02/` byte-for-byte; only the archive paths have been normalized.

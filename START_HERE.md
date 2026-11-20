@@ -4,13 +4,14 @@ You are an AI assistant continuing the AERUNO project. Read the current status b
 
 ## Current status — read first
 
-1. `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md` is the authoritative current project and design state.
-2. `AERUNO_HANDOFF/EXPORT_NOTES.md` explains the verified HTML/PDF export and its stale Round 1 filename/title.
-3. `design/round-02/` contains the Round 2 HTML, PDF, rendered board images and phone captures.
+1. `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md` is the authoritative current project/design status.
+2. `AERUNO_HANDOFF/FOUNDATION_V02_REVIEW.md` records the owner's review of the latest Foundation v0.2 exploration.
+3. `design/foundation-v02/aeruno-foundation-v02.html` is the original Foundation v0.2 HTML export.
+4. `design/round-02/` contains the completed Round 2 Today strength, navigation and Today running visual baseline.
 
-**The Round 2 design is complete and archived. The next phase is Design Foundation.** Design work is authorized to continue. App implementation, migration and architecture selection are NOT approved yet.
+**Current phase: Design Foundation refinement.** Round 2 is complete. Foundation v0.1 established the first system board; Foundation v0.2 is an exploration that now needs targeted refinement. Do not restart earlier rounds.
 
-The current-state document supersedes older phase labels such as the "understanding and architecture decision" sentence in Part 1 of `AGENTS.md` and any older handoff note that says not to begin design. The native prototype task list in Part 2 of `AGENTS.md` remains historical/on hold unless the owner explicitly resumes it.
+App implementation, migration and architecture selection are NOT approved yet. Design exploration is authorized to continue. The current-state document supersedes older phase labels in `AGENTS.md` and historical handoff notes where they conflict. The native prototype task list in Part 2 of `AGENTS.md` remains historical/on hold unless the owner explicitly resumes it.
 
 ## Project overview
 
@@ -19,7 +20,7 @@ AERUNO (formerly Arya Fit) is a personal Android fitness app. The functional leg
 ## Read in this order
 
 1. `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md`
-2. `AERUNO_HANDOFF/EXPORT_NOTES.md`
+2. `AERUNO_HANDOFF/FOUNDATION_V02_REVIEW.md`
 3. `AERUNO_HANDOFF/PROJECT_OVERVIEW.md`
 4. `AERUNO_HANDOFF/REPOSITORY_GUIDE.md`
 5. `AERUNO_HANDOFF/LEGACY_APPLICATION.md`
@@ -46,7 +47,8 @@ AERUNO (formerly Arya Fit) is a personal Android fitness app. The functional leg
 
 - The owner decides design, architecture, identity, signing and implementation.
 - ChatGPT leads visual design direction; the coding AI implements and tests; the owner tests on the real Android phone.
-- Continue with Design Foundation; do not restart Round 1 or Round 2.
+- Continue with Foundation v0.2 refinement. Preserve the owner's preference for Depth B and Depth C; do not restart Round 1, Round 2 or Foundation v0.1.
+- Treat proposed stretch factors, Depth A, ghost numerals and implementation techniques as unresolved until the owner approves them.
 - Do not claim build/performance/device testing without evidence.
 - Do not touch legacy app ID, signing, `aryaApp2`, storage schema, backup format or native services without explicit owner approval.
 - This repository is public: never add secrets, keystores, passwords, tokens, private keys or personal backups.
@@ -57,10 +59,9 @@ AERUNO (formerly Arya Fit) is a personal Android fitness app. The functional leg
 | Need | Location |
 |---|---|
 | Current design/project state | `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md` |
-| Latest design source exports | `design/round-02/` |
-| Design archive guide | `design/README.md` |
+| Foundation v0.2 review | `AERUNO_HANDOFF/FOUNDATION_V02_REVIEW.md` |
+| Foundation v0.2 source HTML | `design/foundation-v02/aeruno-foundation-v02.html` |
+| Round 2 design baseline | `design/round-02/` |
 | Prototype source | `app/src/main/java/com/aeruno/nativeprototype/` |
 | Prototype change log | `docs/log/` |
 | Legacy app reference, read-only | `AERUNO_HANDOFF/legacy-reference/` |
-| Legacy web UI | `AERUNO_HANDOFF/legacy-reference/web/` |
-| Legacy native Java | `AERUNO_HANDOFF/legacy-reference/native/java/` |
