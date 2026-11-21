@@ -37,10 +37,16 @@ This is the authoritative decision overlay for the current AERUNO redesign phase
 
 The file `design/foundation-v1/aeruno-design-foundation.html` is Design Foundation draft 1, not a final approved specification.
 
-- **Session-pill timer font remains open.** Round 2 shows Big Shoulders in the session pill; older `DESIGN_SYSTEM.md` guidance specifies Inter tabular numerals for timers. Recommendation for review: Inter tabular numerals for all live timers/countdowns, while Big Shoulders remains for hero/display numbers. Do not record this as an owner decision until the owner confirms it.
+- **Session-pill timer font: LOCKED — Big Shoulders Display (Option 2), owner decision 2026-11-21** (`TIMER_FONT_DECISION_2026-11-21.md`). Do not reopen unless the owner asks or implementation testing finds a concrete issue. It is a design decision, not proof of Android/WebView/Compose behaviour. The timer stays outside the Variant C ×1.14 scaling. It does not approve Foundation Draft 2 as a whole or its Proposed tokens. Other timers and countdowns have no recorded decision; use tabular figures where numbers must not jitter and mark any choice Proposed.
 - The Foundation's contrast notes show Terracotta `#C97855` on Ivory `#F3EFE4` at 2.90:1 and on Surface `#FFFEFA` at 3.30:1. Keep the approved palette unchanged unless the owner approves a change. Treat these combinations as decorative/large-fill use only; do not use Terracotta as ordinary small text on these light surfaces. The displayed ratios have not been independently re-measured in this patch.
 - Spacing, radius, motion, component details and accessibility codification tagged **Proposed** still need owner review. Items tagged **Open** remain undecided or untested.
 - HTML/headless-browser rendering at phone-like widths is not a real Android/Compose/WebView device test. No performance or implementation claims may be inferred from it.
+
+## Status update — Plan phase (2026-11-21)
+
+- The owner reports that the Foundation Draft 2 correction and owner review are complete. The Draft 2 file itself is not in this repository copy (only `design/foundation-v1/` and the older v0.2 export are). Proposed and Open tags from the Foundation stay as tagged unless the owner explicitly approves them; nothing was promoted by this update.
+- Current work: **Plan screen design exploration** in `design/plan-screen/`, awaiting owner review. Train is not started and waits for that review.
+- The sequence below is kept for history; step 4 (Plan) is now in progress.
 
 ## Current sequence
 
@@ -56,6 +62,6 @@ The file `design/foundation-v1/aeruno-design-foundation.html` is Design Foundati
 - `AERUNO_HANDOFF/TYPE_DEPTH_BOARD_REVIEW.md`: early statements that the type winner is undecided are superseded by the selected Variant C decision above.
 - `AERUNO_HANDOFF/FOUNDATION_V02_REVIEW.md`: older exploration-stage wording that the tall type treatment is undecided predates the Type & Depth Board and is superseded by the selected Variant C direction.
 - `AERUNO_HANDOFF/ARCHITECTURE_DECISIONS.md` and `AERUNO_HANDOFF/KNOWN_ISSUES.md`: old Lite/Smooth-mode diagnostic suggestions and V2-lag comparisons are not current tasks or valid architecture evidence.
-- `AERUNO_HANDOFF/CONTINUATION_UPDATE_2026-11-21.md`: old next-step instructions to refine the Type & Depth Board are superseded; that checkpoint is complete.
+- `AERUNO_HANDOFF/CONTINUATION_UPDATE_2026-11-21.md`: old next-step instructions to refine the Type & Depth Board are superseded; that checkpoint is complete. Its instruction to resolve the timer-font question is also superseded: the timer font is locked (see above).
 
 Do not delete historical evidence merely to make the old notes appear current. Preserve it and use this precedence note to avoid treating it as an active instruction.

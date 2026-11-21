@@ -1,6 +1,13 @@
 # AERUNO Current Design State — 2026-11-21
 
-**Current phase: Design Foundation review/refinement.** Round 2 visual screens are complete. Foundation v0.1 and v0.2 are historical explorations. Type & Depth Board Refinement 1 is complete and the owner selected Variant C. Design Foundation draft 1 exists and is awaiting owner review/corrections. No app implementation, migration, final native/WebView architecture decision or new-UI performance benchmark has been approved.
+**Current phase: Design Foundation review/refinement.** Round 2 visual screens are complete. Foundation v0.1 and v0.2 are historical explorations. Type & Depth Board Refinement 1 is complete and the owner selected Variant C. Design Foundation draft 1 exists; the owner reports the Draft 2 correction and review complete (2026-11-21), see the status update below. No app implementation, migration, final native/WebView architecture decision or new-UI performance benchmark has been approved.
+
+## Status update — Plan screen design phase (2026-11-21)
+
+- **Current phase: Plan screen creative rework**, owner review pending: `design/plan-screen/OWNER_REVIEW_CREATIVE_DIRECTION_2026-11-21.md` is the latest owner feedback; `design/plan-screen/README.md` and the HTML export preserve the first functional/layout exploration.
+- Session-pill timer font is locked (Big Shoulders Display). Where the Foundation-review notes below say it is open, this update supersedes them.
+- The Foundation Draft 2 file is not in this repo copy. Proposed and Open items remain so unless the owner approves them explicitly.
+- The owner says the first Plan visual feels too conventional and has lost the distinctive creative quality of Round 2. Keep its functional research, archive the first layout as reference, and create two materially different, more art-directed Plan concepts. Train starts only after the owner selects and approves one. No app implementation, migration or architecture commitment.
 
 ## Read these first
 
@@ -46,16 +53,14 @@ If older documents conflict with the override or this file, follow the override/
 
 Known review items:
 
-- Session-pill timer font is still open. Round 2 shows Big Shoulders; older `DESIGN_SYSTEM.md` guidance specifies Inter tabular numerals for timers. Recommendation for owner review: Inter tabular numerals for all active timers/countdowns; do not mark it owner-approved until confirmed.
+- **Session-pill timer font: LOCKED — Big Shoulders Display (Option 2), owner decision 2026-11-21** (`TIMER_FONT_DECISION_2026-11-21.md`). Do not reopen unless the owner asks or implementation testing finds a concrete issue. It is a design decision, not proof of Android/WebView/Compose behaviour. The timer stays outside the Variant C ×1.14 scaling. It does not approve Foundation Draft 2 as a whole or its Proposed tokens. Other timers and countdowns have no recorded decision; use tabular figures where numbers must not jitter and mark any choice Proposed.
 - Keep the palette unchanged. The Foundation lists Terracotta on Ivory at 2.90:1 and on Surface at 3.30:1; these combinations should be decorative or large-fill use, not ordinary small text. The ratios have not been independently re-measured as part of this documentation patch.
 - Proposed component, spacing, radius, motion and accessibility rules require owner review. Open items remain open.
 - Foundation rendering was checked in a headless browser at 360, 390 and 412 px; this is not a real Android implementation or device test. Actual system font scaling at 200%, dark mode, accessibility and performance remain untested unless separately evidenced.
 
 ## Immediate next task
 
-Continue refining **the existing Foundation draft only**. Resolve the session-pill timer question with the owner, clarify Terracotta contrast/use restrictions, preserve Proposed/Open status honestly, and deliver the corrected Foundation with a documentation update ZIP. Wait for the owner's Foundation approval before beginning the representative **Plan** screen. Review Plan with the owner before moving to **Train**.
-
-No app implementation, migration, architecture investigation or performance benchmark is authorized in this phase.
+Rework the Plan screen's visual direction. The first concept is a useful functional/layout study but the owner says it feels too conventional and lacks the creativity of the Round 2 AERUNO boards. Follow `design/plan-screen/OWNER_REVIEW_CREATIVE_DIRECTION_2026-11-21.md`: create two materially different creative directions, each with the Plan screen and Manage sheet, compare them in one artifact, and stop for the owner's selection. Do not begin Train, implementation, migration or architecture work until a Plan direction is approved.
 
 ## Safety and preservation constraints
 

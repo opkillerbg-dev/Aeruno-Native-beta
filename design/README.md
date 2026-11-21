@@ -8,3 +8,4 @@
 
 There is no Round 1 export in this archive. Do not create a `round-01/` classification for the supplied HTML/PDF.
 - `foundation-v1/`: Design Foundation draft 1 (HTML plus phone-width render checks). `type-depth/`: Type & Depth Board (Refinement 1) and archive of the original.
+- `plan-screen/`: Plan screen design exploration (2026-11-21): `README.md` (brief, legacy functionality, Approved / Proposed / Open), `aeruno-plan-screen.html` (both boards, fixed 390 px frames) and `render-checks/` (headless-browser renders at 360, 390 and 412 px). Awaiting owner review.

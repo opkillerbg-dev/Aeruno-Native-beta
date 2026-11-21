@@ -4,6 +4,7 @@ You are an AI assistant continuing the AERUNO project. Read this file and the cu
 
 ## Current status — read first
 
+0. `design/plan-screen/OWNER_REVIEW_CREATIVE_DIRECTION_2026-11-21.md` — owner's review: current Plan layout is functionally useful but visually too conventional; next pass must explore two distinct creative directions.
 1. `AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-21.md` — authoritative current owner decisions and superseded historical guidance.
 2. `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md` — current phase, design decisions and next task.
 3. `AERUNO_HANDOFF/PROJECT_HISTORY_CLARIFICATION.md` — owner clarification about V1, Smooth mode and V2.
@@ -13,7 +14,7 @@ You are an AI assistant continuing the AERUNO project. Read this file and the cu
 7. `design/type-depth/` — Type & Depth Board, Refinement 1 and phone captures.
 8. `design/round-02/` — approved Round 2 visual baseline.
 
-**Current phase: Design Foundation review/refinement.** The Type & Depth Board checkpoint is closed: the owner selected Variant C (Big Shoulders Display Black at ×1.14 vertical scale) on 2026-11-21 for selective display use only. Design Foundation draft 1 exists at `design/foundation-v1/` and is awaiting owner review/corrections. Do not restart earlier design rounds. Do not begin Plan or Train screens until the owner approves the corrected Foundation.
+**Current phase: Plan screen creative rework (owner review pending).** The Type & Depth Board checkpoint is closed: the owner selected Variant C (Big Shoulders Display Black at ×1.14 vertical scale) on 2026-11-21 for selective display use only. The owner reports the Foundation Draft 2 correction and review complete on 2026-11-21 (the Draft 2 file is not in this repo copy; draft 1 is at `design/foundation-v1/`; Proposed and Open items stay as tagged). The session-pill timer font is locked to Big Shoulders Display. The first Plan exploration is a useful functional/layout study but is not visually approved; the owner says it lacks the distinctive creative character of the earlier AERUNO boards. Read `design/plan-screen/OWNER_REVIEW_CREATIVE_DIRECTION_2026-11-21.md` and produce two materially different, more art-directed Plan concepts. Do not begin Train until the owner selects a Plan direction. Do not restart earlier design rounds.
 
 ## Important precedence and stale-document warning
 

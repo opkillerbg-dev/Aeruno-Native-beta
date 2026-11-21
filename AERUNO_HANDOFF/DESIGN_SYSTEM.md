@@ -26,7 +26,7 @@ Also in code: border `#D8D9CE`, danger `#B55345`, brass `#A98542` (unused, remov
 |---|---|---|
 | Display | **Big Shoulders Display Black (900)** | Short, bold, uppercase headings; hero numbers; workout titles (1 to 3 words) |
 | Accent | **Instrument Serif Italic** | Expressive editorial accent; at most one per screen; never body copy |
-| UI | **Inter** (Regular 400 and Bold 700 bundled) | Body, labels, buttons, metrics, timers (tabular numerals) |
+| UI | **Inter** (Regular 400 and Bold 700 bundled) | Body, labels, buttons, metrics, tabular numerals where digits must not jitter. The session-pill timer is the exception: Big Shoulders Display, locked by the owner 2026-11-21. Other timers: no decision recorded |
 No other families. Contrast between display, editorial and functional type should be obvious.
 **Hierarchy (prototype values, sp size/line height; EXPERIMENT until phone-checked) [V `AGENTS.md` section 7]:** hero stat 72/66; display large 60/55, medium 44/40; screen title 36/33; accent large 40/44, medium 28/32; headline 22/28 (Inter Bold); card title 18/24; body large 16/24, body 14/20; button 15/20; label 12/16 uppercase with tracking; caption 11/16; timer/stat numbers Inter Bold 32/36 and 22/28 with `tnum`. Rules: numbers visually dominant; tight tracking on big stats; uppercase only for small labels and display headings; never stretch or shrink fonts to fit.
 The legacy web app already ships the same three families as woff2 (`LEGACY/web/fonts/`).
