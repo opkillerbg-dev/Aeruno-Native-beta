@@ -1,81 +1,54 @@
-# AERUNO Current Design State — 2026-11-20
+# AERUNO Current Design State — 2026-11-21
 
-**Current phase: Design Foundation refinement (v0.2 review).** Round 2 visual screens are complete and archived. Foundation v0.1 established the first token/component board. Foundation v0.2 is now archived as a visual exploration; it is not yet fully approved. No app implementation, migration, native/WebView architecture decision, or performance benchmark has been completed or approved.
+**Current phase: Design Foundation refinement.** Round 2 visual screens are complete. Foundation v0.1 and v0.2 are archived. The Type & Depth Board is the current visual evaluation checkpoint. No app implementation, migration, final native/WebView architecture decision, or new-UI performance benchmark has been approved.
 
-## Source-of-truth order
+## Read these first
 
-1. This file is the authoritative current project/design status.
-2. `AERUNO_HANDOFF/FOUNDATION_V02_REVIEW.md` records the owner's current preferences and what remains open.
-3. `design/foundation-v02/aeruno-foundation-v02.html` is the original HTML export of Foundation v0.2.
-4. `design/round-02/` contains the approved Round 2 Today strength, navigation and Today running visual baseline (HTML/PDF exports, page images and phone captures).
-5. `AERUNO_HANDOFF/DESIGN_SYSTEM.md` contains the established brand direction, palette, approved font families and prior token guidance.
+1. `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md` — current authoritative status.
+2. `AERUNO_HANDOFF/PROJECT_HISTORY_CLARIFICATION.md` — owner clarification: V1 was fine for the owner; Smooth mode was for friends on lower-end devices; V2 was a failed experiment and is not the target.
+3. `AERUNO_HANDOFF/TYPE_DEPTH_BOARD_REVIEW.md` — latest Type & Depth Board review and next targeted fixes.
+4. `AERUNO_HANDOFF/FOUNDATION_V02_REVIEW.md` — previous Foundation v0.2 decisions and observations.
+5. `design/type-depth/` — latest Type & Depth Board HTML and phone captures.
+6. `design/foundation-v02/` — Foundation v0.2 source.
+7. `design/round-02/` — approved Round 2 Today strength, navigation and Today running baseline.
 
-The Foundation v0.2 file is correctly named and titled `AERUNO Foundation v0.2`. Treat its content as the latest exploration, but do not treat every proposal in it as approved.
+This current-state file and the two clarification/review files above supersede older performance-test suggestions or stale phase labels in historical docs where they conflict.
 
-## Completed visual baseline — Round 2
+## Product and architecture context
 
-### Board 1 — Today: strength day
-- Week 2 · Day 3; LOWER BODY; 35 min; 6 exercises; Start workout.
-- Stats: 8,420 steps / goal 10,000; 42 min active; 4 day streak.
-- Up Next: Back squat, Romanian deadlift and Walking lunge.
-- Ivory canvas, forest hero, topographic contours, terracotta focal dot, serif greeting and large display typography.
-
-### Board 2 — Floating navigation states
-- Five destinations: **Today, Plan, Train, Progress, Me**.
-- Live session pill with timer, exercise/set, tap-to-reopen and pause control.
-- Paused state with dimmed timer and resume control.
-- Navigation retreats to a compact dock while scrolling down, returns on scroll up and is never fully hidden.
-- Round 2 board specifies 64 px nav height, 16 px side margin, 28 px radius, 16 px blur, 62% white, 55% white border, 220 ms transition and 112 px bottom content inset.
-
-### Board 3 — Today: running day
-- Tempo Run; 5.0 km; 32 min; 6:24/km; Start run.
-- Stats: 12.4 km this week / goal 20; pace 6:24/km; 4 day streak.
-- Warm-up, tempo and cool-down rows; route line extends the topographic visual language.
+- AERUNO is a personal Android fitness app.
+- The legacy V1 application is the functional reference for existing capabilities, data and native integrations. The owner reports V1 ran normally on his own phone.
+- Smooth mode was added mainly to help friends using lower-end devices who experienced lag; it was not a fix for a V1 lag issue on the owner's phone.
+- V2 was a failed experiment, not the target product. Its reported lag is historical context, not a reason to diagnose V2 or choose the new architecture.
+- Native Kotlin/Compose and a redesigned Capacitor/WebView remain possible implementation paths. Neither is approved. Evaluate them against the new AERUNO design and real functional requirements when an implementation decision is needed.
+- Do not run the old V1 Smooth/Lite-mode comparison as an architecture diagnostic. Do not spend time reverse-engineering V2 unless the owner requests a specific investigation.
 
 ## Approved visual direction
 
-- Aesthetic: **Old Money × Liquid Glass**. Solid surfaces carry content; glass is selective and functional.
+- Aesthetic: **Old Money × Liquid Glass**. Solid surfaces carry information; glass is selective and functional.
 - Palette: Ivory `#F3EFE4`; Deep Forest `#1F3B30`; Terracotta `#C97855`; Surface `#FFFEFA`; Surface Alt `#E7E2D6`; Sage `#DCE5D7`; Text `#202A23`; Muted `#646E65`.
 - Font families: Big Shoulders Display Black, Instrument Serif Italic and Inter.
-- Navigation: Today, Plan, Train, Progress, Me, plus contextual live/paused session states.
+- Navigation: Today, Plan, Train, Progress, Me; contextual live/paused session states.
+- Round 2 screens: Today strength day, navigation states and Today running day are complete and archived in `design/round-02/`.
 
-## Foundation v0.2 — current review state
+## Type & Depth direction
 
-The v0.2 HTML is in `design/foundation-v02/`. It explores tall typography, ordinary-vs-expressive type, three depth compositions, number styling and usage rules. See `AERUNO_HANDOFF/FOUNDATION_V02_REVIEW.md` for detailed owner feedback.
+- Selective tall/elongated display typography is wanted, but the exact scale/method remains to be selected from the A/B/C/D comparison in the Type & Depth Board.
+- Depth B (number tucked behind a card) and Depth C (route crossing in front of typography) are owner-preferred directions. Preserve them.
+- Depth A remains exploratory; ghost numerals are promising but need restraint.
+- Type & Depth Board fixes still needed: Start workout button label wrapping, clearer run metadata/title spacing, route placement review, and owner selection of the type specimen.
+- The board is a visual exploration only; its HTML transforms are not proof of Android implementation or performance.
 
-**Strongly preferred and to be retained:**
-- **Depth B (v0.2 section 4):** oversized decorative number tucked behind a summary card. Use selectively for weekly/monthly summaries; keep the real statistic stated in readable text.
-- **Depth C (v0.2 section 5):** route line crossing in front of oversized running typography. Preserve the route-over-type interaction for running hero exploration.
+## Immediate next task
 
-**Direction wanted, details still open:**
-- Selective tall/elongated display typography. The owner wants this in selected high-impact places, not throughout the UI. Exact technique and scale are undecided. The v0.2 suggestion of `scaleY` around 1.10–1.15 is a proposal, not an approved code token. The 1.30 sample is not recommended. Anton is an unapproved alternative-font specimen only.
+Refine the existing Type & Depth Board only. Fix the mobile button wrapping and Depth C metadata/route spacing, retain the type comparison and Depth B/C compositions, render-check at realistic mobile dimensions, then return the revised artifact and an update ZIP for owner review.
 
-**Needs refinement:**
-- Depth A (title sinking behind a ledge): not selected as-is; refine overlap and ensure the full title remains identifiable.
-- Ghost numeral treatment: refine size, tone and placement so it does not compete with the primary metric.
-- Ordinary-vs-expressive type comparison and usage rules: make them clearer and test at mobile sizes.
+Do not repeat the Lite-mode test. Do not investigate V2. Do not start app implementation or migration yet.
 
-The v0.2 HTML uses Google Fonts for its browser preview. The Android app must keep using locally bundled approved fonts; do not add a network-font dependency based on this artifact.
+## Next phase after the board is approved
 
-## Decisions still open
+Consolidate the selected typography, depth rules, components, accessibility constraints and motion into the practical Design Foundation. Then design representative screens beyond Today (starting with Plan and Train) to test the system across the product. Architecture can be evaluated against those actual screen and feature requirements before implementation.
 
-- Final implementation approach for selective tall display typography (larger native size/tighter leading versus a restrained vertical transform).
-- Final treatment for Depth A and the ghost-number treatment.
-- Exact limits for text cropping and how to keep every essential word/readout accessible.
-- Compact-dock expansion interaction; tap-to-expand is a preferred proposal but is not yet recorded as an explicit owner decision in the archived Round 2 board.
-- Rest-day and recovery-day Today variants.
-- Full screen designs for Plan, Train, Progress and Me.
-- Final reusable component specifications and motion/accessibility rules.
-- Architecture choice: native Kotlin/Compose versus rebuilt WebView remains undecided.
-- Glass performance benchmark remains unperformed. Design boards do not establish app performance.
+## Safety and preservation constraints
 
-## Next phase task
-
-Refine Foundation v0.2, not restart it:
-1. Retain and polish Depth B and Depth C.
-2. Explore selective tall display type and compare native size/leading against mild vertical scaling; do not lock the exact scaling value without owner review.
-3. Refine Depth A and ghost-number composition.
-4. Clarify use/avoidance rules and accessibility safeguards.
-5. Produce a clean, mobile-readable visual board for owner review.
-
-Do not change app IDs, signing, storage keys/schema, backup format, services, or the legacy app. Do not start implementation or migration until the owner explicitly approves the architecture and implementation phase.
+Do not change app IDs, signing, storage keys/schema, backup format, native services, legacy source or existing build workflows without explicit owner approval. Keep legacy source as a read-only functional reference. No secrets, keys or personal backups in this public repository. Keep design and technical claims evidence-based.
