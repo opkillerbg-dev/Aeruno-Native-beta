@@ -4,7 +4,7 @@
 
 This repository contains a small native Kotlin/Jetpack Compose prototype and a read-only copy of the legacy AERUNO source for reference. It is not yet the production AERUNO app. The functional legacy app remains in its separate repository and must not be modified from this repository.
 
-**Current project phase:** Round 2 visual design is complete and archived in `design/round-02/`. The next phase is Design Foundation. Architecture (native Compose vs rebuilt WebView), app implementation and migration remain undecided/not approved. See [`AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md`](AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md).
+**Current project phase:** Plan screen creative rework. The Round 2 visual baseline and the separate 8-image Visual Reference Pack are complete. The first Plan exploration is a functional/layout reference, not an approved visual direction. See [`START_HERE.md`](START_HERE.md), [`AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md`](AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md), and [`AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md`](AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md). Architecture (native Compose vs rebuilt WebView), app implementation and migration remain undecided/not approved.
 
 Working rules: [`AGENTS.md`](AGENTS.md). Project handoff: [`AERUNO_HANDOFF/`](AERUNO_HANDOFF/). Legacy baseline: [`docs/BASELINE_LEGACY.md`](docs/BASELINE_LEGACY.md). Tool versions: [`docs/VERSIONS.md`](docs/VERSIONS.md).
 

@@ -1,28 +1,31 @@
 # START HERE: AERUNO project handoff
 
-You are an AI assistant continuing the AERUNO project. Read this file and the current owner-decision documents before relying on historical phase descriptions.
+You are continuing the existing AERUNO project. Do not restart the design process. Read this file, the current handoff documents and the separately supplied Visual Reference Pack before proposing or changing anything.
 
 ## Current status — read first
 
-0. `design/plan-screen/OWNER_REVIEW_CREATIVE_DIRECTION_2026-11-21.md` — owner's review: current Plan layout is functionally useful but visually too conventional; next pass must explore two distinct creative directions.
-1. `AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-21.md` — authoritative current owner decisions and superseded historical guidance.
-2. `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md` — current phase, design decisions and next task.
-3. `AERUNO_HANDOFF/PROJECT_HISTORY_CLARIFICATION.md` — owner clarification about V1, Smooth mode and V2.
-4. `AERUNO_HANDOFF/TYPE_DEPTH_BOARD_REVIEW.md` — completed Type & Depth refinement and the owner's selected type treatment.
-5. `AERUNO_HANDOFF/FOUNDATION_V02_REVIEW.md` — historical v0.2 exploration; newer decisions supersede earlier open questions.
-6. `design/foundation-v1/aeruno-design-foundation.html` — current Design Foundation draft 1 for owner review.
-7. `design/type-depth/` — Type & Depth Board, Refinement 1 and phone captures.
+1. `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md` — current phase and immediate next task.
+2. `AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md` — status, contents and authority of the completed visual pack. The owner supplies `AERUNO_Visual_Reference_Pack_v1.zip` separately with this repository.
+3. `AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-21.md` — authoritative owner decisions and superseded historical guidance.
+4. `design/plan-screen/OWNER_REVIEW_CREATIVE_DIRECTION_2026-11-21.md` — owner's review of the first Plan exploration and the required creative rework.
+5. `design/plan-screen/README.md` — researched Plan functionality, information hierarchy, and its Proposed/Open gaps.
+6. `AERUNO_HANDOFF/PROJECT_HISTORY_CLARIFICATION.md` — correction about V1, Smooth mode and V2.
+7. `AERUNO_HANDOFF/TYPE_DEPTH_BOARD_REVIEW.md` — completed Type & Depth refinement and selected type treatment.
 8. `design/round-02/` — approved Round 2 visual baseline.
+9. `design/type-depth/` — Type & Depth Board and refinement captures.
+10. `design/foundation-v1/aeruno-design-foundation.html` — Foundation draft 1; the owner reports Draft 2 correction/review complete, but that Draft 2 file is not in this repo copy.
 
-**Current phase: Plan screen creative rework (owner review pending).** The Type & Depth Board checkpoint is closed: the owner selected Variant C (Big Shoulders Display Black at ×1.14 vertical scale) on 2026-11-21 for selective display use only. The owner reports the Foundation Draft 2 correction and review complete on 2026-11-21 (the Draft 2 file is not in this repo copy; draft 1 is at `design/foundation-v1/`; Proposed and Open items stay as tagged). The session-pill timer font is locked to Big Shoulders Display. The first Plan exploration is a useful functional/layout study but is not visually approved; the owner says it lacks the distinctive creative character of the earlier AERUNO boards. Read `design/plan-screen/OWNER_REVIEW_CREATIVE_DIRECTION_2026-11-21.md` and produce two materially different, more art-directed Plan concepts. Do not begin Train until the owner selects a Plan direction. Do not restart earlier design rounds.
+**Current phase: Plan screen creative rework (owner review pending).** Round 2 and the separate 8-image Visual Reference Pack are complete. The first Plan exploration is useful functional/layout research but its visual direction is not approved. Use the Visual Reference Pack as the primary creative benchmark, while using the Plan README and legacy V1 source for functional requirements. The next task is two materially different Plan concepts, each showing the Plan screen and Manage sheet, compared in one review artifact. Stop for the owner's selection. Do not begin Train until a Plan direction is selected. Do not recreate earlier design rounds or regenerate the Visual Reference Pack.
 
 ## Important precedence and stale-document warning
 
-`OWNER_DECISIONS_OVERRIDE_2026-11-21.md` and `CURRENT_DESIGN_STATE.md` are the current source of truth where older documents conflict. In particular:
+`AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md`, `AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-21.md`, and the addendum in `AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md` are the current source of truth. Where older prototype or phase documents conflict with them, follow the current handoff. In particular:
 
-- Older statements that the exact type treatment is undecided are superseded. Variant C is selected as a **design direction**; Android implementation and font-scaling feasibility remain untested.
-- The original `AGENTS.md` prototype plan and its dated phase statements describe the earlier native prototype experiment. They do not override the current design-only phase.
-- Older Lite/Smooth-mode diagnostic suggestions and V2-lag references in `AERUNO_HANDOFF/ARCHITECTURE_DECISIONS.md` and `AERUNO_HANDOFF/KNOWN_ISSUES.md` are historical and must not be treated as current tasks or architecture evidence.
+- Variant C is selected as a **design direction**: Big Shoulders Display Black at ×1.14 vertical scale, used selectively. Android implementation and font-scaling feasibility remain untested.
+- The session-pill timer font is locked to Big Shoulders Display (Option 2), outside Variant C scaling.
+- The original `AGENTS.md` prototype plan and its dated phase statements describe the earlier native prototype experiment; they do not override the current design-only phase.
+- Older Lite/Smooth-mode diagnostic suggestions and V2-lag references are historical and must not be treated as current tasks or architecture evidence.
+- The Visual Reference Pack is a completed external companion artifact. Do not describe it as missing from the repo as a blocker, ask the owner to recreate it, or start another moodboard/reference-generation round. It will be attached separately to the new chat.
 
 ## Important owner clarification about performance history
 
@@ -40,10 +43,10 @@ AERUNO (formerly Arya Fit) is a personal Android fitness app. The legacy V1 app 
 
 ## Ground rules
 
-- Do not recreate Round 1, Round 2, Foundation v0.1/v0.2 or the Type & Depth Board. Continue from the current Foundation draft only when asked.
+- Do not recreate Round 1, Round 2, Foundation v0.1/v0.2 or the Type & Depth Board. Continue from the current Plan creative rework; use the Foundation material as reference, not as a reason to restart.
 - Preserve the owner's preference for Depth B and Depth C.
 - Use Variant C only for selective display typography; do not apply it to ordinary UI text, buttons, navigation, chips, body text, exercise names, forms, settings, timers or secondary statistics.
-- Keep the Design Foundation work design-only. Do not begin app implementation, migration or architecture changes without explicit owner approval.
+- Keep current work design-only. Do not begin app implementation, migration or architecture changes without explicit owner approval.
 - Do not claim build, performance or device testing without evidence.
 - Do not touch legacy app ID, signing, `aryaApp2`, storage schema, backup format, native services or legacy reference files without explicit approval.
 - This repository is public: never add secrets, keystores, passwords, tokens, private keys or personal backups.

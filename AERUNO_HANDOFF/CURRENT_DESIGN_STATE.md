@@ -1,26 +1,31 @@
 # AERUNO Current Design State — 2026-11-21
 
-**Current phase: Design Foundation review/refinement.** Round 2 visual screens are complete. Foundation v0.1 and v0.2 are historical explorations. Type & Depth Board Refinement 1 is complete and the owner selected Variant C. Design Foundation draft 1 exists; the owner reports the Draft 2 correction and review complete (2026-11-21), see the status update below. No app implementation, migration, final native/WebView architecture decision or new-UI performance benchmark has been approved.
+**Current phase: Plan screen creative rework.** Round 2 visual screens, the Type & Depth Board checkpoint and the separate 8-image Visual Reference Pack are complete. The first Plan exploration was reviewed and is not visually approved. The next checkpoint is two materially different Plan directions with their Manage sheets; owner selection is pending. Design Foundation Draft 2 correction/review is owner-reported, but the Draft 2 file is not included in this repo copy. No app implementation, migration, final native/WebView architecture decision or new-UI performance benchmark has been approved.
 
-## Status update — Plan screen design phase (2026-11-21)
+## Status update — visual reference pack and Plan phase
 
-- **Current phase: Plan screen creative rework**, owner review pending: `design/plan-screen/OWNER_REVIEW_CREATIVE_DIRECTION_2026-11-21.md` is the latest owner feedback; `design/plan-screen/README.md` and the HTML export preserve the first functional/layout exploration.
-- Session-pill timer font is locked (Big Shoulders Display). Where the Foundation-review notes below say it is open, this update supersedes them.
-- The Foundation Draft 2 file is not in this repo copy. Proposed and Open items remain so unless the owner approves them explicitly.
-- The owner says the first Plan visual feels too conventional and has lost the distinctive creative quality of Round 2. Keep its functional research, archive the first layout as reference, and create two materially different, more art-directed Plan concepts. Train starts only after the owner selects and approves one. No app implementation, migration or architecture commitment.
+- **Visual Reference Pack v1 is complete and delivered as a separate ZIP:** `AERUNO_Visual_Reference_Pack_v1.zip`. The owner will attach it separately when starting the new chat; it is not a prerequisite to regenerate or rebuild. Read `AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md` for the contents and how it should guide the work.
+- Use the pack as the primary **visual/art-direction benchmark**. It does not replace the repo's functional research or owner-approved decisions, and it is not an approved final Plan layout.
+- **Current phase: Plan screen creative rework**, owner review pending: `design/plan-screen/OWNER_REVIEW_CREATIVE_DIRECTION_2026-11-21.md` is the owner's visual feedback; `design/plan-screen/README.md` and the HTML export preserve the first functional/layout exploration.
+- The first Plan exploration is useful for its researched feature set and information sequence, but its conventional visual execution is not approved. Preserve it as reference; do not restart its functionality research without a specific unresolved question.
+- Create two materially different, art-directed Plan concepts. Each must show the main Plan screen and its Manage sheet, use the existing researched feature set, and be compared in one review artifact. Explain the core idea briefly and recommend one, but do not mark either Approved. Stop for owner selection. Train begins only after Plan approval.
+- Session-pill timer font is locked to Big Shoulders Display. It is outside the Variant C vertical scaling.
+- The owner reports that Foundation Draft 2 correction and review are complete (2026-11-21), but the Draft 2 file is not in this repo copy. Proposed and Open items remain as tagged unless the owner explicitly approves them.
 
 ## Read these first
 
-1. `AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-21.md` — authoritative owner decisions and superseded guidance.
-2. `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md` — this current status.
-3. `AERUNO_HANDOFF/PROJECT_HISTORY_CLARIFICATION.md` — owner clarification: V1 was fine for the owner; Smooth mode was mainly for friends on lower-end devices; V2 was a failed experiment and is not the target.
-4. `AERUNO_HANDOFF/TYPE_DEPTH_BOARD_REVIEW.md` — completed board refinement and selected Variant C.
-5. `design/foundation-v1/aeruno-design-foundation.html` — Foundation draft 1 for owner review.
-6. `design/type-depth/` — Type & Depth Board HTML and phone captures.
+1. `AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md` — the separate pack's status, contents and intended use.
+2. `AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-21.md` — authoritative owner decisions and superseded guidance.
+3. `design/plan-screen/OWNER_REVIEW_CREATIVE_DIRECTION_2026-11-21.md` — required Plan creative rework.
+4. `design/plan-screen/README.md` — existing Plan research and open capability gaps.
+5. `AERUNO_HANDOFF/PROJECT_HISTORY_CLARIFICATION.md` — V1/Smooth/V2 correction.
+6. `AERUNO_HANDOFF/TYPE_DEPTH_BOARD_REVIEW.md` — completed board refinement and selected Variant C.
 7. `design/round-02/` — approved Round 2 Today strength, navigation and Today running baseline.
-8. `AERUNO_HANDOFF/FOUNDATION_V02_REVIEW.md` — historical Foundation v0.2 review; newer decisions supersede older open questions.
+8. `design/type-depth/` — Type & Depth Board HTML and refinement captures.
+9. `design/foundation-v1/aeruno-design-foundation.html` — Foundation draft 1; do not assume it contains the owner-reported Draft 2 corrections.
+10. `AERUNO_HANDOFF/FOUNDATION_V02_REVIEW.md` — historical exploration; newer decisions supersede old open questions.
 
-If older documents conflict with the override or this file, follow the override/current state. Preserve older content as historical context unless a specific documentation correction is requested.
+If older documents conflict with the current owner override or this file, follow the current status and the owner override. Preserve older content as historical context unless a specific documentation correction is requested.
 
 ## Product and architecture context
 
@@ -49,18 +54,18 @@ If older documents conflict with the override or this file, follow the override/
 
 ## Current Design Foundation status
 
-`design/foundation-v1/aeruno-design-foundation.html` is **Draft 1 — for owner review**, not a fully approved implementation specification. It consolidates palette, font roles, Variant C, depth rules, components, space/motion and accessibility with Approved / Proposed / Open tags.
+`design/foundation-v1/aeruno-design-foundation.html` is **Draft 1 — historical review artifact**, not a fully approved implementation specification. The owner reports Draft 2 correction and review complete, but that file is not in this repository copy. Do not silently infer that all Proposed/Open items were promoted.
 
-Known review items:
+Known review items retained from the available record:
 
-- **Session-pill timer font: LOCKED — Big Shoulders Display (Option 2), owner decision 2026-11-21** (`TIMER_FONT_DECISION_2026-11-21.md`). Do not reopen unless the owner asks or implementation testing finds a concrete issue. It is a design decision, not proof of Android/WebView/Compose behaviour. The timer stays outside the Variant C ×1.14 scaling. It does not approve Foundation Draft 2 as a whole or its Proposed tokens. Other timers and countdowns have no recorded decision; use tabular figures where numbers must not jitter and mark any choice Proposed.
-- Keep the palette unchanged. The Foundation lists Terracotta on Ivory at 2.90:1 and on Surface at 3.30:1; these combinations should be decorative or large-fill use, not ordinary small text. The ratios have not been independently re-measured as part of this documentation patch.
-- Proposed component, spacing, radius, motion and accessibility rules require owner review. Open items remain open.
+- **Session-pill timer font: LOCKED — Big Shoulders Display (Option 2), owner decision 2026-11-21** (`TIMER_FONT_DECISION_2026-11-21.md`). Do not reopen unless the owner asks or implementation testing finds a concrete issue. The timer stays outside Variant C ×1.14 scaling. Other timers and countdowns have no recorded decision; use tabular figures where numbers must not jitter and mark any choice Proposed.
+- Keep the palette unchanged. The Foundation lists Terracotta on Ivory at 2.90:1 and on Surface at 3.30:1; these combinations should be decorative or large-fill use, not ordinary small text. The ratios have not been independently re-measured in this documentation patch.
+- Proposed component, spacing, radius, motion and accessibility rules remain Proposed unless the owner explicitly approves them. Open items remain Open.
 - Foundation rendering was checked in a headless browser at 360, 390 and 412 px; this is not a real Android implementation or device test. Actual system font scaling at 200%, dark mode, accessibility and performance remain untested unless separately evidenced.
 
 ## Immediate next task
 
-Rework the Plan screen's visual direction. The first concept is a useful functional/layout study but the owner says it feels too conventional and lacks the creativity of the Round 2 AERUNO boards. Follow `design/plan-screen/OWNER_REVIEW_CREATIVE_DIRECTION_2026-11-21.md`: create two materially different creative directions, each with the Plan screen and Manage sheet, compare them in one artifact, and stop for the owner's selection. Do not begin Train, implementation, migration or architecture work until a Plan direction is approved.
+Use the completed Visual Reference Pack and the existing Plan research to create two materially different, art-directed Plan concepts, each with a main Plan screen and its Manage sheet. Compare both in one review artifact, explain their different composition ideas, recommend one with reasons, and stop for the owner's selection. Do not begin Train, app implementation, migration or architecture work until the relevant owner approvals are given.
 
 ## Safety and preservation constraints
 
