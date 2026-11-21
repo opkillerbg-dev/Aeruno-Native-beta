@@ -36,14 +36,12 @@ This current-state file and the two clarification/review files above supersede o
 - Selective tall/elongated display typography is wanted, but the exact scale/method remains to be selected from the A/B/C/D comparison in the Type & Depth Board.
 - Depth B (number tucked behind a card) and Depth C (route crossing in front of typography) are owner-preferred directions. Preserve them.
 - Depth A remains exploratory; ghost numerals are promising but need restraint.
-- Type & Depth Board fixes still needed: Start workout button label wrapping, clearer run metadata/title spacing, route placement review, and owner selection of the type specimen.
+- Type & Depth Board **Refinement 1 delivered 2026-11-21** (awaiting owner review on the phone): Start workout/Start run labels stay on one line, Depth C metadata and title have clear spacing, the route placement is refined with the route-over-type effect kept, Depth B and the quieter ghost numeral are unchanged, and the A/B/C/D comparison is retained (label "approved" removed from C). **The owner chose variant C (×1.14 vertical scale of Big Shoulders Display) on 2026-11-21.** It is a design decision only; Android feasibility and the licence position for scaling the font are unchecked.
 - The board is a visual exploration only; its HTML transforms are not proof of Android implementation or performance.
 
 ## Immediate next task
 
-Refine the existing Type & Depth Board only. Fix the mobile button wrapping and Depth C metadata/route spacing, retain the type comparison and Depth B/C compositions, render-check at realistic mobile dimensions, then return the revised artifact and an update ZIP for owner review.
-
-Do not repeat the Lite-mode test. Do not investigate V2. Do not start app implementation or migration yet.
+Owner reviews `design/foundation-v1/aeruno-design-foundation.html` (draft 1: colour, type with variant C, depth rules, components, space/motion, accessibility; every rule tagged Approved / Proposed / Open) and answers its open items, notably the session-pill timer font. Then design the representative **Plan** screen, then **Train**, to test the system beyond Today. No app implementation, migration or architecture investigation is approved. Do not repeat the Lite-mode test. Do not investigate V2.
 
 ## Next phase after the board is approved
 

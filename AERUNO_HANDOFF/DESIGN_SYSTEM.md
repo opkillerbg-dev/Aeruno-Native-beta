@@ -1,5 +1,7 @@
 # Design system
 
+> **Update 2026-11-21:** the consolidated, tagged reference is now `../design/foundation-v1/aeruno-design-foundation.html` (draft). The owner chose type variant C: display type may be scaled ×1.14 vertically (hero titles, major workout/category words, one hero statistic per screen). This is a deliberate, display-only exception to "never stretch or shrink fonts to fit" below; it is untested on Android. Where this file and the foundation page differ, the foundation page and `CURRENT_DESIGN_STATE.md` win.
+
 Tags: see `../START_HERE.md`. Status labels: **APPROVED** = owner decision recorded in this repo's `AGENTS.md`/logs or stated by the owner; **EXPERIMENT** = tested visually in the prototype, not a final rule; **OPEN** = undecided. Code truth for the native tokens: `app/src/main/java/com/aeruno/nativeprototype/ui/theme/` (`Color.kt`, `Dimens.kt`, `Type.kt`, `Theme.kt`) and `docs/DESIGN_TOKENS.md`.
 
 ## Aesthetic: Old Money x Liquid Glass (APPROVED direction)

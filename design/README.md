@@ -7,3 +7,4 @@
 - `../AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md`: authoritative current status, verified board contents, decisions and next phase.
 
 There is no Round 1 export in this archive. Do not create a `round-01/` classification for the supplied HTML/PDF.
+- `foundation-v1/`: Design Foundation draft 1 (HTML plus phone-width render checks). `type-depth/`: Type & Depth Board (Refinement 1) and archive of the original.

@@ -2,7 +2,7 @@
 
 **Board:** `design/type-depth/aeruno-type-depth-board.html`  
 **Claude artifact:** https://claude.ai/artifact/RgbjfH2Ep66UkxqrXU4FXw  
-**Status:** Visual exploration delivered; targeted refinements and owner review remain. This is not application implementation.
+**Status:** Visual exploration delivered; **Refinement 1 delivered 2026-11-21** (see the last section); owner review and type selection remain. This is not application implementation.
 
 ## What's in the board
 
@@ -63,3 +63,23 @@ Make a **small refinement pass** on this existing board, not a redesign:
 6. Render and inspect at a realistic mobile viewport before publishing/exporting.
 
 After the owner reviews the refined board, record the selected type treatment and finalize the reusable foundation. Do not start app implementation or architecture migration as part of this board correction.
+
+## Refinement 1 — 2026-11-21 (delivered, awaiting owner review)
+
+Targeted pass on the existing board. Nothing was restarted. The original is kept at `design/type-depth/archive/aeruno-type-depth-board-v1-original.html`. Evidence tags: **[S]** = headless Chromium (Playwright) in an AI sandbox; it is never a phone test.
+
+| # | Request | What changed |
+|---|---|---|
+| 1 | Start workout wrapping | Button is `nowrap`, never shrinks, keeps a 48 px touch height. The session facts beside it are two short lines ("35 min" / "6 exercises") because the one-line version collided with the button at 360 px. **[S]** one line at 320, 360, 375, 390, 412 and 430 px; no horizontal scroll. |
+| 2 | Depth C metadata/title spacing | The vertical scale was growing the title up into the "Run · Week 2 · Day 4" label (the spacing fix was cancelled by a CSS override). Spacing is now reserved explicitly. **[S]** measured ink gaps: label to title about 20–24 px (was overlapping), title to run facts about 29–30 px. The "Warm-up · Tempo / Cool-down" line also no longer breaks mid-word. |
+| 3 | Route placement | "TEMPO" ran off the right edge (about 3–7% of the O clipped depending on width **[S]**, and no margin at all); it is now fully inside the card with about 21–27 px right margin at the measured widths, in a slightly smaller size (35% of card width, was 38%). The route keeps its forest casing and still crosses RUN and TEMPO. It now ends in a clear spot below the O instead of leaving through the edge with a dot sitting on a letter. Title left edge now lines up with the label (20 px). |
+| 4 | Depth B | Unchanged composition; the oversized 18 stays behind the card. Only 14 px of space was added under the section title so the numeral does not touch it. Still `aria-hidden`; the real figure is in the card text. |
+| 5 | Ghost numeral | Unchanged (Surface Alt at 70%, bottom corner). Still `aria-hidden`; the goal is in the label. |
+| 6 | A/B/C/D comparison | Retained. Label gaps equalised (about 10–13 px). Variant C no longer says "approved": no type treatment is selected. |
+| 7 | Render checks | **[S]** 360, 390 and 412 px at 2.5x, all five sections: `design/type-depth/render-checks/refinement-1/`. Fonts reported loaded. |
+
+Also tidied: workout-hero title now lines up with its label at 20 px (it sat about 4 px right).
+
+**Not tested:** any real phone (the owner's OnePlus or otherwise), the owner's WebView, ordinary-viewing-distance legibility, dark mode (the board is light-only), screen-reader behaviour, Android/Compose implementation of `scaleY`, performance of any effect. The HTML transforms are a visual experiment, not proof of Android feasibility. Anton is still not approved; fonts remain the bundled Big Shoulders / Instrument Serif / Inter.
+
+**Owner decision (2026-11-21): variant C**, Big Shoulders Display Black at ×1.14 vertical scale, for selective display type only (hero title, major workout/category words, one hero statistic per screen). Not approved for Android until a Compose/WebView check; the earlier "never stretch fonts" note is a deliberate display-only exception.

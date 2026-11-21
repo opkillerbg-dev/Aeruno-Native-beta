@@ -8,11 +8,11 @@ You are an AI assistant continuing the AERUNO project. Read the current status b
 2. `AERUNO_HANDOFF/PROJECT_HISTORY_CLARIFICATION.md`
 3. `AERUNO_HANDOFF/TYPE_DEPTH_BOARD_REVIEW.md`
 4. `AERUNO_HANDOFF/FOUNDATION_V02_REVIEW.md`
-5. `design/type-depth/` — latest Type & Depth Board HTML and phone captures
+5. `design/foundation-v1/` — Design Foundation draft 1 (latest consolidation); `design/type-depth/` — Type & Depth Board, Refinement 1 and phone captures
 6. `design/foundation-v02/` — Foundation v0.2 exploration
 7. `design/round-02/` — approved Round 2 visual baseline
 
-**Current phase: Design Foundation refinement.** The next task is a small refinement pass on the Type & Depth Board. Do not restart earlier design rounds.
+**Current phase: Design Foundation refinement.** The Type & Depth Board is closed: the owner chose type variant C (×1.14) on 2026-11-21. Design Foundation draft 1 (`design/foundation-v1/`) awaits owner review. Do not restart earlier design rounds. Next: representative screens beyond Today (Plan, then Train).
 
 **Important stale-reference warning:** Older sections of `AERUNO_HANDOFF/ARCHITECTURE_DECISIONS.md` and `AERUNO_HANDOFF/KNOWN_ISSUES.md` still mention V1 Lite/Smooth-mode testing or V2 lag as possible architecture evidence. Those suggestions are superseded by `AERUNO_HANDOFF/PROJECT_HISTORY_CLARIFICATION.md`. Do not run that test or diagnose V2. The V2 experiment is closed as a product direction.
 
@@ -32,7 +32,7 @@ AERUNO (formerly Arya Fit) is a personal Android fitness app. The legacy V1 app 
 
 ## Ground rules
 
-- Continue the Type & Depth Board refinement; do not recreate Round 1, Round 2 or Foundation v0.1/v0.2.
+- Do not recreate Round 1, Round 2, Foundation v0.1/v0.2 or the Type & Depth Board; make only the changes the owner asks for after reviewing Refinement 1.
 - Preserve the owner's preference for Depth B and Depth C.
 - The exact tall-type scale is still open pending the owner's comparison of the specimens.
 - Do not use V2's failure as evidence against WebView generally; V2 is not the target.
