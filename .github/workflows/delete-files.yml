@@ -1,0 +1,271 @@
+name: Delete repository paths (guarded)
+
+# Manual-only deletion workflow. Dry-run is the default.
+# This workflow is intentionally restricted to main and protects critical project paths.
+on:
+  workflow_dispatch:
+    inputs:
+      paths:
+        description: 'Repository-relative file or folder paths, one per line (no wildcards).'
+        required: true
+        type: string
+      dry_run:
+        description: 'Preview the exact tracked files first. Turn off only to execute deletion.'
+        required: true
+        type: boolean
+        default: true
+      confirmation:
+        description: 'For real deletion only: type DELETE opkillerbg-dev/Aeruno-Native-beta'
+        required: false
+        type: string
+        default: ''
+
+permissions: {}
+
+concurrency:
+  group: delete-repository-paths-main
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    name: Validate and preview requested deletions
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout the exact commit that triggered this run
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Validate paths and create deletion manifest
+        id: plan
+        env:
+          REQUESTED_PATHS: ${{ inputs.paths }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          REPOSITORY: ${{ github.repository }}
+          REF_NAME: ${{ github.ref }}
+          BASE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          import subprocess
+          import sys
+          from pathlib import PurePosixPath
+
+          repo = os.environ['REPOSITORY']
+          if os.environ['REF_NAME'] != 'refs/heads/main':
+              raise SystemExit('Refusing to run: select the main branch in the workflow Run form.')
+
+          dry_run = os.environ['DRY_RUN'].strip().lower() == 'true'
+          expected = f'DELETE {repo}'
+          if not dry_run and os.environ.get('CONFIRMATION', '') != expected:
+              raise SystemExit(f'Real deletion requires confirmation exactly: {expected}')
+
+          raw = os.environ.get('REQUESTED_PATHS', '')
+          targets = []
+          for line in raw.splitlines():
+              value = line.strip()
+              if not value or value.startswith('#'):
+                  continue
+              if value not in targets:
+                  targets.append(value)
+
+          if not targets:
+              raise SystemExit('No paths supplied. Enter one repository-relative path per line.')
+          if len(targets) > 10:
+              raise SystemExit('Maximum 10 requested paths per run. Split the request into smaller runs.')
+
+          protected_roots = (
+              '.git',
+              '.github',
+              'app',
+              'gradle',
+              'AERUNO_HANDOFF/legacy-reference',
+          )
+          protected_files = {
+              'AGENTS.md', 'START_HERE.md', 'README.md', '.gitignore',
+              'build.gradle.kts', 'settings.gradle.kts', 'gradle.properties',
+              'AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-22.md',
+              'AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md',
+              'AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md',
+              'AERUNO_HANDOFF/NEXT_TASK_G01_V04.md',
+          }
+
+          def is_protected(path):
+              if path in protected_files:
+                  return True
+              for protected in protected_roots:
+                  if path == protected or path.startswith(protected + '/') or protected.startswith(path + '/'):
+                      return True
+              return False
+
+          tracked = subprocess.check_output(['git', 'ls-files', '-z']).decode('utf-8', 'surrogateescape').split('\0')
+          tracked = [p for p in tracked if p]
+          selected = []
+
+          for target in targets:
+              if target.startswith('/') or '\\' in target:
+                  raise SystemExit(f'Unsafe path format: {target!r}. Use repository-relative POSIX paths.')
+              if any(ch in target for ch in '*?[]'):
+                  raise SystemExit(f'Wildcards are not allowed: {target!r}. Specify exact paths.')
+              normalized = target.rstrip('/')
+              parts = normalized.split('/')
+              if not normalized or normalized == '.' or any(part in ('', '.', '..') for part in parts):
+                  raise SystemExit(f'Unsafe path: {target!r}. Root, dot and parent paths are forbidden.')
+              if is_protected(normalized):
+                  raise SystemExit(f'Protected path refused: {normalized}')
+
+              matches = [p for p in tracked if p == normalized or p.startswith(normalized + '/')]
+              if not matches:
+                  raise SystemExit(f'No tracked files found for: {normalized!r}. Check spelling and branch.')
+
+              # A folder request is rejected if any matched file is protected, even if the folder itself is not.
+              blocked = [p for p in matches if is_protected(p)]
+              if blocked:
+                  raise SystemExit('Request includes protected files: ' + ', '.join(blocked[:10]))
+
+              for path in matches:
+                  if os.path.islink(path):
+                      raise SystemExit(f'Symlink deletion is not supported: {path}')
+                  if path not in selected:
+                      selected.append(path)
+
+          selected.sort()
+          if len(selected) > 100:
+              raise SystemExit(f'Request resolves to {len(selected)} tracked files. Maximum is 100 per run.')
+
+          # Reject overlapping requests so the preview is unambiguous.
+          normalized_targets = [t.rstrip('/') for t in targets]
+          for i, first in enumerate(normalized_targets):
+              for second in normalized_targets[i + 1:]:
+                  if first.startswith(second + '/') or second.startswith(first + '/'):
+                      raise SystemExit(f'Overlapping requested paths: {first!r} and {second!r}')
+
+          manifest = {
+              'repository': repo,
+              'base_sha': os.environ['BASE_SHA'],
+              'targets': normalized_targets,
+              'files': selected,
+          }
+          with open('delete-manifest.json', 'w', encoding='utf-8') as f:
+              json.dump(manifest, f, ensure_ascii=True, indent=2)
+
+          summary = os.environ['GITHUB_STEP_SUMMARY']
+          with open(summary, 'a', encoding='utf-8') as f:
+              f.write('# Repository deletion preview\n\n')
+              f.write(f'- Repository: `{repo}`\n- Branch: `main`\n- Mode: **{"DRY RUN — no changes made" if dry_run else "EXECUTION REQUESTED"}**\n')
+              f.write(f'- Requested paths: {len(normalized_targets)}\n- Tracked files matched: **{len(selected)}**\n\n')
+              f.write('## Exact files selected\n\n')
+              for path in selected:
+                  f.write(f'- `{path}`\n')
+              if dry_run:
+                  f.write('\nNothing has been deleted. Run again with Dry run disabled and the exact confirmation phrase to execute.\n')
+          print(f'Validated {len(selected)} tracked file(s) for {len(normalized_targets)} path(s).')
+          print('DRY RUN: no files were deleted.' if dry_run else 'Manifest validated. Deletion will run in a separate write-permission job.')
+          PY
+
+      - name: Upload validated manifest for the deletion job
+        if: ${{ inputs.dry_run == false }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: guarded-delete-manifest
+          path: delete-manifest.json
+          if-no-files-found: error
+          retention-days: 1
+
+  delete:
+    name: Delete the validated paths and commit
+    if: github.ref == 'refs/heads/main' && inputs.dry_run == false
+    needs: preview
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout the exact commit that was previewed
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: true
+
+      - name: Download the validated deletion manifest
+        uses: actions/download-artifact@v4
+        with:
+          name: guarded-delete-manifest
+          path: .delete-workflow
+
+      - name: Recheck manifest and delete only the listed tracked files
+        env:
+          REPOSITORY: ${{ github.repository }}
+          BASE_SHA: ${{ github.sha }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          import subprocess
+          import sys
+
+          expected = f"DELETE {os.environ['REPOSITORY']}"
+          if os.environ.get('CONFIRMATION', '') != expected:
+              raise SystemExit(f'Real deletion requires confirmation exactly: {expected}')
+
+          with open('.delete-workflow/delete-manifest.json', encoding='utf-8') as f:
+              manifest = json.load(f)
+          if manifest.get('repository') != os.environ['REPOSITORY']:
+              raise SystemExit('Manifest repository mismatch.')
+          if manifest.get('base_sha') != os.environ['BASE_SHA']:
+              raise SystemExit('Manifest commit mismatch. Nothing was deleted; run a fresh preview.')
+
+          files = manifest.get('files')
+          if not isinstance(files, list) or not files or len(files) > 100:
+              raise SystemExit('Invalid or empty deletion manifest.')
+
+          protected_roots = ('.git', '.github', 'app', 'gradle', 'AERUNO_HANDOFF/legacy-reference')
+          protected_files = {
+              'AGENTS.md', 'START_HERE.md', 'README.md', '.gitignore',
+              'build.gradle.kts', 'settings.gradle.kts', 'gradle.properties',
+              'AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-22.md',
+              'AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md',
+              'AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md',
+              'AERUNO_HANDOFF/NEXT_TASK_G01_V04.md',
+          }
+          def is_protected(path):
+              if path in protected_files:
+                  return True
+              return any(path == root or path.startswith(root + '/') for root in protected_roots)
+
+          tracked = set(p for p in subprocess.check_output(['git', 'ls-files', '-z']).decode('utf-8', 'surrogateescape').split('\0') if p)
+          for path in files:
+              if not isinstance(path, str) or path not in tracked:
+                  raise SystemExit(f'File is no longer tracked; nothing deleted: {path!r}')
+              if path.startswith('/') or '\\' in path or '..' in path.split('/') or is_protected(path):
+                  raise SystemExit(f'Unsafe or protected manifest path: {path!r}')
+              if os.path.islink(path):
+                  raise SystemExit(f'Symlink deletion is not supported: {path}')
+
+          subprocess.run(['git', 'rm', '--', *files], check=True)
+          print(f'Staged deletion of {len(files)} tracked file(s).')
+          PY
+
+      - name: Commit and push deletions
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Delete requested repository paths [skip ci]"
+          git push origin HEAD:main
+          {
+            echo '## Deletion completed'
+            echo '- The requested, previewed files were deleted and committed to `main`.'
+            echo '- No APK build was requested; this was a repository-file cleanup only.'
+            echo '- Review the commit in the repository history.'
+          } >> "$GITHUB_STEP_SUMMARY"
