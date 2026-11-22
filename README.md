@@ -1,41 +1,38 @@
-# AERUNO Native (prototype repository)
+# AERUNO — Native prototype repository and product handoff
 
-> **New here?** Read `START_HERE.md` first. It points to the current project state and design archive.
+> **Start with [`START_HERE.md`](START_HERE.md).** It identifies the active design phase, current source-of-truth documents and exact next task.
 
-This repository contains a small native Kotlin/Jetpack Compose prototype and a read-only copy of the legacy AERUNO source for reference. It is not yet the production AERUNO app. The functional legacy app remains in its separate repository and must not be modified from this repository.
+This public repository contains:
 
-**Current project phase:** Plan screen creative rework. The Round 2 visual baseline and the separate 8-image Visual Reference Pack are complete. The first Plan exploration is a functional/layout reference, not an approved visual direction. See [`START_HERE.md`](START_HERE.md), [`AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md`](AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md), and [`AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md`](AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md). Architecture (native Compose vs rebuilt WebView), app implementation and migration remain undecided/not approved.
+- AERUNO's project handoff and design archive.
+- A read-only reference copy of legacy V1 under `AERUNO_HANDOFF/legacy-reference/`.
+- A small experimental Kotlin/Jetpack Compose prototype under `app/`.
+- Design prototypes and supporting review records under `design/`.
 
-Working rules: [`AGENTS.md`](AGENTS.md). Project handoff: [`AERUNO_HANDOFF/`](AERUNO_HANDOFF/). Legacy baseline: [`docs/BASELINE_LEGACY.md`](docs/BASELINE_LEGACY.md). Tool versions: [`docs/VERSIONS.md`](docs/VERSIONS.md).
+It is **not yet the production AERUNO application**. The legacy app remains separate and must not be modified from this repository.
 
-## Prototype status
+## Current phase
 
-The native prototype is a visual/technical experiment. Its existing theme, fonts and glass tests are not the finished app and do not establish performance. Continue only within the owner's approved phase and the rules in `AGENTS.md`. The previous N04/N05 prototype task sequence remains on hold unless explicitly resumed.
+**Milestone 1 — Product and design foundation.** The current main Plan candidate is `design/plan-screen/aeruno-plan-g01-v03.html`; its status is Proposed / owner review pending, not Approved. The selected direction is Concept B — Program Edition + Concept A — Training Route. Natural scrolling, variable-height weekly rhythm, Progressive Blur and selective Liquid Glass are part of the working direction.
 
-- Prototype app id: `com.aeruno.nativeprototype` (temporary, debug builds only).
-- Minimum Android version: Android 12 (minSdk 31).
-- No keys, passwords or secrets belong in this public repository.
+The completed eight-image Visual Reference Pack v1 is supplied separately as a companion ZIP and is the primary creative benchmark. Do not regenerate it.
 
-## How the app gets built
+Architecture (native Compose vs redesigned Capacitor/WebView), implementation and migration remain undecided/not approved. The native prototype is an experiment, not the final architecture.
 
-GitHub builds it. The workflow `Build debug APK` runs on pushes to `main`, or manually: **Actions tab > Build debug APK > Run workflow**.
+## Where to read
 
-## Get the app onto your phone
+- [`START_HERE.md`](START_HERE.md) — current handoff and precedence.
+- [`AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md`](AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md) — detailed current state.
+- [`AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-22.md`](AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-22.md) — newest owner decisions.
+- [`AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md`](AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md) — three development milestones.
+- [`AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md`](AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md) — companion reference pack rules.
+- [`design/plan-screen/README.md`](design/plan-screen/README.md) — Plan research and current artifact links.
+- [`AGENTS.md`](AGENTS.md) — working rules for coding/design AIs.
 
-1. Open the repo, tap **Actions**, then the newest **Build debug APK** run. A green tick means the build succeeded.
-2. Open **Artifacts** and download `aeruno-native-debug-apk`.
-3. Extract the downloaded ZIP and tap the `.apk`.
-4. Allow installs from the app you used to download/open it, then install.
-5. Before installing a newer prototype build, uninstall the previous `AERUNO Native (proto)`. Each build uses a fresh debug key, so Android won't update over the previous one. The prototype has no user data.
+## Safety
 
-If a run fails, open it, tap the failed **Build debug APK** job, and capture the first red error line.
+This repository is public. Never add credentials, API keys, keystores, personal data, personal backups or release signing material. Do not edit `AERUNO_HANDOFF/legacy-reference/`. Preserve the existing app ID, storage contracts, backup format, native services and build workflows unless the owner explicitly approves a change.
 
-## How changes get into this repo
+## Repository update workflow
 
-Upload one file named `update.zip` to the repository root (**Add file > Upload files**). The `Apply update` workflow unpacks the paths, commits them, removes the ZIP and attempts to start the debug build.
-
-Files inside `.github/` are skipped by the workflow and must be added manually.
-
-## Building locally (optional)
-
-Requires JDK 17 and Gradle 8.13. The repository does not include the Gradle wrapper; use `gradle assembleDebug`. The APK appears in `app/build/outputs/apk/debug/`.
+The established workflow accepts one file named `update.zip` at the repository root. It writes or replaces repo-relative files, commits them, removes the uploaded ZIP and attempts to start the debug build. It **does not delete existing files**; cleanup deletions require a separate GitHub repository action. Files inside `.github/` are skipped and must be handled manually if ever necessary.

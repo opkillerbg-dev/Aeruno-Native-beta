@@ -1,5 +1,15 @@
 # Repository guide
 
+## Current design repository status — 2026-11-22
+
+- Current phase: Milestone 1 — product and design foundation. See `CURRENT_DESIGN_STATE.md` and `PRODUCT_AND_DEVELOPMENT_PLAN.md`.
+- Current Plan candidate: `design/plan-screen/aeruno-plan-g01-v03.html` with `design/plan-screen/G01_V03_DESIGN_HANDOFF.md` and owner preview captures under `design/plan-screen/owner-captures/`.
+- The existing `design/plan-screen/aeruno-plan-screen.html` and its render checks are the first functional/layout exploration, retained as historical research; do not treat it as the visual benchmark.
+- The eight-image Visual Reference Pack v1 is a completed separate companion ZIP, not duplicated here.
+- `app/` is the experimental native Compose prototype for later technical validation, not the final architecture.
+- `AERUNO_HANDOFF/legacy-reference/` is a read-only v150 functional reference. Never edit it.
+- `aeruno_update/` was a one-time staging package for the 2026-11-20 continuation note. That note is now copied into `AERUNO_HANDOFF/historical/`; after this update is applied, the two files in `aeruno_update/` can be deleted manually. The Apply update workflow itself cannot delete paths.
+
 Tags: see `../START_HERE.md`. `LEGACY/` = `AERUNO_HANDOFF/legacy-reference/`.
 
 ## Repositories involved

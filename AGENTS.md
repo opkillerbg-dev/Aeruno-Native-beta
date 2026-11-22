@@ -7,7 +7,7 @@ Read `START_HERE.md` and the documents in `AERUNO_HANDOFF/` before suggesting or
 1. **Inspect before you act.** Open the real files. Repo documentation can be stale; the source and the `AERUNO_HANDOFF/` evidence tags tell you how far to trust a statement.
 2. **Evidence honesty.** Never say "tested", "works", "smooth" or "fast" without naming what was run and where. A sandbox run is not a phone test. See the tags in `START_HERE.md`.
 3. **The owner decides.** Architecture, identity, signing, design direction. Offer two options and a recommendation; never settle a disagreement silently.
-4. **Current phase (2026-11-20): understanding and architecture decision.** The owner restarted AERUNO as a complete UI/UX redesign. Neither Path A (native Compose) nor Path B (WebView rebuild) is approved (`AERUNO_HANDOFF/ARCHITECTURE_DECISIONS.md`). Do not begin the redesign, migrate data or change native services until the owner decides.
+4. **Current phase (2026-11-22): Milestone 1 — product and design foundation.** The current Plan candidate is G01 V03 and is not yet Approved. The hybrid Concept B + Concept A direction is selected. Follow `START_HERE.md`, `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md`, `AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-22.md` and `AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md`. Do not start app implementation, migrate data or change native services during this design phase. Native Compose vs redesigned Capacitor/WebView remains undecided.
 5. **Two codebases, do not mix them up.** The legacy app (`AERUNO_HANDOFF/legacy-reference/`, a read-only copy at v150) is the functional asset. The native prototype (`app/`) is an experiment. Never edit `AERUNO_HANDOFF/legacy-reference/`; if legacy needs changing, that happens in the legacy repository and only with the owner's explicit OK.
 6. **Frozen without explicit OK:** legacy app id (`com.arya.fit3`) and signing key, storage key `aryaApp2`, storage schema and backup format, native service architecture. The prototype's own id (`com.aeruno.nativeprototype`) is temporary.
 7. **Security.** The repo is public. No keystores, passwords, tokens, API keys, personal data or backups. The legacy `debug.keystore` was deliberately not copied here.
@@ -20,14 +20,14 @@ Read `START_HERE.md` and the documents in `AERUNO_HANDOFF/` before suggesting or
 
 ## Part 2. Native prototype plan and rules (original AGENTS.md)
 
-Note: the card list below was written for the prototype before the 2026-11-20 redesign reset. It is **on hold** until the architecture decision. Card numbers N04 and later changed meaning once (see `AERUNO_HANDOFF/PROTOTYPE_HISTORY.md`).
+Note: the card list below was written for the native prototype experiment before the 2026-11-20 redesign reset. It is **historical and on hold**; it is not the current product roadmap. The current product milestones are in `AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md`. Card numbers N04 and later changed meaning once (see `AERUNO_HANDOFF/PROTOTYPE_HISTORY.md`).
 
 # AERUNO Native Prototype: plan and rules for every AI
 
 Repo: `opkillerbg-dev/Aeruno-Native-beta` (public). Read this whole file first. Keep it under ~250 lines; when a fact changes, change it here.
-Created 2026-11-19. Status: N00 to N03 done. N04 (top progressive blur, owner-defined 2026-11-20) delivered, gate not confirmed. 2026-11-20: owner restarted AERUNO as a full UI/UX redesign; handoff package added (`START_HERE.md`, `AERUNO_HANDOFF/`); architecture undecided; cards on hold.
+Created 2026-11-19. This is a historical record of the native prototype experiment: N00 to N03 done; N04 (top progressive blur test) delivered with its owner gate not confirmed in this snapshot. The owner subsequently continued the full product/design foundation in Milestone 1; the native-prototype card sequence remains on hold pending Milestone 2 technical validation and an explicit owner decision.
 
-## 0. Current state (update after every card)
+## 0. Historical native-prototype state snapshot (2026-11-20; not the current product status)
 
 - **Done:** N00 baseline. N01 skeleton + CI: GitHub Actions run "Build debug APK #4" (commit 93a3528) was green and produced the artifact `aeruno-native-debug-apk`; the owner installed it and saw the blank AERUNO screen on his phone (his screenshot). The Gradle build compiled Kotlin 2.3.0, Compose BOM 2026.05.00, AGP 8.13.2, Gradle 8.13 together; the app id and minSdk 31 were checked inside the built APK by the workflow.
 - **N02 (done 2026-11-20: owner confirmed green build, status bar and display type on his phone):** typography tokens, bundled fonts + OFL licenses, type specimen screen (now the only screen), `docs/DESIGN_TOKENS.md`. Fonts are the owner-approved set Big Shoulders Display 900, Instrument Serif Italic, Inter Regular/Bold (same as the legacy app), replacing the Manrope plan. Refinement 1 (owner approved palette and type): Palette A Deep Heritage, dark status-bar icons, compact stats in Inter Bold tnum, font notices checked. Refinement 2 (UNTESTED): status-bar cover so scrolling content no longer passes under the clock/icons; tighter, larger display styles. 

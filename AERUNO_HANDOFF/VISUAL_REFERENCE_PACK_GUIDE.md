@@ -50,15 +50,13 @@ The references establish an expressive AERUNO language rather than a generic fit
 - Depth C: route graphic crossing in front of large typography.
 - Canonical navigation: **Today · Plan · Train · Progress · Me**. Some images may show older or inconsistent navigation labels; those labels are not authoritative. Use the canonical navigation above.
 
-## Immediate design task
+## Current Plan status — 2026-11-22
 
-Use the pack together with:
+The owner selected the hybrid direction **Concept B — Program Edition + Concept A — Training Route**. Gemini's G01 V03 is the current scroll-aware editorial Plan prototype, stored at `design/plan-screen/aeruno-plan-g01-v03.html`. It is a strong proposed candidate, not an approved final design.
 
-- `design/plan-screen/OWNER_REVIEW_CREATIVE_DIRECTION_2026-11-21.md`
-- `design/plan-screen/README.md`
-- `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md`
+The owner prefers natural vertical scrolling, expressive unequal-height weekly rhythm, a fixed Liquid Glass navigation capsule and top-edge Progressive Blur. Do not compress the whole experience into one viewport. The browser prototype does not prove Android performance or final implementation feasibility.
 
-Create two materially different Plan concepts. Each concept must include the main Plan screen and its Manage sheet, preserve the researched feature set and make a distinct compositional choice. Compare the concepts in one review artifact, explain their core visual ideas briefly, recommend one with reasons, and stop for the owner's selection. Do not begin Train, implementation, migration or architecture work before the relevant owner approvals.
+Next: G01 V04 product-completeness and design QA, then the Manage Plan sheet. See `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md` and `AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md`. Do not regenerate the visual reference pack or repeat the earlier two-concept exploration.
 
 ## New-chat upload checklist
 

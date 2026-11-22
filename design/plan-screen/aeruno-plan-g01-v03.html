@@ -1,0 +1,2885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>AERUNO — G01 V03 | Scroll-aware Editorial Plan</title>
+
+  <!-- Preview-only font loading (App uses bundled Big Shoulders Display Black, Instrument Serif Italic & Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* =========================================================================
+       1. AERUNO LOCKED COLOUR PALETTE & DESIGN TOKENS
+       ========================================================================= */
+    :root {
+      --ivory: #F3EFE4;
+      --forest: #1F3B30;
+      --terracotta: #C97855;
+      --surface: #FFFEFA;
+      --surface-alt: #E7E2D6;
+      --sage: #DCE5D7;
+      --text: #202A23;
+      --muted: #646E65;
+
+      /* Structural hairlines & ambient grounding derived strictly from Forest & Surface */
+      --hairline: rgba(31, 59, 48, 0.16);
+      --hairline-strong: rgba(31, 59, 48, 0.34);
+      --hairline-light: rgba(243, 239, 228, 0.24);
+      --shadow-card: 0 20px 40px -24px rgba(31, 59, 48, 0.24), 0 2px 8px -2px rgba(31, 59, 48, 0.06);
+      --shadow-session: 0 24px 44px -26px rgba(31, 59, 48, 0.46);
+      --shadow-glass:
+        0 16px 36px -14px rgba(31, 59, 48, 0.24),
+        0 2px 10px -4px rgba(31, 59, 48, 0.08),
+        inset 0 1px 0 rgba(255, 254, 250, 0.92);
+
+      /* Signature AERUNO rounded surface geometry (24–28px) */
+      --radius-surface: 26px;
+      --radius-row: 16px;
+      --radius-pill: 9999px;
+
+      /* Responsive layout & safe-area tokens */
+      --gutter: 20px;
+      --nav-height: 70px;
+      --nav-bottom: 16px;
+      --blur-field-h: 82px;
+
+      /* Scroll-driven progressive blur activation (0 at rest, ramps smoothly to 1 on scroll) */
+      --blur-progress: 0;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--ivory);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: 0;
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+
+    button:focus-visible {
+      outline: 2px solid var(--forest);
+      outline-offset: 2px;
+    }
+
+    /* =========================================================================
+       2. TYPOGRAPHY & SELECTIVE VARIANT C (×1.14 VERTICAL SCALE)
+       ========================================================================= */
+    .font-display {
+      font-family: 'Big Shoulders Display', sans-serif;
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 0.84;
+      letter-spacing: -0.012em;
+    }
+
+    /* Variant C: Selective display scale ONLY on hero title (PLAN), workout title, and 1 hero stat (40%) */
+    .variant-c {
+      display: inline-block;
+      transform: scaleY(1.14);
+      transform-origin: left bottom;
+    }
+
+    .font-serif-accent {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .tabular {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Editorial Terracotta Micro-Grammar (Refs 04, 07, 08) */
+    .terra-bar-v {
+      display: inline-block;
+      width: 3.5px;
+      height: 12px;
+      background-color: var(--terracotta);
+      border-radius: 1px;
+      flex-shrink: 0;
+    }
+
+    .terra-dash-h {
+      display: block;
+      width: 32px;
+      height: 3.5px;
+      background-color: var(--terracotta);
+      border-radius: 1.5px;
+    }
+
+    /* =========================================================================
+       3. APP CANVAS, SCROLL VIEWPORT & PROGRESSIVE BLUR FIELD
+       ========================================================================= */
+    .aeruno-viewport {
+      width: 100%;
+      min-height: 100vh;
+      background-color: var(--ivory);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .aeruno-scroller {
+      width: 100%;
+      min-height: 100%;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .screen-content {
+      position: relative;
+      padding-top: env(safe-area-inset-top, 0px);
+      /* Generous bottom clearance so final content & CTA never trap behind floating nav */
+      padding-bottom: calc(var(--nav-height) + var(--nav-bottom) + env(safe-area-inset-bottom, 0px) + 34px);
+    }
+
+    /* -------------------------------------------------------------------------
+       MULTI-LAYER MASKED PROGRESSIVE BLUR (Top Viewport Edge)
+       6 overlapping backdrop-filter strata with continuous gradient masks.
+       Zero opaque header strip. Zero hard horizontal end line.
+       Ramps smoothly from opacity 0 (scroll=0) to 1 as content glides underneath.
+       ------------------------------------------------------------------------- */
+    .progressive-blur-field {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: calc(var(--blur-field-h) + env(safe-area-inset-top, 0px));
+      pointer-events: none;
+      z-index: 35;
+      opacity: var(--blur-progress);
+      transition: opacity 140ms linear;
+      overflow: hidden;
+    }
+
+    .is-no-blur .progressive-blur-field {
+      display: none !important;
+    }
+
+    .pblur-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: transparent;
+      will-change: backdrop-filter;
+    }
+
+    /* Stratum 1: Broadest soft feather (1.2px blur, fades gently to 0 at 100%) */
+    .pblur-1 {
+      backdrop-filter: blur(1.2px);
+      -webkit-backdrop-filter: blur(1.2px);
+      mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, 0.45) 80%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, 0.45) 80%, transparent 100%);
+    }
+
+    /* Stratum 2: Lower-mid transition (2.6px blur) */
+    .pblur-2 {
+      backdrop-filter: blur(2.6px);
+      -webkit-backdrop-filter: blur(2.6px);
+      mask-image: linear-gradient(to bottom, #000 0%, #000 44%, rgba(0, 0, 0, 0.35) 68%, transparent 86%);
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 44%, rgba(0, 0, 0, 0.35) 68%, transparent 86%);
+    }
+
+    /* Stratum 3: Mid transition (5px blur) */
+    .pblur-3 {
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      mask-image: linear-gradient(to bottom, #000 0%, #000 32%, rgba(0, 0, 0, 0.3) 54%, transparent 72%);
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 32%, rgba(0, 0, 0, 0.3) 54%, transparent 72%);
+    }
+
+    /* Stratum 4: Upper-mid depth (8.5px blur) */
+    .pblur-4 {
+      backdrop-filter: blur(8.5px);
+      -webkit-backdrop-filter: blur(8.5px);
+      mask-image: linear-gradient(to bottom, #000 0%, #000 22%, rgba(0, 0, 0, 0.25) 42%, transparent 58%);
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 22%, rgba(0, 0, 0, 0.25) 42%, transparent 58%);
+    }
+
+    /* Stratum 5: Upper edge (13px blur) */
+    .pblur-5 {
+      backdrop-filter: blur(13px);
+      -webkit-backdrop-filter: blur(13px);
+      mask-image: linear-gradient(to bottom, #000 0%, #000 13%, rgba(0, 0, 0, 0.2) 30%, transparent 44%);
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 13%, rgba(0, 0, 0, 0.2) 30%, transparent 44%);
+    }
+
+    /* Stratum 6: Strongest top boundary (19px blur + whisper saturation) */
+    .pblur-6 {
+      backdrop-filter: blur(19px) saturate(112%);
+      -webkit-backdrop-filter: blur(19px) saturate(112%);
+      mask-image: linear-gradient(to bottom, #000 0%, #000 8%, rgba(0, 0, 0, 0.18) 20%, transparent 32%);
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 8%, rgba(0, 0, 0, 0.18) 20%, transparent 32%);
+    }
+
+    /* Subtle atmospheric ivory veil — retains underlying forest/ivory hues without opacity banding */
+    .pblur-atmosphere {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(
+        to bottom,
+        rgba(243, 239, 228, 0.42) 0%,
+        rgba(243, 239, 228, 0.22) 28%,
+        rgba(243, 239, 228, 0.07) 62%,
+        rgba(243, 239, 228, 0) 100%
+      );
+    }
+
+    /* Graceful fallback when backdrop-filter is unsupported */
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      .pblur-layer {
+        display: none;
+      }
+      .pblur-atmosphere {
+        background: linear-gradient(
+          to bottom,
+          rgba(243, 239, 228, 0.88) 0%,
+          rgba(243, 239, 228, 0.45) 48%,
+          rgba(243, 239, 228, 0) 100%
+        );
+      }
+    }
+
+    /* -------------------------------------------------------------------------
+       ZONE A — EDITORIAL MASTHEAD (44–52px excluding safe area)
+       ------------------------------------------------------------------------- */
+    .masthead {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px var(--gutter) 4px;
+      min-height: 48px;
+      position: relative;
+      z-index: 25;
+    }
+
+    .brand-lockup {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      font-size: 7.5px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      margin-top: 1px;
+      text-transform: uppercase;
+    }
+
+    .masthead-rule {
+      flex: 1;
+      height: 1px;
+      background-color: var(--hairline-strong);
+      min-width: 16px;
+    }
+
+    .manage-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 0 2px 0 10px;
+      border-radius: var(--radius-pill);
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .manage-btn:active {
+      transform: scale(0.96);
+      opacity: 0.72;
+    }
+
+    /* -------------------------------------------------------------------------
+       ZONE B + ZONE C — PROGRAMME IDENTITY, DEPTH B (4), DEPTH C & PROGRESS HERO
+       Generous editorial proportions: identity dominates left, solid '4' + sage
+       route anchor upper-right, warm-white progress card occludes lower '4'.
+       ------------------------------------------------------------------------- */
+    .hero-composition {
+      position: relative;
+      padding: 18px var(--gutter) 0;
+    }
+
+    /* Localized Topographic Contours (Negative Space & Upper-Right Field, Fade-to-Edge) */
+    .hero-contours-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 240px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Depth B: Monumental Solid Deep Forest Total Programme Duration Numeral ('4')
+       Strong architectural silhouette, slight angular character, right-edge crop,
+       visibly plunging behind the warm-white foreground Progress Card */
+    .depth-b-numeral-svg {
+      position: absolute;
+      top: 4px;
+      right: -12px;
+      width: 252px;
+      height: 320px;
+      pointer-events: none;
+      z-index: 2;
+      overflow: visible;
+    }
+
+    /* Depth C: Organic Sage Route with Ivory-Ringed Terracotta Waypoints & Pins
+       Weaves cleanly across the solid numeral '4' (Programme progression, not GPS) */
+    .depth-c-route-svg {
+      position: absolute;
+      top: 8px;
+      right: 0;
+      width: 230px;
+      height: 174px;
+      pointer-events: none;
+      z-index: 4;
+      overflow: visible;
+    }
+
+    /* Zone B: Left Editorial Identity Block */
+    .identity-block {
+      position: relative;
+      z-index: 5;
+      max-width: 60%;
+      padding-top: 2px;
+      padding-bottom: 22px;
+    }
+
+    .identity-kicker {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 6px;
+    }
+
+    .identity-kicker-text {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .plan-title {
+      margin: 0;
+      font-size: 78px;
+      color: var(--forest);
+      line-height: 0.84;
+      padding-top: 9px;
+    }
+
+    .programme-name {
+      margin: 6px 0 0;
+      font-size: 29px;
+      line-height: 1.08;
+      color: var(--forest);
+      letter-spacing: -0.01em;
+      /* Handles long programme names gracefully without crowding Depth B */
+      overflow-wrap: break-word;
+    }
+
+    .programme-dash {
+      margin-top: 10px;
+    }
+
+    /* Zone C: Solid Warm-White Current-Week Progress Hero (Occludes Lower '4') */
+    .progress-card {
+      position: relative;
+      z-index: 6;
+      background-color: var(--surface);
+      border-radius: var(--radius-surface);
+      box-shadow: var(--shadow-card);
+      border: 1px solid rgba(31, 59, 48, 0.06);
+      padding: 18px 20px 18px;
+    }
+
+    .progress-row-1 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .progress-week-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--forest);
+    }
+
+    .progress-date-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .progress-date-range {
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .signature-dot {
+      width: 8.5px;
+      height: 8.5px;
+      border-radius: 50%;
+      background-color: var(--terracotta);
+      flex-shrink: 0;
+    }
+
+    /* Row 2: Three Equally Weighted Metrics (Ref 03 & Ref 08) */
+    .progress-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: end;
+      margin-bottom: 15px;
+    }
+
+    .metric-col {
+      display: flex;
+      flex-direction: column;
+      padding-right: 8px;
+    }
+
+    .metric-col + .metric-col {
+      border-left: 1px solid var(--hairline);
+      padding-left: 13px;
+    }
+
+    .metric-col:last-child {
+      padding-right: 0;
+    }
+
+    .metric-value {
+      font-size: 42px;
+      color: var(--forest);
+      line-height: 0.86;
+      padding-top: 4px;
+    }
+
+    .metric-label {
+      font-size: 8.5px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    /* Row 3: Adaptable Segmented Week Indicators */
+    .week-segments {
+      display: grid;
+      gap: 7px;
+    }
+
+    .week-pill {
+      height: 26px;
+      border-radius: var(--radius-pill);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .week-pill.done {
+      background-color: var(--terracotta);
+      color: var(--surface);
+    }
+
+    .week-pill.current {
+      background-color: var(--forest);
+      color: var(--ivory);
+    }
+
+    .week-pill.upcoming {
+      background-color: var(--sage);
+      color: var(--text);
+    }
+
+    .week-pill-dot {
+      width: 4.5px;
+      height: 4.5px;
+      border-radius: 50%;
+      background-color: var(--terracotta);
+      flex-shrink: 0;
+    }
+
+    /* -------------------------------------------------------------------------
+       ZONE D — EXPRESSIVE VARIABLE-HEIGHT WEEKLY RHYTHM
+       Proportional active session heights (18–44px) + 8px horizontal rest capsules
+       + Organic undulating route thread linking every day's elevated node.
+       ------------------------------------------------------------------------- */
+    .rhythm-section {
+      padding: 26px var(--gutter) 0;
+      position: relative;
+      z-index: 10;
+    }
+
+    .rhythm-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .rhythm-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .rhythm-heading {
+      margin: 0;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .rhythm-derived-meta {
+      font-size: 9.5px;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .rhythm-canvas {
+      position: relative;
+    }
+
+    /* Undulating Route Thread SVG:
+       Covers the exact 70px upper graph zone of the 7-column rhythm grid
+       (col top pad 8px + 62px graph stage). Paths align to exact column centers
+       (x = (i + 0.5) * 100 in 0..700 viewBox) and exact node vertical elevation. */
+    .rhythm-route-svg {
+      position: absolute;
+      top: 8px;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      pointer-events: none;
+      z-index: 2;
+      overflow: visible;
+    }
+
+    .rhythm-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 0;
+      position: relative;
+      z-index: 3;
+    }
+
+    .day-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px 1px 9px;
+      border-radius: 17px;
+      position: relative;
+      min-width: 0;
+      min-height: 44px;
+      transition: background-color 200ms ease, box-shadow 200ms ease, transform 160ms ease;
+    }
+
+    .day-col:active {
+      transform: scale(0.96);
+    }
+
+    /* Warm-white individual highlight ONLY on the Selected day (independent of Today) */
+    .day-col.is-selected {
+      background-color: var(--surface);
+      box-shadow: 0 12px 24px -14px rgba(31, 59, 48, 0.28), 0 0 0 1px rgba(31, 59, 48, 0.14);
+    }
+
+    /* 64px Variable-Height Elevation Stage:
+       Holds the proportional vertical capsule at bottom + elevated connected route node above it */
+    .day-elevation-stage {
+      position: relative;
+      width: 100%;
+      height: 64px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 4px;
+    }
+
+    .day-bar {
+      width: 24px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), background-color 180ms ease;
+    }
+
+    .day-col.is-selected .day-bar {
+      transform: translateY(-1px);
+    }
+
+    .day-bar.done {
+      background-color: var(--forest);
+      color: var(--ivory);
+    }
+
+    .day-bar.today {
+      background-color: var(--terracotta);
+      color: var(--surface);
+    }
+
+    .day-bar.upcoming {
+      background-color: var(--ivory);
+      border: 1.5px solid var(--forest);
+      color: var(--forest);
+    }
+
+    .day-col.is-selected .day-bar.upcoming {
+      background-color: var(--surface);
+    }
+
+    /* Rest Day: 8px horizontal Sage capsule resting near lower baseline */
+    .day-bar.rest {
+      width: 24px;
+      height: 8px !important;
+      border-radius: var(--radius-pill);
+      background-color: var(--sage);
+      margin-bottom: 1px;
+    }
+
+    /* Elevated Route Node positioned dynamically on the undulating route thread */
+    .day-node {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 7.5px;
+      height: 7.5px;
+      border-radius: 50%;
+      z-index: 4;
+      transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 200ms ease;
+    }
+
+    .day-node.done {
+      background-color: var(--forest);
+      box-shadow: 0 0 0 2px var(--ivory);
+    }
+
+    /* Today always preserves its ivory-ringed terracotta waypoint independent of selection */
+    .day-node.today {
+      width: 9.5px;
+      height: 9.5px;
+      background-color: var(--terracotta);
+      box-shadow: 0 0 0 2.5px var(--ivory), 0 0 0 4.2px var(--terracotta);
+    }
+
+    .day-node.upcoming {
+      background-color: var(--ivory);
+      border: 1.6px solid var(--forest);
+    }
+
+    .day-node.rest {
+      width: 6.5px;
+      height: 6.5px;
+      background-color: var(--sage);
+      border: 1.5px solid var(--muted);
+    }
+
+    .day-col.is-selected .day-node.done {
+      box-shadow: 0 0 0 2.5px var(--surface), 0 0 0 4px var(--forest);
+    }
+
+    .day-col.is-selected .day-node.today {
+      box-shadow: 0 0 0 2.5px var(--surface), 0 0 0 4.2px var(--terracotta);
+    }
+
+    .day-col.is-selected .day-node.upcoming {
+      background-color: var(--surface);
+      transform: translate(-50%, -50%) scale(1.15);
+    }
+
+    /* Clean Aligned Reading Grid Beneath the Variable-Height Rhythm */
+    .day-dow {
+      font-size: 8.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1;
+    }
+
+    .day-col.is-today .day-dow,
+    .day-col.is-selected .day-dow {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .day-num {
+      font-size: 21px;
+      color: var(--text);
+      margin-top: 3px;
+      line-height: 0.9;
+    }
+
+    .day-col.is-rest .day-num {
+      color: var(--muted);
+    }
+
+    /* Explicit Session Category (STR / RUN / REST) */
+    .day-cat {
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--forest);
+      margin-top: 4px;
+      line-height: 1;
+    }
+
+    .day-col.is-rest .day-cat {
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* Independent Today vs Selected Anchor Dash */
+    .day-state-underline {
+      margin-top: 5px;
+      width: 14px;
+      height: 2.5px;
+      border-radius: var(--radius-pill);
+      background-color: transparent;
+    }
+
+    .day-col.is-today .day-state-underline {
+      background-color: var(--terracotta);
+    }
+
+    .day-col.is-selected:not(.is-today) .day-state-underline {
+      background-color: var(--forest);
+      width: 10px;
+      opacity: 0.55;
+    }
+
+    /* -------------------------------------------------------------------------
+       ZONE E — GENEROUS DEEP FOREST SELECTED SESSION SURFACE
+       Second major visual anchor — generous breathing room, right-side contours,
+       large Big Shoulders workout title, concise description, full-pill ivory CTA.
+       ------------------------------------------------------------------------- */
+    .session-section {
+      padding: 22px var(--gutter) 0;
+      position: relative;
+      z-index: 10;
+    }
+
+    .session-card {
+      background-color: var(--forest);
+      color: var(--ivory);
+      border-radius: var(--radius-surface);
+      padding: 22px 20px 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-session);
+    }
+
+    .session-card.animate-swap {
+      animation: sessionSwap 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes sessionSwap {
+      from {
+        opacity: 0.78;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Localized Topographic Contours on Right Interior Only (Refs 05, 06, 08) */
+    .session-contours-svg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 56%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .session-inner {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Row 1: Vertical Terracotta Bar + Date/Programme Day + Right Status */
+    .session-row-1 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .session-date-kicker {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .session-date-text {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ivory);
+      opacity: 0.92;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .session-status-pill {
+      padding: 4px 9px;
+      border-radius: var(--radius-pill);
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      background-color: rgba(243, 239, 228, 0.14);
+      border: 1px solid rgba(243, 239, 228, 0.26);
+      color: var(--ivory);
+    }
+
+    .session-status-pill.is-done {
+      background-color: var(--sage);
+      border-color: var(--sage);
+      color: var(--forest);
+    }
+
+    .session-status-pill.is-rest {
+      background-color: rgba(220, 229, 215, 0.20);
+      border-color: rgba(220, 229, 215, 0.34);
+      color: var(--sage);
+    }
+
+    /* Row 2: Large Selected Session Title (Big Shoulders Display Black · Variant C) */
+    .session-title {
+      margin: 0;
+      font-size: 58px;
+      color: var(--ivory);
+      line-height: 0.86;
+      padding-top: 7px;
+      padding-bottom: 3px;
+    }
+
+    /* Row 3: Category + Duration + Exercise Count / Run Target */
+    .session-row-3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 11px;
+    }
+
+    .category-pill {
+      padding: 3.5px 9px;
+      border-radius: var(--radius-pill);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background-color: var(--sage);
+      color: var(--forest);
+      flex-shrink: 0;
+    }
+
+    .category-pill.is-run {
+      background-color: var(--surface-alt);
+      color: var(--forest);
+    }
+
+    .session-facts-rule {
+      width: 20px;
+      height: 1px;
+      background-color: var(--hairline-light);
+      flex-shrink: 0;
+    }
+
+    .session-facts-text {
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ivory);
+      opacity: 0.92;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Row 4: Concise Session Description */
+    .session-summary {
+      margin: 12px 0 20px;
+      font-size: 12.5px;
+      line-height: 1.48;
+      color: rgba(243, 239, 228, 0.86);
+      max-width: 94%;
+    }
+
+    /* Row 5: Signature Full-Width Warm-Ivory Pill CTA + Circular Terracotta Arrow */
+    .session-cta-btn {
+      width: 100%;
+      height: 54px;
+      border-radius: var(--radius-pill);
+      background-color: var(--ivory);
+      color: var(--forest);
+      padding: 6px 6px 6px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 10px 22px -12px rgba(0, 0, 0, 0.38);
+      transition: background-color 160ms ease, transform 160ms ease;
+    }
+
+    .session-cta-btn:hover {
+      background-color: var(--surface);
+    }
+
+    .session-cta-btn:active {
+      transform: scale(0.982);
+    }
+
+    .session-cta-label {
+      flex: 1;
+      text-align: center;
+      padding-left: 16px;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--forest);
+    }
+
+    .session-cta-arrow {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background-color: var(--terracotta);
+      color: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 180ms ease;
+    }
+
+    .session-cta-btn:active .session-cta-arrow {
+      transform: translateX(2px);
+    }
+
+    /* -------------------------------------------------------------------------
+       ZONE F — SUPPORTING PLAN SEQUENCE ("COMING UP")
+       Grounded in researched Plan information hierarchy (design/plan-screen/README.md).
+       Derived directly from remaining scheduled days in Week 02 — no filler, no cards stack.
+       ------------------------------------------------------------------------- */
+    .upcoming-section {
+      padding: 26px var(--gutter) 8px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .upcoming-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .upcoming-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .upcoming-heading {
+      margin: 0;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .upcoming-editorial-note {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1;
+    }
+
+    .upcoming-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .upcoming-row {
+      width: 100%;
+      min-height: 58px;
+      padding: 12px 14px;
+      border-radius: var(--radius-row);
+      background-color: var(--surface);
+      border: 1px solid rgba(31, 59, 48, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      text-align: left;
+      transition: border-color 180ms ease, transform 160ms ease, background-color 180ms ease;
+    }
+
+    .upcoming-row:active {
+      transform: scale(0.985);
+    }
+
+    .upcoming-row.is-active-row {
+      border-color: rgba(31, 59, 48, 0.34);
+      background-color: var(--surface);
+    }
+
+    .upcoming-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .upcoming-date-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 34px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--hairline);
+      padding-right: 10px;
+    }
+
+    .upcoming-dow {
+      font-size: 8.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .upcoming-num {
+      font-size: 20px;
+      color: var(--forest);
+      line-height: 0.92;
+      margin-top: 2px;
+    }
+
+    .upcoming-info {
+      min-width: 0;
+    }
+
+    .upcoming-name {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .upcoming-facts {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .upcoming-tag {
+      padding: 4px 9px;
+      border-radius: var(--radius-pill);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      background-color: var(--sage);
+      color: var(--forest);
+    }
+
+    .upcoming-tag.is-rest {
+      background-color: var(--surface-alt);
+      color: var(--muted);
+    }
+
+    /* -------------------------------------------------------------------------
+       FLOATING LIQUID GLASS NAVIGATION (CANONICAL 5 ITEMS)
+       Today · Plan (Active) · Train · Progress · Me
+       Fixed to viewport bottom; content glides behind translucent ivory glass.
+       ------------------------------------------------------------------------- */
+    .floating-nav-dock {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: max(var(--nav-bottom), env(safe-area-inset-bottom, 0px));
+      padding: 0 var(--gutter);
+      z-index: 40;
+      pointer-events: none;
+    }
+
+    .liquid-glass-nav {
+      pointer-events: auto;
+      width: 100%;
+      max-width: 372px;
+      height: var(--nav-height);
+      margin: 0 auto;
+      padding: 6px;
+      border-radius: var(--radius-pill);
+      /* Proposed browser tuning: ~78% ivory surface opacity, 20px blur + subtle saturation */
+      background: rgba(255, 254, 250, 0.78);
+      backdrop-filter: blur(20px) saturate(135%);
+      -webkit-backdrop-filter: blur(20px) saturate(135%);
+      border: 1px solid rgba(31, 59, 48, 0.11);
+      box-shadow: var(--shadow-glass);
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      align-items: center;
+      gap: 2px;
+    }
+
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      .liquid-glass-nav {
+        background: rgba(255, 254, 250, 0.96);
+      }
+    }
+
+    .nav-tab {
+      height: 100%;
+      min-height: 48px;
+      border-radius: var(--radius-pill);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: var(--muted);
+      transition: color 180ms ease, background-color 180ms ease, transform 140ms ease;
+    }
+
+    .nav-tab:hover {
+      color: var(--text);
+    }
+
+    .nav-tab:active {
+      transform: scale(0.95);
+    }
+
+    .nav-tab.is-active {
+      background-color: var(--forest);
+      color: var(--ivory);
+      box-shadow: 0 6px 14px -8px rgba(31, 59, 48, 0.56);
+    }
+
+    .nav-tab-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      line-height: 1;
+    }
+
+    .nav-tab.is-active .nav-tab-label {
+      font-weight: 600;
+    }
+
+    /* Non-intrusive Prototype Scope Notice */
+    .scope-toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(var(--nav-height) + var(--nav-bottom) + env(safe-area-inset-bottom, 0px) + 12px);
+      transform: translateX(-50%) translateY(8px);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 50;
+      max-width: 320px;
+      width: calc(100% - 40px);
+      background-color: var(--text);
+      color: var(--ivory);
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-size: 11px;
+      line-height: 1.38;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: 0 14px 28px -12px rgba(31, 59, 48, 0.45);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .scope-toast.is-visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .scope-toast-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--terracotta);
+      flex-shrink: 0;
+    }
+
+    /* =========================================================================
+       4. REDUCED MOTION PREFERENCE
+       ========================================================================= */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* =========================================================================
+       5. RESPONSIVE TUNING: 360 × 800 (COMPACT) & 412 × 915 (BREATHING ROOM)
+       ========================================================================= */
+    @media (max-width: 374px) {
+      :root {
+        --gutter: 16px;
+        --nav-height: 66px;
+        --nav-bottom: 12px;
+        --blur-field-h: 74px;
+      }
+
+      .masthead { padding-top: 10px; min-height: 46px; }
+      .hero-composition { padding-top: 14px; }
+      .identity-block { max-width: 61%; padding-bottom: 18px; }
+      .identity-kicker-text { font-size: 9.5px; letter-spacing: 0.14em; }
+      .plan-title { font-size: 68px; }
+      .programme-name { font-size: 26px; }
+      .depth-b-numeral-svg { width: 222px; height: 288px; right: -14px; }
+      .depth-c-route-svg { width: 202px; height: 156px; }
+
+      .progress-card { padding: 15px 15px 15px; border-radius: 24px; }
+      .metric-value { font-size: 36px; }
+      .metric-col + .metric-col { padding-left: 10px; }
+      .metric-label { font-size: 8px; letter-spacing: 0.10em; }
+
+      .rhythm-section { padding-top: 22px; }
+      .day-bar { width: 20px; border-radius: 7px; }
+      .day-bar.rest { width: 20px; }
+      .day-num { font-size: 19px; }
+      .day-cat { font-size: 8px; letter-spacing: 0.04em; }
+
+      .session-section { padding-top: 20px; }
+      .session-card { padding: 19px 16px 17px; border-radius: 24px; }
+      .session-title { font-size: 50px; }
+      .session-cta-btn { height: 50px; padding: 5px 5px 5px 18px; }
+      .session-cta-arrow { width: 40px; height: 40px; }
+    }
+
+    @media (min-width: 406px) {
+      :root {
+        --nav-height: 72px;
+        --nav-bottom: 18px;
+        --blur-field-h: 88px;
+      }
+
+      .plan-title { font-size: 80px; }
+      .programme-name { font-size: 30px; }
+      .session-title { font-size: 60px; }
+    }
+
+    /* =========================================================================
+       6. DESKTOP-ONLY REVIEW HARNESS
+       Strictly hidden on real mobile screens & embedded comparison iframes.
+       ========================================================================= */
+    .review-shell {
+      display: contents;
+    }
+
+    .review-bar,
+    .geometry-readout,
+    .multi-stage-grid {
+      display: none;
+    }
+
+    body:not(.is-embed) .single-stage {
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    @media (min-width: 560px) {
+      body:not(.is-embed) {
+        background-color: var(--surface-alt);
+        min-height: 100vh;
+        padding: 18px 20px 44px;
+      }
+
+      body:not(.is-embed) .review-shell {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
+
+      body:not(.is-embed) .review-bar {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        max-width: 900px;
+        background-color: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 16px;
+        padding: 10px 14px;
+        margin-bottom: 12px;
+        box-shadow: 0 10px 24px -18px rgba(31, 59, 48, 0.24);
+      }
+
+      .review-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .review-brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--forest);
+      }
+
+      .review-controls {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .review-group-label {
+        font-size: 9.5px;
+        font-weight: 700;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-right: 2px;
+      }
+
+      .review-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        background-color: var(--ivory);
+        padding: 3px;
+        border-radius: 10px;
+      }
+
+      .review-btn {
+        padding: 5px 9px;
+        border-radius: 7px;
+        font-size: 10.5px;
+        font-weight: 600;
+        color: var(--muted);
+        transition: background-color 140ms ease, color 140ms ease;
+      }
+
+      .review-btn:hover {
+        color: var(--text);
+      }
+
+      .review-btn.is-active {
+        background-color: var(--forest);
+        color: var(--ivory);
+      }
+
+      /* Live Geometry Inspection Panel (Desktop Only) */
+      body:not(.is-embed).show-audit .geometry-readout {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 10px 14px;
+        width: 100%;
+        max-width: 900px;
+        background-color: var(--forest);
+        color: var(--ivory);
+        border-radius: 12px;
+        padding: 9px 14px;
+        margin-bottom: 14px;
+        font-size: 10.5px;
+        font-weight: 500;
+        letter-spacing: 0.03em;
+      }
+
+      .audit-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .audit-ok {
+        color: var(--sage);
+        font-weight: 700;
+      }
+
+      /* Desktop Device Frame */
+      body:not(.is-embed) .single-stage {
+        width: var(--stage-w, 390px);
+        min-height: 0;
+        border-radius: 36px;
+        overflow: hidden;
+        box-shadow:
+          0 32px 72px -24px rgba(31, 59, 48, 0.30),
+          0 0 0 1px rgba(31, 59, 48, 0.14);
+        background-color: var(--ivory);
+        position: relative;
+        transition: width 200ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      /* First-Screen / Interactive Scroll Mode:
+         Viewport matches exact phone height (800 / 844 / 915) with real internal scrolling
+         so fixed Progressive Blur & Floating Liquid Glass behave authentically. */
+      body:not(.is-embed) .single-stage.mode-first-screen .aeruno-viewport {
+        min-height: 0;
+        height: var(--stage-h, 844px);
+        overflow: hidden;
+      }
+
+      body:not(.is-embed) .single-stage.mode-first-screen .aeruno-scroller {
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-width: none;
+      }
+
+      body:not(.is-embed) .single-stage.mode-first-screen .aeruno-scroller::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Full-Length Mode: expands to full document height for full-page inspection */
+      body:not(.is-embed) .single-stage.mode-full-length .aeruno-viewport {
+        min-height: 0;
+        height: auto;
+      }
+
+      body:not(.is-embed) .single-stage.mode-full-length .aeruno-scroller {
+        height: auto;
+        overflow: visible;
+      }
+
+      /* Pin fixed layers cleanly inside the desktop device frame */
+      body:not(.is-embed) .single-stage .progressive-blur-field {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+      }
+
+      body:not(.is-embed) .single-stage .floating-nav-dock {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: var(--nav-bottom);
+      }
+
+      body:not(.is-embed) .single-stage .scope-toast {
+        position: absolute;
+        bottom: calc(var(--nav-height) + var(--nav-bottom) + 12px);
+      }
+
+      /* Multi-frame comparison grid (All 3 widths OR Blur vs No Blur split) */
+      body:not(.is-embed).view-multi .single-stage {
+        display: none;
+      }
+
+      body:not(.is-embed).view-multi .multi-stage-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 24px;
+        width: 100%;
+      }
+
+      .multi-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .multi-col-label {
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+        color: var(--forest);
+        background-color: var(--surface);
+        padding: 5px 12px;
+        border-radius: var(--radius-pill);
+        border: 1px solid var(--hairline);
+      }
+
+      .multi-frame {
+        border: 0;
+        border-radius: 34px;
+        background-color: var(--ivory);
+        box-shadow:
+          0 28px 60px -24px rgba(31, 59, 48, 0.28),
+          0 0 0 1px rgba(31, 59, 48, 0.14);
+      }
+    }
+
+    /* Desktop manual viewport width overrides (360×800 & 412×915) */
+    .single-stage[data-width="360"] {
+      --gutter: 16px;
+      --nav-height: 66px;
+      --nav-bottom: 12px;
+      --blur-field-h: 74px;
+    }
+    .single-stage[data-width="360"] .masthead { padding-top: 10px; min-height: 46px; }
+    .single-stage[data-width="360"] .hero-composition { padding-top: 14px; }
+    .single-stage[data-width="360"] .identity-block { max-width: 61%; padding-bottom: 18px; }
+    .single-stage[data-width="360"] .identity-kicker-text { font-size: 9.5px; letter-spacing: 0.14em; }
+    .single-stage[data-width="360"] .plan-title { font-size: 68px; }
+    .single-stage[data-width="360"] .programme-name { font-size: 26px; }
+    .single-stage[data-width="360"] .depth-b-numeral-svg { width: 222px; height: 288px; right: -14px; }
+    .single-stage[data-width="360"] .depth-c-route-svg { width: 202px; height: 156px; }
+    .single-stage[data-width="360"] .progress-card { padding: 15px 15px 15px; border-radius: 24px; }
+    .single-stage[data-width="360"] .metric-value { font-size: 36px; }
+    .single-stage[data-width="360"] .metric-col + .metric-col { padding-left: 10px; }
+    .single-stage[data-width="360"] .metric-label { font-size: 8px; letter-spacing: 0.10em; }
+    .single-stage[data-width="360"] .rhythm-section { padding-top: 22px; }
+    .single-stage[data-width="360"] .day-bar { width: 20px; border-radius: 7px; }
+    .single-stage[data-width="360"] .day-bar.rest { width: 20px; }
+    .single-stage[data-width="360"] .day-num { font-size: 19px; }
+    .single-stage[data-width="360"] .day-cat { font-size: 8px; letter-spacing: 0.04em; }
+    .single-stage[data-width="360"] .session-section { padding-top: 20px; }
+    .single-stage[data-width="360"] .session-card { padding: 19px 16px 17px; border-radius: 24px; }
+    .single-stage[data-width="360"] .session-title { font-size: 50px; }
+    .single-stage[data-width="360"] .session-cta-btn { height: 50px; padding: 5px 5px 5px 18px; }
+    .single-stage[data-width="360"] .session-cta-arrow { width: 40px; height: 40px; }
+
+    .single-stage[data-width="412"] {
+      --nav-height: 72px;
+      --nav-bottom: 18px;
+      --blur-field-h: 88px;
+    }
+    .single-stage[data-width="412"] .plan-title { font-size: 80px; }
+    .single-stage[data-width="412"] .programme-name { font-size: 30px; }
+    .single-stage[data-width="412"] .session-title { font-size: 60px; }
+
+    /* Embedded iframe mode renders pure edge-to-edge phone screen */
+    body.is-embed .aeruno-viewport {
+      height: 100vh;
+      min-height: 0;
+      overflow: hidden;
+    }
+    body.is-embed .aeruno-scroller {
+      height: 100%;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+    body.is-embed .aeruno-scroller::-webkit-scrollbar {
+      display: none;
+    }
+    body.is-embed .progressive-blur-field {
+      position: fixed;
+      top: 0;
+    }
+    body.is-embed .floating-nav-dock {
+      position: fixed;
+      bottom: var(--nav-bottom);
+    }
+  </style>
+</head>
+<body>
+  <div class="review-shell">
+    <!-- =======================================================================
+         DESKTOP-ONLY INSPECTION TOOLBAR (Excluded from mobile UI)
+         ======================================================================= -->
+    <aside class="review-bar" aria-label="Desktop Prototype Inspection Controls">
+      <div class="review-row">
+        <div class="review-brand">
+          <span class="terra-bar-v" style="height: 12px;"></span>
+          <span>AERUNO · G01 V03 Scroll-aware Plan</span>
+        </div>
+
+        <div class="review-controls">
+          <div class="review-group" role="group" aria-label="Viewport Preset">
+            <button type="button" class="review-btn" data-vp="360">360×800</button>
+            <button type="button" class="review-btn is-active" data-vp="390">390×844</button>
+            <button type="button" class="review-btn" data-vp="412">412×915</button>
+            <button type="button" class="review-btn" data-vp="all">All 3</button>
+          </div>
+
+          <div class="review-group" role="group" aria-label="Frame Height Mode">
+            <button type="button" class="review-btn is-active" data-mode="first-screen">First Screen</button>
+            <button type="button" class="review-btn" data-mode="full-length">Full Length</button>
+          </div>
+
+          <div class="review-group" role="group" aria-label="Geometry Inspector">
+            <button type="button" id="auditToggleBtn" class="review-btn">Geometry</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-row">
+        <div class="review-controls">
+          <span class="review-group-label">Scroll</span>
+          <div class="review-group" role="group" aria-label="Scroll Position Presets">
+            <button type="button" class="review-btn is-active" data-scroll="0">Top</button>
+            <button type="button" class="review-btn" data-scroll="195">Mid-Scroll</button>
+            <button type="button" class="review-btn" data-scroll="380">Session</button>
+            <button type="button" class="review-btn" data-scroll="max">Bottom</button>
+          </div>
+        </div>
+
+        <div class="review-controls">
+          <span class="review-group-label">Top Material</span>
+          <div class="review-group" role="group" aria-label="Progressive Blur Comparison">
+            <button type="button" class="review-btn is-active" data-blur="progressive">Progressive Blur</button>
+            <button type="button" class="review-btn" data-blur="none">No Blur</button>
+            <button type="button" class="review-btn" data-blur="split">Blur vs No Blur</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Live Geometry Readout (Desktop Inspection Only) -->
+    <div id="geometryReadout" class="geometry-readout tabular" aria-live="polite"></div>
+
+    <!-- =======================================================================
+         SINGLE INTERACTIVE DEVICE STAGE (Default 390×844 on Desktop, Edge-to-Edge on Mobile)
+         ======================================================================= -->
+    <div
+      id="singleStage"
+      class="single-stage mode-first-screen"
+      data-width="390"
+      style="--stage-w: 390px; --stage-h: 844px;"
+    >
+      <div class="aeruno-viewport" id="aerunoViewport">
+        <!-- Fixed Upper-Edge Multi-Layer Progressive Blur Field (pointer-events: none) -->
+        <div class="progressive-blur-field" id="progressiveBlurField" aria-hidden="true">
+          <div class="pblur-layer pblur-1"></div>
+          <div class="pblur-layer pblur-2"></div>
+          <div class="pblur-layer pblur-3"></div>
+          <div class="pblur-layer pblur-4"></div>
+          <div class="pblur-layer pblur-5"></div>
+          <div class="pblur-layer pblur-6"></div>
+          <div class="pblur-atmosphere"></div>
+        </div>
+
+        <!-- Natural Editorial Scroll Container -->
+        <div class="aeruno-scroller" id="aerunoScroller">
+          <main class="screen-content" id="screenContent">
+            <!-- =================================================================
+                 ZONE A — COMPACT EDITORIAL MASTHEAD (44–52px excluding safe area)
+                 ================================================================= -->
+            <header class="masthead" id="zoneA">
+              <div class="brand-lockup">
+                <span class="brand-name">AERUNO —</span>
+                <span class="brand-sub">Personal Fitness</span>
+              </div>
+              <div class="masthead-rule" aria-hidden="true"></div>
+              <button
+                id="manageBtn"
+                type="button"
+                class="manage-btn"
+                aria-label="Manage training plan"
+              >
+                <span>Manage</span>
+                <svg width="17" height="10" viewBox="0 0 17 10" fill="none" aria-hidden="true">
+                  <line x1="0" y1="2" x2="17" y2="2" stroke="#1F3B30" stroke-width="1.35" />
+                  <line x1="4" y1="8" x2="17" y2="8" stroke="#1F3B30" stroke-width="1.35" />
+                </svg>
+              </button>
+            </header>
+
+            <!-- =================================================================
+                 ZONE B + ZONE C — PROGRAMME IDENTITY, DEPTH B (4), DEPTH C & PROGRESS HERO
+                 ================================================================= -->
+            <section class="hero-composition" id="zoneB" aria-label="Programme identity and progress">
+              <!-- Localized Topographic Contours (Negative Space & Upper-Right Field) -->
+              <svg
+                class="hero-contours-svg"
+                viewBox="0 0 390 240"
+                preserveAspectRatio="xMidYMin slice"
+                fill="none"
+                aria-hidden="true"
+              >
+                <defs>
+                  <linearGradient id="heroContourFade" x1="22%" y1="100%" x2="96%" y2="4%">
+                    <stop offset="0%" stop-color="#1F3B30" stop-opacity="0" />
+                    <stop offset="34%" stop-color="#1F3B30" stop-opacity="0.20" />
+                    <stop offset="76%" stop-color="#1F3B30" stop-opacity="0.16" />
+                    <stop offset="100%" stop-color="#1F3B30" stop-opacity="0" />
+                  </linearGradient>
+                </defs>
+                <g stroke="url(#heroContourFade)" stroke-width="1.0">
+                  <path d="M98 198 C128 164, 170 174, 204 140 C238 106, 254 62, 298 42 C330 28, 360 36, 396 14" />
+                  <path d="M116 212 C146 176, 188 188, 224 154 C256 122, 272 78, 316 58 C346 44, 374 52, 400 30" />
+                  <path d="M136 224 C166 188, 206 200, 242 166 C274 134, 290 92, 332 72 C360 58, 384 66, 404 48" />
+                  <path d="M158 232 C188 198, 226 210, 262 176 C292 148, 308 108, 348 88 C372 76, 392 82, 408 66" />
+                  <path d="M82 184 C112 150, 154 160, 188 126 C222 92, 240 48, 282 28 C314 14, 346 22, 386 2" />
+                </g>
+              </svg>
+
+              <!-- Depth B: Monumental Solid Deep Forest Programme-Duration Numeral ('4')
+                   Dynamically adapts font scale for multi-digit programme lengths -->
+              <svg
+                class="depth-b-numeral-svg"
+                viewBox="0 0 252 320"
+                fill="none"
+                aria-hidden="true"
+              >
+                <g id="depthBNumeralGroup" transform="translate(158, 290) skewX(-8) scale(1.26, 1.0)">
+                  <text
+                    id="depthBDurationNumeral"
+                    x="0"
+                    y="0"
+                    text-anchor="middle"
+                    fill="#1F3B30"
+                    font-family="'Big Shoulders Display', sans-serif"
+                    font-weight="900"
+                    font-size="356"
+                  >4</text>
+                </g>
+              </svg>
+
+              <!-- Depth C: Organic Sage Programme Route + Ivory-Ringed Terracotta Waypoints
+                   Interacts strictly with the solid numeral '4' (Never crosses PLAN or metrics) -->
+              <svg
+                class="depth-c-route-svg"
+                viewBox="0 0 230 174"
+                fill="none"
+                aria-hidden="true"
+              >
+                <!-- Subtle muted casing for contrast across both Ivory and Deep Forest '4' -->
+                <path
+                  d="M28 134 C56 128, 74 96, 106 92 C138 88, 150 60, 176 52 C196 46, 206 34, 212 20"
+                  stroke="#646E65"
+                  stroke-width="3.6"
+                  stroke-linecap="round"
+                />
+                <!-- Organic Sage Core (Ref 04 & 07) -->
+                <path
+                  d="M28 134 C56 128, 74 96, 106 92 C138 88, 150 60, 176 52 C196 46, 206 34, 212 20"
+                  stroke="#DCE5D7"
+                  stroke-width="1.95"
+                  stroke-linecap="round"
+                />
+
+                <!-- Restrained Start Pin -->
+                <g transform="translate(28, 134)">
+                  <circle cx="0" cy="0" r="4.8" fill="#646E65" stroke="#F3EFE4" stroke-width="2" />
+                  <circle cx="0" cy="0" r="1.9" fill="#DCE5D7" />
+                </g>
+
+                <!-- Ivory-Ringed Terracotta Waypoints crossing the giant numeral '4' -->
+                <circle cx="106" cy="92" r="5.1" fill="#C97855" stroke="#F3EFE4" stroke-width="2.2" />
+                <circle cx="176" cy="52" r="5.1" fill="#C97855" stroke="#F3EFE4" stroke-width="2.2" />
+
+                <!-- Restrained Destination Terracotta Pin -->
+                <g transform="translate(212, 15)">
+                  <path
+                    d="M0 -12 C-4.4 -12, -7.8 -8.6, -7.8 -4.2 C-7.8 0.8, 0 7, 0 7 C0 7, 7.8 0.8, 7.8 -4.2 C7.8 -8.6, 4.4 -12, 0 -12 Z"
+                    fill="#C97855"
+                    stroke="#F3EFE4"
+                    stroke-width="1.4"
+                  />
+                  <circle cx="0" cy="-4.4" r="2.4" fill="#F3EFE4" />
+                </g>
+              </svg>
+
+              <!-- Zone B: Asymmetrical Editorial Identity Block -->
+              <div class="identity-block">
+                <div class="identity-kicker">
+                  <span class="terra-bar-v" aria-hidden="true"></span>
+                  <span id="programmeKicker" class="identity-kicker-text">THE ROUTINE · 4 WEEKS</span>
+                </div>
+                <h1 class="plan-title font-display">
+                  <span class="variant-c">PLAN</span>
+                </h1>
+                <p id="programmeTitle" class="programme-name font-serif-accent">
+                  Home Hybrid
+                </p>
+                <span class="terra-dash-h programme-dash" aria-hidden="true"></span>
+              </div>
+
+              <!-- Zone C: Warm-White Foreground Current-Week Progress Hero -->
+              <article class="progress-card" id="zoneC" aria-label="Current programme progress">
+                <!-- Row 1: Week Identity + Date Range + Signature Dot -->
+                <div class="progress-row-1">
+                  <span id="weekPositionLabel" class="progress-week-label tabular">WEEK 02 OF 04</span>
+                  <div class="progress-date-wrap">
+                    <span id="weekDateRange" class="progress-date-range tabular">NOV 16–22</span>
+                    <span class="signature-dot" aria-hidden="true"></span>
+                  </div>
+                </div>
+
+                <!-- Row 2: Three Equally Weighted Columns -->
+                <div class="progress-metrics">
+                  <div class="metric-col">
+                    <span id="metricSessionsDone" class="metric-value font-display tabular">8</span>
+                    <span class="metric-label">Sessions Done</span>
+                  </div>
+                  <div class="metric-col">
+                    <span id="metricWeekProgress" class="metric-value font-display tabular">3/5</span>
+                    <span class="metric-label">This Week</span>
+                  </div>
+                  <div class="metric-col">
+                    <span class="metric-value font-display tabular">
+                      <span id="metricProgrammePct" class="variant-c">40%</span>
+                    </span>
+                    <span class="metric-label">Programme</span>
+                  </div>
+                </div>
+
+                <!-- Row 3: Adaptable Segmented Week Pills (W1 ✓ · W2 · W3 · W4) -->
+                <div
+                  id="weekSegments"
+                  class="week-segments"
+                  aria-label="Programme week progression"
+                ></div>
+              </article>
+            </section>
+
+            <!-- =================================================================
+                 ZONE D — EXPRESSIVE VARIABLE-HEIGHT WEEKLY RHYTHM
+                 Proportional 18–44px active markers + 8px rest capsules + undulating route
+                 ================================================================= -->
+            <section class="rhythm-section" id="zoneD" aria-label="Weekly training rhythm">
+              <div class="rhythm-header">
+                <div class="rhythm-title-wrap">
+                  <span class="terra-bar-v" style="height: 11px;" aria-hidden="true"></span>
+                  <h2 id="rhythmHeading" class="rhythm-heading">WEEK 02 RHYTHM</h2>
+                </div>
+                <span id="rhythmDerivedMeta" class="rhythm-derived-meta tabular">
+                  5 SESSIONS · 2 REST
+                </span>
+              </div>
+
+              <div class="rhythm-canvas">
+                <!-- Dynamically computed organic undulating route thread linking all 7 day nodes -->
+                <svg
+                  id="rhythmRouteSvg"
+                  class="rhythm-route-svg"
+                  viewBox="0 0 700 64"
+                  preserveAspectRatio="none"
+                  fill="none"
+                  aria-hidden="true"
+                ></svg>
+
+                <!-- 7 Equal-Width Interactive Day Columns -->
+                <div
+                  id="rhythmGrid"
+                  class="rhythm-grid"
+                  role="tablist"
+                  aria-label="Select a day in Week 02"
+                ></div>
+              </div>
+            </section>
+
+            <!-- =================================================================
+                 ZONE E — GENEROUS DEEP FOREST SELECTED SESSION SURFACE
+                 ================================================================= -->
+            <section class="session-section" id="zoneE" aria-label="Selected training session">
+              <article id="sessionCard" class="session-card" aria-live="polite">
+                <!-- Localized Topographic Contours on Right Interior Only -->
+                <svg
+                  class="session-contours-svg"
+                  viewBox="0 0 220 280"
+                  preserveAspectRatio="xMaxYMid slice"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <g stroke="#DCE5D7" stroke-width="1">
+                    <path d="M84 -12 C108 32, 70 72, 108 116 C146 160, 114 212, 172 254 C194 270, 210 282, 228 292" stroke-opacity="0.14" />
+                    <path d="M112 -12 C136 36, 98 78, 136 122 C174 166, 142 218, 198 260" stroke-opacity="0.19" />
+                    <path d="M140 -12 C164 40, 126 84, 164 128 C198 168, 172 216, 224 256" stroke-opacity="0.22" />
+                    <path d="M170 -10 C192 44, 156 90, 192 134 C218 166, 200 208, 236 244" stroke-opacity="0.15" />
+                    <path d="M58 -10 C82 28, 48 66, 82 108 C118 152, 86 202, 144 246" stroke-opacity="0.09" />
+                  </g>
+                </svg>
+
+                <div class="session-inner">
+                  <!-- Row 1: Vertical Terracotta Bar + Date/Programme Day + Status -->
+                  <div class="session-row-1">
+                    <div class="session-date-kicker">
+                      <span class="terra-bar-v" aria-hidden="true"></span>
+                      <span id="sessionDateMeta" class="session-date-text tabular">
+                        FRIDAY 20 NOV · WEEK 02 · DAY 5
+                      </span>
+                    </div>
+                    <span id="sessionStatusPill" class="session-status-pill">TODAY</span>
+                  </div>
+
+                  <!-- Row 2: Large Selected Workout Title (Selective Variant C) -->
+                  <h2 id="sessionTitle" class="session-title font-display">
+                    <span class="variant-c">LOWER BODY</span>
+                  </h2>
+
+                  <!-- Row 3: Category + Duration + Exercises / Run Target -->
+                  <div class="session-row-3">
+                    <span id="sessionCategoryPill" class="category-pill">STRENGTH</span>
+                    <span class="session-facts-rule" aria-hidden="true"></span>
+                    <span id="sessionFacts" class="session-facts-text tabular">
+                      35 MIN · 6 EXERCISES
+                    </span>
+                  </div>
+
+                  <!-- Row 4: Concise Session Description -->
+                  <p id="sessionSummary" class="session-summary">
+                    Goblet squat, Romanian deadlift, split squat &amp; glute bridge — focused lower-body strength.
+                  </p>
+
+                  <!-- Row 5: Full-Width Warm-Ivory Pill CTA + Circular Terracotta Arrow -->
+                  <button id="sessionCtaBtn" type="button" class="session-cta-btn">
+                    <span id="sessionCtaLabel" class="session-cta-label">START WORKOUT</span>
+                    <span class="session-cta-arrow" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <path
+                          d="M3.5 9H14.5M14.5 9L9.8 4.3M14.5 9L9.8 13.7"
+                          stroke="#FFFEFA"
+                          stroke-width="1.8"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+              </article>
+            </section>
+
+            <!-- =================================================================
+                 ZONE F — SUPPORTING PLAN SEQUENCE ("COMING UP")
+                 Derived strictly from remaining Week 02 schedule entries (no filler).
+                 ================================================================= -->
+            <section class="upcoming-section" id="zoneF" aria-label="Coming up in Week 02">
+              <div class="upcoming-header">
+                <div class="upcoming-title-wrap">
+                  <span class="terra-bar-v" style="height: 11px;" aria-hidden="true"></span>
+                  <h2 class="upcoming-heading">COMING UP</h2>
+                </div>
+                <span class="upcoming-editorial-note font-serif-accent">One session at a time.</span>
+              </div>
+
+              <div id="upcomingList" class="upcoming-list"></div>
+            </section>
+          </main>
+        </div>
+
+        <!-- Prototype Scope Toast (No alert()) -->
+        <div id="scopeToast" class="scope-toast" role="status" aria-live="polite">
+          <span id="scopeToastText">Visual composition prototype only.</span>
+          <span class="scope-toast-dot" aria-hidden="true"></span>
+        </div>
+
+        <!-- =====================================================================
+             FLOATING LIQUID GLASS NAVIGATION (CANONICAL 5 ITEMS)
+             Today · Plan (Active) · Train · Progress · Me
+             ===================================================================== -->
+        <div class="floating-nav-dock" id="zoneNav">
+          <nav class="liquid-glass-nav" aria-label="Primary Navigation">
+            <button type="button" class="nav-tab" data-nav="Today">
+              <svg width="19" height="19" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle cx="10" cy="10" r="6.5" stroke="currentColor" stroke-width="1.5" />
+                <circle cx="10" cy="10" r="2" fill="currentColor" />
+              </svg>
+              <span class="nav-tab-label">Today</span>
+            </button>
+
+            <button type="button" class="nav-tab is-active" data-nav="Plan" aria-current="page">
+              <svg width="19" height="19" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <rect x="3.2" y="4.5" width="13.6" height="12" rx="2.8" stroke="currentColor" stroke-width="1.5" />
+                <line x1="6.8" y1="2.8" x2="6.8" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                <line x1="13.2" y1="2.8" x2="13.2" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                <line x1="3.6" y1="8.5" x2="16.4" y2="8.5" stroke="currentColor" stroke-width="1.3" />
+                <circle cx="10" cy="12.5" r="1.4" fill="#C97855" />
+              </svg>
+              <span class="nav-tab-label">Plan</span>
+            </button>
+
+            <button type="button" class="nav-tab" data-nav="Train">
+              <svg width="19" height="19" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M5.5 7.5V12.5M14.5 7.5V12.5M3.2 8.8V11.2M16.8 8.8V11.2M5.5 10H14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+              <span class="nav-tab-label">Train</span>
+            </button>
+
+            <button type="button" class="nav-tab" data-nav="Progress">
+              <svg width="19" height="19" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M4.5 15.5V11M10 15.5V6.5M15.5 15.5V4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+              <span class="nav-tab-label">Progress</span>
+            </button>
+
+            <button type="button" class="nav-tab" data-nav="Me">
+              <svg width="19" height="19" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle cx="10" cy="6.8" r="2.8" stroke="currentColor" stroke-width="1.5" />
+                <path d="M4.5 16C5.4 13.1 7.4 11.8 10 11.8C12.6 11.8 14.6 13.1 15.5 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+              <span class="nav-tab-label">Me</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- =======================================================================
+         MULTI-FRAME COMPARISON STAGE (All 3 Widths OR Blur vs No Blur Split)
+         ======================================================================= -->
+    <div id="multiStageGrid" class="multi-stage-grid" aria-label="Side-by-side comparison previews"></div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* -----------------------------------------------------------------------
+         0. EMBED & URL PARAM SUPPORT (Used for All-3 and Blur-Split iframes)
+         ----------------------------------------------------------------------- */
+      const isEmbedded = window.self !== window.top;
+      if (isEmbedded) {
+        document.body.classList.add('is-embed');
+      }
+
+      /* -----------------------------------------------------------------------
+         1. PRESERVED V02 SAMPLE SCHEDULE & PROGRAMME MODEL
+            Illustrative schedule — Nov 16–22, 2026 (Fri 20 Nov 2026 = Today).
+            No invented database fields or fabricated chapter names.
+         ----------------------------------------------------------------------- */
+      const PROGRAMME = {
+        kickerPrefix: 'THE ROUTINE',
+        name: 'Home Hybrid',
+        totalWeeks: 4,
+        currentWeek: 2,
+        weekDateRange: 'NOV 16–22',
+        sessionsPerWeek: 5,
+        priorWeeksCompletedSessions: 5, // Week 01: 5/5 completed
+      };
+
+      const WEEK_SCHEDULE = [
+        {
+          id: 'mon',
+          dow: 'Mon',
+          dateNum: '16',
+          fullDate: 'MONDAY 16 NOV',
+          dayIndex: 1,
+          status: 'done', // done | today | upcoming | rest
+          isToday: false,
+          isRest: false,
+          shortCat: 'STR',
+          category: 'STRENGTH',
+          title: 'UPPER BODY',
+          durationMin: 40,
+          runKm: 0,
+          facts: '40 MIN · 6 EXERCISES',
+          summary: 'Incline push-up, single-arm row, overhead press & scapular control — all sets logged.',
+          ctaLabel: 'REVIEW WORKOUT',
+        },
+        {
+          id: 'tue',
+          dow: 'Tue',
+          dateNum: '17',
+          fullDate: 'TUESDAY 17 NOV',
+          dayIndex: 2,
+          status: 'done',
+          isToday: false,
+          isRest: false,
+          shortCat: 'RUN',
+          category: 'RUN',
+          title: 'EASY RUN',
+          durationMin: 30,
+          runKm: 5.0,
+          facts: '30 MIN · 5.0 KM · ZONE 2',
+          summary: 'Relaxed conversational aerobic miles focused on steady cadence and low effort.',
+          ctaLabel: 'REVIEW RUN',
+        },
+        {
+          id: 'wed',
+          dow: 'Wed',
+          dateNum: '18',
+          fullDate: 'WEDNESDAY 18 NOV',
+          dayIndex: 3,
+          status: 'rest',
+          isToday: false,
+          isRest: true,
+          shortCat: 'REST',
+          category: 'RECOVERY',
+          title: 'REST DAY',
+          durationMin: 0,
+          runKm: 0,
+          facts: 'ACTIVE RECOVERY · MOBILITY',
+          summary: 'Planned mid-week recovery window. Light walking and hip mobility completed.',
+          ctaLabel: 'VIEW RECOVERY',
+        },
+        {
+          id: 'thu',
+          dow: 'Thu',
+          dateNum: '19',
+          fullDate: 'THURSDAY 19 NOV',
+          dayIndex: 4,
+          status: 'done',
+          isToday: false,
+          isRest: false,
+          shortCat: 'STR',
+          category: 'STRENGTH',
+          title: 'CORE & MOBILITY',
+          durationMin: 25,
+          runKm: 0,
+          facts: '25 MIN · 5 EXERCISES',
+          summary: 'Dead bug, side plank, thoracic rotation & ankle stability — completed cleanly.',
+          ctaLabel: 'REVIEW WORKOUT',
+        },
+        {
+          id: 'fri',
+          dow: 'Fri',
+          dateNum: '20',
+          fullDate: 'FRIDAY 20 NOV',
+          dayIndex: 5,
+          status: 'today',
+          isToday: true,
+          isRest: false,
+          shortCat: 'STR',
+          category: 'STRENGTH',
+          title: 'LOWER BODY',
+          durationMin: 35,
+          runKm: 0,
+          facts: '35 MIN · 6 EXERCISES',
+          summary: 'Goblet squat, Romanian deadlift, split squat & glute bridge — focused lower-body strength.',
+          ctaLabel: 'START WORKOUT',
+        },
+        {
+          id: 'sat',
+          dow: 'Sat',
+          dateNum: '21',
+          fullDate: 'SATURDAY 21 NOV',
+          dayIndex: 6,
+          status: 'upcoming',
+          isToday: false,
+          isRest: false,
+          shortCat: 'RUN',
+          category: 'RUN',
+          title: 'TEMPO RUN',
+          durationMin: 32,
+          runKm: 5.5,
+          facts: '32 MIN · 5.5 KM · ZONE 2–3',
+          summary: '1.5 km warm-up, 3 km sustained tempo rhythm, and 1 km easy cool-down.',
+          ctaLabel: 'PREVIEW RUN',
+        },
+        {
+          id: 'sun',
+          dow: 'Sun',
+          dateNum: '22',
+          fullDate: 'SUNDAY 22 NOV',
+          dayIndex: 7,
+          status: 'rest',
+          isToday: false,
+          isRest: true,
+          shortCat: 'REST',
+          category: 'RECOVERY',
+          title: 'REST DAY',
+          durationMin: 0,
+          runKm: 0,
+          facts: 'FULL REST · WEEK RESET',
+          summary: 'Scheduled full rest before next week begins. Focus on sleep and hydration.',
+          ctaLabel: 'VIEW RECOVERY',
+        },
+      ];
+
+      const VIEWPORT_PRESETS = {
+        360: { w: 360, h: 800, label: '360×800 · Compact' },
+        390: { w: 390, h: 844, label: '390×844 · Primary' },
+        412: { w: 412, h: 915, label: '412×915 · Large' },
+      };
+
+      let selectedDayId = 'fri';
+      let currentVp = '390';
+      let currentMode = 'first-screen';
+      let currentBlurMode = 'progressive'; // progressive | none | split
+      let currentScrollPreset = '0';
+      let toastTimeout = null;
+
+      function pad2(n) {
+        return String(n).padStart(2, '0');
+      }
+
+      /* -----------------------------------------------------------------------
+         2. SCHEDULE-DERIVED CALCULATIONS
+         ----------------------------------------------------------------------- */
+      function computeDerivedStats() {
+        const trainingDays = WEEK_SCHEDULE.filter((d) => !d.isRest);
+        const doneThisWeek = trainingDays.filter((d) => d.status === 'done').length;
+        const restCount = WEEK_SCHEDULE.filter((d) => d.isRest).length;
+        const totalProgrammeSessions = PROGRAMME.totalWeeks * PROGRAMME.sessionsPerWeek;
+        const totalSessionsDone = PROGRAMME.priorWeeksCompletedSessions + doneThisWeek;
+        const programmePct = Math.round((totalSessionsDone / totalProgrammeSessions) * 100);
+
+        return {
+          totalWeekSessions: trainingDays.length,
+          doneThisWeek,
+          restCount,
+          totalSessionsDone,
+          programmePct,
+        };
+      }
+
+      /* -----------------------------------------------------------------------
+         3. RENDER ZONE B (IDENTITY + DEPTH B '4') & ZONE C (PROGRESS HERO)
+         ----------------------------------------------------------------------- */
+      function renderHeroAndProgress(stats) {
+        document.getElementById('programmeKicker').textContent =
+          `${PROGRAMME.kickerPrefix} · ${PROGRAMME.totalWeeks} WEEKS`;
+        document.getElementById('programmeTitle').textContent = PROGRAMME.name;
+
+        // Depth B: Total Programme Duration ('4' for 4-week plan) with multi-digit responsive scaling
+        const durationStr = String(PROGRAMME.totalWeeks);
+        const depthBText = document.getElementById('depthBDurationNumeral');
+        const depthBGroup = document.getElementById('depthBNumeralGroup');
+        depthBText.textContent = durationStr;
+        if (durationStr.length >= 2) {
+          depthBText.setAttribute('font-size', '275');
+          depthBGroup.setAttribute('transform', 'translate(138, 276) skewX(-6) scale(0.96, 1.0)');
+        } else {
+          depthBText.setAttribute('font-size', '356');
+          depthBGroup.setAttribute('transform', 'translate(158, 290) skewX(-8) scale(1.26, 1.0)');
+        }
+
+        document.getElementById('weekPositionLabel').textContent =
+          `WEEK ${pad2(PROGRAMME.currentWeek)} OF ${pad2(PROGRAMME.totalWeeks)}`;
+        document.getElementById('weekDateRange').textContent = PROGRAMME.weekDateRange;
+
+        document.getElementById('metricSessionsDone').textContent = String(stats.totalSessionsDone);
+        document.getElementById('metricWeekProgress').textContent =
+          `${stats.doneThisWeek}/${stats.totalWeekSessions}`;
+        document.getElementById('metricProgrammePct').textContent = `${stats.programmePct}%`;
+
+        document.getElementById('rhythmHeading').textContent =
+          `WEEK ${pad2(PROGRAMME.currentWeek)} RHYTHM`;
+        document.getElementById('rhythmDerivedMeta').textContent =
+          `${stats.totalWeekSessions} SESSIONS · ${stats.restCount} REST`;
+
+        // Adaptable Multi-Week Segmented Pills
+        const segContainer = document.getElementById('weekSegments');
+        const cols = Math.min(PROGRAMME.totalWeeks, 6);
+        segContainer.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
+        segContainer.innerHTML = '';
+
+        for (let w = 1; w <= PROGRAMME.totalWeeks; w++) {
+          const pill = document.createElement('div');
+          if (w < PROGRAMME.currentWeek) {
+            pill.className = 'week-pill done tabular';
+            pill.innerHTML = `
+              <span>W${w}</span>
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M2.2 6.3L4.8 8.9L9.8 3.6" stroke="#FFFEFA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            `;
+          } else if (w === PROGRAMME.currentWeek) {
+            pill.className = 'week-pill current tabular';
+            pill.innerHTML = `<span>W${w}</span><span class="week-pill-dot" aria-hidden="true"></span>`;
+          } else {
+            pill.className = 'week-pill upcoming tabular';
+            pill.innerHTML = `<span>W${w}</span>`;
+          }
+          segContainer.appendChild(pill);
+        }
+      }
+
+      /* -----------------------------------------------------------------------
+         4. RENDER ZONE D (EXPRESSIVE VARIABLE-HEIGHT WEEKLY RHYTHM + UNDULATING ROUTE)
+            Active heights scale proportionally across 18–44px by planned duration.
+            Rest days sit at 8px horizontal sage capsules near the lower baseline.
+            Organic cubic-Bezier route connects exact node centers across all 7 days.
+         ----------------------------------------------------------------------- */
+      function buildSmoothSegmentPath(p0, p1) {
+        const midX = (p0.x + p1.x) / 2;
+        return `M ${p0.x} ${p0.y} C ${midX} ${p0.y}, ${midX} ${p1.y}, ${p1.x} ${p1.y}`;
+      }
+
+      function renderWeeklyRhythm() {
+        const grid = document.getElementById('rhythmGrid');
+        const svg = document.getElementById('rhythmRouteSvg');
+        grid.innerHTML = '';
+
+        const activeDurations = WEEK_SCHEDULE.filter((d) => !d.isRest).map((d) => d.durationMin);
+        const minDur = Math.min(...activeDurations);
+        const maxDur = Math.max(...activeDurations);
+        const stageHeight = 64;
+        const barBottomOffset = 4;
+        const nodeGapAboveBar = 9;
+
+        const todayIdx = WEEK_SCHEDULE.findIndex((d) => d.isToday);
+        const points = [];
+
+        WEEK_SCHEDULE.forEach((day, idx) => {
+          const isSelected = day.id === selectedDayId;
+
+          // Proportional height across 18–44px for active sessions; 8px for rest capsules
+          let heightPx = 8;
+          if (!day.isRest) {
+            const norm = maxDur === minDur ? 0.65 : (day.durationMin - minDur) / (maxDur - minDur);
+            heightPx = Math.round(20 + norm * 24); // 20px (25 min) -> 44px (40 min)
+          }
+
+          // Exact vertical center of this day's connected route node inside the 64px stage
+          const nodeY = stageHeight - (barBottomOffset + heightPx + nodeGapAboveBar);
+          const nodeX = idx * 100 + 50; // Exact column center in 0..700 viewBox
+          points.push({ x: nodeX, y: nodeY, status: day.status, isToday: day.isToday });
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.role = 'tab';
+          btn.setAttribute('aria-selected', String(isSelected));
+          btn.setAttribute(
+            'aria-label',
+            `${day.fullDate}, ${day.title}, ${day.shortCat}, ${day.isToday ? 'Today' : day.status}`
+          );
+
+          const classes = ['day-col'];
+          if (isSelected) classes.push('is-selected');
+          if (day.isToday) classes.push('is-today');
+          if (day.isRest) classes.push('is-rest');
+          btn.className = classes.join(' ');
+
+          let barInner = '';
+          if (day.status === 'done') {
+            barInner = `
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M2.4 6.2L4.9 8.7L9.6 3.5" stroke="#F3EFE4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            `;
+          } else if (day.status === 'today') {
+            barInner = `<span style="width: 10px; height: 2.2px; border-radius: 99px; background: #FFFEFA;"></span>`;
+          } else if (day.status === 'upcoming') {
+            barInner = `<span style="width: 4px; height: 4px; border-radius: 50%; background: #1F3B30; opacity: 0.5;"></span>`;
+          }
+
+          btn.innerHTML = `
+            <div class="day-elevation-stage">
+              <span class="day-node ${day.status}" style="top: ${nodeY}px;" aria-hidden="true"></span>
+              <div class="day-bar ${day.status}" style="height: ${heightPx}px;">
+                ${barInner}
+              </div>
+            </div>
+            <span class="day-dow">${day.dow}</span>
+            <span class="day-num font-display tabular">${day.dateNum}</span>
+            <span class="day-cat">${day.shortCat}</span>
+            <span class="day-state-underline" aria-hidden="true"></span>
+          `;
+
+          btn.addEventListener('click', () => {
+            selectedDayId = day.id;
+            renderWeeklyRhythm();
+            renderSelectedSession(true);
+            renderUpcomingList();
+            updateGeometryReadout();
+          });
+
+          grid.appendChild(btn);
+        });
+
+        // Build organic undulating connecting route segments:
+        // 0..todayIdx-1 = solid Deep Forest | todayIdx-1..todayIdx = Terracotta arrival | todayIdx..end = muted dashed
+        let svgMarkup = '';
+        for (let i = 0; i < points.length - 1; i++) {
+          const d = buildSmoothSegmentPath(points[i], points[i + 1]);
+          if (i < todayIdx - 1) {
+            svgMarkup += `<path d="${d}" stroke="#1F3B30" stroke-opacity="0.52" stroke-width="1.75" stroke-linecap="round" vector-effect="non-scaling-stroke" />`;
+          } else if (i === todayIdx - 1) {
+            svgMarkup += `<path d="${d}" stroke="#C97855" stroke-opacity="0.88" stroke-width="2.0" stroke-linecap="round" vector-effect="non-scaling-stroke" />`;
+          } else {
+            svgMarkup += `<path d="${d}" stroke="#1F3B30" stroke-opacity="0.26" stroke-width="1.5" stroke-dasharray="3.5 4.5" stroke-linecap="round" vector-effect="non-scaling-stroke" />`;
+          }
+        }
+        svg.innerHTML = svgMarkup;
+      }
+
+      /* -----------------------------------------------------------------------
+         5. RENDER ZONE E (SELECTED SESSION) & ZONE F (COMING UP SEQUENCE)
+         ----------------------------------------------------------------------- */
+      function renderSelectedSession(animate) {
+        const day = WEEK_SCHEDULE.find((d) => d.id === selectedDayId) || WEEK_SCHEDULE[4];
+        const card = document.getElementById('sessionCard');
+
+        if (animate) {
+          card.classList.remove('animate-swap');
+          void card.offsetWidth;
+          card.classList.add('animate-swap');
+        }
+
+        document.getElementById('sessionDateMeta').textContent =
+          `${day.fullDate} · WEEK ${pad2(PROGRAMME.currentWeek)} · DAY ${day.dayIndex}`;
+
+        const statusMap = {
+          done: { text: 'COMPLETED', cls: 'session-status-pill is-done' },
+          today: { text: 'TODAY', cls: 'session-status-pill' },
+          upcoming: { text: 'UPCOMING', cls: 'session-status-pill' },
+          rest: { text: 'REST DAY', cls: 'session-status-pill is-rest' },
+        };
+        const st = statusMap[day.status];
+        const statusEl = document.getElementById('sessionStatusPill');
+        statusEl.textContent = st.text;
+        statusEl.className = st.cls;
+
+        document.getElementById('sessionTitle').innerHTML =
+          `<span class="variant-c">${day.title}</span>`;
+
+        const catEl = document.getElementById('sessionCategoryPill');
+        catEl.textContent = day.category;
+        catEl.className = day.category === 'RUN' ? 'category-pill is-run' : 'category-pill';
+
+        document.getElementById('sessionFacts').textContent = day.facts;
+        document.getElementById('sessionSummary').textContent = day.summary;
+        document.getElementById('sessionCtaLabel').textContent = day.ctaLabel;
+      }
+
+      function renderUpcomingList() {
+        const list = document.getElementById('upcomingList');
+        const todayIdx = WEEK_SCHEDULE.findIndex((d) => d.isToday);
+        const upcomingDays = WEEK_SCHEDULE.slice(todayIdx + 1);
+
+        list.innerHTML = '';
+        upcomingDays.forEach((day) => {
+          const isSelected = day.id === selectedDayId;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = isSelected ? 'upcoming-row is-active-row' : 'upcoming-row';
+          btn.setAttribute('aria-label', `Select ${day.fullDate}, ${day.title}`);
+
+          btn.innerHTML = `
+            <div class="upcoming-left">
+              <div class="upcoming-date-col">
+                <span class="upcoming-dow">${day.dow}</span>
+                <span class="upcoming-num font-display tabular">${day.dateNum}</span>
+              </div>
+              <div class="upcoming-info">
+                <span class="upcoming-name">${day.title}</span>
+                <span class="upcoming-facts tabular">${day.facts}</span>
+              </div>
+            </div>
+            <span class="upcoming-tag ${day.isRest ? 'is-rest' : ''}">${day.shortCat}</span>
+          `;
+
+          btn.addEventListener('click', () => {
+            selectedDayId = day.id;
+            renderWeeklyRhythm();
+            renderSelectedSession(true);
+            renderUpcomingList();
+            updateGeometryReadout();
+          });
+
+          list.appendChild(btn);
+        });
+      }
+
+      /* -----------------------------------------------------------------------
+         6. SCROLL-DRIVEN PROGRESSIVE BLUR ACTIVATION
+            At scroll=0 the masthead is razor-sharp (blur opacity = 0).
+            As content scrolls upward, progressive blur ramps seamlessly 0 -> 1.
+         ----------------------------------------------------------------------- */
+      function getActiveScrollTop() {
+        const scroller = document.getElementById('aerunoScroller');
+        if (scroller && scroller.scrollHeight > scroller.clientHeight + 2) {
+          return scroller.scrollTop;
+        }
+        return window.scrollY || document.documentElement.scrollTop || 0;
+      }
+
+      function syncScrollBlur() {
+        const y = getActiveScrollTop();
+        const progress = Math.max(0, Math.min(1, y / 34));
+        document.documentElement.style.setProperty('--blur-progress', progress.toFixed(3));
+      }
+
+      function setScrollPosition(preset) {
+        const scroller = document.getElementById('aerunoScroller');
+        if (!scroller) return;
+
+        // Scroll presets work best in First-Screen (scrollable phone frame) mode
+        if (currentMode === 'full-length' && preset !== '0') {
+          currentMode = 'first-screen';
+          document.querySelectorAll('[data-mode]').forEach((b) => {
+            b.classList.toggle('is-active', b.getAttribute('data-mode') === 'first-screen');
+          });
+          const stage = document.getElementById('singleStage');
+          stage.classList.remove('mode-full-length');
+          stage.classList.add('mode-first-screen');
+        }
+
+        const maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+        const target = preset === 'max' ? maxScroll : Math.min(Number(preset), maxScroll);
+        scroller.scrollTo({ top: target, behavior: 'smooth' });
+        setTimeout(() => {
+          syncScrollBlur();
+          updateGeometryReadout();
+        }, 280);
+      }
+
+      /* -----------------------------------------------------------------------
+         7. PROTOTYPE SCOPE NOTICE (No alert())
+         ----------------------------------------------------------------------- */
+      function showScopeNotice(message) {
+        const toast = document.getElementById('scopeToast');
+        document.getElementById('scopeToastText').textContent = message;
+        toast.classList.add('is-visible');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+          toast.classList.remove('is-visible');
+        }, 2200);
+      }
+
+      /* -----------------------------------------------------------------------
+         8. DESKTOP GEOMETRY INSPECTOR & MULTI-FRAME PREVIEW HARNESS
+         ----------------------------------------------------------------------- */
+      function updateGeometryReadout() {
+        if (isEmbedded || !document.body.classList.contains('show-audit')) return;
+
+        const viewportEl = document.getElementById('aerunoViewport');
+        const scrollerEl = document.getElementById('aerunoScroller');
+        const contentEl = document.getElementById('screenContent');
+        const zoneA = document.getElementById('zoneA');
+        const zoneB = document.getElementById('zoneB');
+        const zoneC = document.getElementById('zoneC');
+        const zoneD = document.getElementById('zoneD');
+        const zoneE = document.getElementById('zoneE');
+        const zoneF = document.getElementById('zoneF');
+        const zoneNav = document.getElementById('zoneNav');
+        const readout = document.getElementById('geometryReadout');
+
+        if (!viewportEl || !zoneA || !zoneC || !zoneD || !zoneE || !zoneNav) return;
+
+        const contentTop = contentEl.getBoundingClientRect().top;
+        const vpRect = viewportEl.getBoundingClientRect();
+
+        const box = (el) => {
+          const r = el.getBoundingClientRect();
+          return {
+            y: Math.round(r.top - contentTop),
+            h: Math.round(r.height),
+            bottom: Math.round(r.bottom - contentTop),
+          };
+        };
+
+        const a = box(zoneA);
+        const b = box(zoneB);
+        const c = box(zoneC);
+        const d = box(zoneD);
+        const e = box(zoneE);
+        const f = box(zoneF);
+        const navRect = zoneNav.getBoundingClientRect();
+        const navY = Math.round(navRect.top - vpRect.top);
+        const navH = Math.round(navRect.height);
+
+        const finalBottom = f.bottom;
+        const totalDocH = Math.round(contentEl.scrollHeight);
+        const reservedBottom = totalDocH - finalBottom;
+        const navOccupancy = navH + parseInt(getComputedStyle(viewportEl).getPropertyValue('--nav-bottom'), 10);
+        const finalClearance = reservedBottom - navOccupancy;
+        const hOverflow = scrollerEl.scrollWidth > scrollerEl.clientWidth;
+
+        readout.innerHTML = `
+          <span class="audit-chip">Masthead A: <strong>y=${a.y} h=${a.h}</strong></span>
+          <span class="audit-chip">Hero B: <strong>y=${b.y} h=${b.h}</strong></span>
+          <span class="audit-chip">Progress C: <strong>y=${c.y} h=${c.h}</strong></span>
+          <span class="audit-chip">Rhythm D: <strong>y=${d.y} h=${d.h}</strong></span>
+          <span class="audit-chip">Session E: <strong>y=${e.y} h=${e.h}</strong></span>
+          <span class="audit-chip">Nav: <strong>y=${navY} h=${navH}</strong></span>
+          <span class="audit-chip">End Clearance: <strong class="audit-ok">${finalClearance}px ✓</strong></span>
+          <span class="audit-chip">H-Overflow: <strong class="audit-ok">${hOverflow ? 'YES ⚠' : '0px ✓'}</strong></span>
+        `;
+      }
+
+      function buildComparisonFrames(mode) {
+        const grid = document.getElementById('multiStageGrid');
+        const htmlSnapshot = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+        grid.innerHTML = '';
+
+        const specs = mode === 'split'
+          ? [
+              { w: 390, h: 844, label: '390×844 · Progressive Blur (Mid-Scroll)', blur: 'progressive', scroll: 195 },
+              { w: 390, h: 844, label: '390×844 · No Blur (Mid-Scroll)', blur: 'none', scroll: 195 },
+            ]
+          : [360, 390, 412].map((w) => ({
+              w,
+              h: currentMode === 'first-screen' ? VIEWPORT_PRESETS[w].h : 1120,
+              label: VIEWPORT_PRESETS[w].label,
+              blur: currentBlurMode === 'none' ? 'none' : 'progressive',
+              scroll: currentMode === 'first-screen' ? (currentScrollPreset === 'max' ? 420 : Number(currentScrollPreset)) : 0,
+            }));
+
+        specs.forEach((spec) => {
+          const col = document.createElement('div');
+          col.className = 'multi-col';
+
+          const label = document.createElement('div');
+          label.className = 'multi-col-label';
+          label.textContent = spec.label;
+
+          const iframe = document.createElement('iframe');
+          iframe.className = 'multi-frame';
+          iframe.title = `AERUNO G01 V03 preview — ${spec.label}`;
+          iframe.width = String(spec.w);
+          iframe.height = String(spec.h);
+          iframe.srcdoc = htmlSnapshot;
+
+          iframe.addEventListener('load', () => {
+            try {
+              const doc = iframe.contentDocument;
+              if (!doc) return;
+              if (spec.blur === 'none') {
+                doc.body.classList.add('is-no-blur');
+              }
+              if (spec.scroll > 0) {
+                const scroller = doc.getElementById('aerunoScroller');
+                if (scroller) {
+                  scroller.scrollTop = spec.scroll;
+                  doc.documentElement.style.setProperty('--blur-progress', '1');
+                }
+              }
+            } catch (_) {
+              // Ignore sandbox restrictions if any
+            }
+          });
+
+          col.appendChild(label);
+          col.appendChild(iframe);
+          grid.appendChild(col);
+        });
+      }
+
+      function bindControls() {
+        const scroller = document.getElementById('aerunoScroller');
+        if (scroller) {
+          scroller.addEventListener('scroll', syncScrollBlur, { passive: true });
+        }
+        window.addEventListener('scroll', syncScrollBlur, { passive: true });
+
+        document.getElementById('manageBtn').addEventListener('click', () => {
+          showScopeNotice('Manage entry point — Manage sheet is out of scope for G01 V03.');
+        });
+
+        document.getElementById('sessionCtaBtn').addEventListener('click', () => {
+          const day = WEEK_SCHEDULE.find((d) => d.id === selectedDayId);
+          showScopeNotice(`${day.title} — visual composition prototype only.`);
+        });
+
+        document.querySelectorAll('.nav-tab').forEach((tab) => {
+          tab.addEventListener('click', () => {
+            const label = tab.getAttribute('data-nav');
+            if (label !== 'Plan') {
+              showScopeNotice(`${label} tab — G01 V03 covers the Main Plan screen only.`);
+            }
+          });
+        });
+
+        if (isEmbedded) return;
+
+        const stage = document.getElementById('singleStage');
+
+        // Viewport width buttons
+        document.querySelectorAll('[data-vp]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const vp = btn.getAttribute('data-vp');
+            currentVp = vp;
+
+            document.querySelectorAll('[data-vp]').forEach((b) => b.classList.remove('is-active'));
+            btn.classList.add('is-active');
+
+            if (vp === 'all') {
+              document.body.classList.add('view-multi');
+              buildComparisonFrames('all');
+            } else {
+              const preset = VIEWPORT_PRESETS[vp];
+              if (currentBlurMode === 'split') {
+                currentBlurMode = 'progressive';
+                document.querySelectorAll('[data-blur]').forEach((b) => {
+                  b.classList.toggle('is-active', b.getAttribute('data-blur') === 'progressive');
+                });
+              }
+              document.body.classList.remove('view-multi');
+              stage.style.setProperty('--stage-w', `${preset.w}px`);
+              stage.style.setProperty('--stage-h', `${preset.h}px`);
+              stage.setAttribute('data-width', String(preset.w));
+              requestAnimationFrame(() => {
+                syncScrollBlur();
+                updateGeometryReadout();
+              });
+            }
+          });
+        });
+
+        // First Screen / Full Length mode buttons
+        document.querySelectorAll('[data-mode]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            currentMode = btn.getAttribute('data-mode');
+
+            document.querySelectorAll('[data-mode]').forEach((b) => b.classList.remove('is-active'));
+            btn.classList.add('is-active');
+
+            stage.classList.remove('mode-first-screen', 'mode-full-length');
+            stage.classList.add(`mode-${currentMode}`);
+
+            if (document.body.classList.contains('view-multi')) {
+              buildComparisonFrames(currentBlurMode === 'split' ? 'split' : 'all');
+            } else {
+              requestAnimationFrame(() => {
+                syncScrollBlur();
+                updateGeometryReadout();
+              });
+            }
+          });
+        });
+
+        // Scroll position preset buttons
+        document.querySelectorAll('[data-scroll]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            currentScrollPreset = btn.getAttribute('data-scroll');
+            document.querySelectorAll('[data-scroll]').forEach((b) => b.classList.remove('is-active'));
+            btn.classList.add('is-active');
+
+            if (document.body.classList.contains('view-multi')) {
+              buildComparisonFrames(currentBlurMode === 'split' ? 'split' : 'all');
+            } else {
+              setScrollPosition(currentScrollPreset);
+            }
+          });
+        });
+
+        // Progressive Blur / No Blur / Split Comparison buttons
+        document.querySelectorAll('[data-blur]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            currentBlurMode = btn.getAttribute('data-blur');
+            document.querySelectorAll('[data-blur]').forEach((b) => b.classList.remove('is-active'));
+            btn.classList.add('is-active');
+
+            if (currentBlurMode === 'split') {
+              document.body.classList.add('view-multi');
+              buildComparisonFrames('split');
+            } else {
+              document.body.classList.toggle('is-no-blur', currentBlurMode === 'none');
+              if (currentVp !== 'all') {
+                document.body.classList.remove('view-multi');
+              } else {
+                buildComparisonFrames('all');
+              }
+            }
+          });
+        });
+
+        // Geometry Audit Toggle
+        const auditBtn = document.getElementById('auditToggleBtn');
+        auditBtn.addEventListener('click', () => {
+          const active = document.body.classList.toggle('show-audit');
+          auditBtn.classList.toggle('is-active', active);
+          if (active) {
+            requestAnimationFrame(updateGeometryReadout);
+          }
+        });
+
+        window.addEventListener('resize', () => {
+          requestAnimationFrame(updateGeometryReadout);
+        });
+      }
+
+      /* -----------------------------------------------------------------------
+         9. INITIALIZE PROTOTYPE
+         ----------------------------------------------------------------------- */
+      function init() {
+        const stats = computeDerivedStats();
+        renderHeroAndProgress(stats);
+        renderWeeklyRhythm();
+        renderSelectedSession(false);
+        renderUpcomingList();
+        bindControls();
+        syncScrollBlur();
+
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(updateGeometryReadout);
+        }
+      }
+
+      window.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
+</body>
+</html>

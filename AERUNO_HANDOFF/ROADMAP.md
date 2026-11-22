@@ -1,19 +1,53 @@
-# Roadmap (current recommended sequence; flexible until the architecture decision)
+# AERUNO Roadmap — Current owner-approved sequence
 
-Tags: see `../START_HERE.md`. This is a sequence of phases, not a commitment. **Phase 2 is open: neither Path A nor Path B is approved** (`ARCHITECTURE_DECISIONS.md`). Do not start phase 3 or later without the owner's go.
+**Updated:** 2026-11-22. This roadmap supersedes the earlier phase sequence where it conflicts. It is a gated plan, not authorization to skip owner decisions.
 
-| # | Phase | Notes |
-|---|---|---|
-| 1 | Complete project and architecture understanding | In progress. Audit and architecture investigation done as written reports; this handoff package is the portable record. Remaining: the missing materials in `KNOWN_ISSUES.md` section H |
-| 2 | Finalize the application architecture | Owner decides Path A or B, repository for the final app, whether the app id and signing change, migration method. Evidence that would help: Lite-mode lag test, CSS review, native benchmark (`ARCHITECTURE_DECISIONS.md`) |
-| 3 | Establish the new design system and application shell | Palette, type, tokens, navigation, base components (cards, buttons, sheets). Reuse prototype findings only as experiments (`PROTOTYPE_HISTORY.md`) |
-| 4 | Design the individual screens | ChatGPT leads direction; owner approves. Screen concept, visual direction, then implementation |
-| 5 | Create custom visual assets where needed | Only with a clear purpose and consistent art direction; propose concept first; prefer local bundled assets; mind size and offline use (`LEGACY/docs/art/EXERCISE_IMAGE_PROMPTS.md` shows the earlier approach for exercise images) |
-| 6 | Implement the redesigned screens | In small reviewable phases, one major system at a time |
-| 7 | Integrate existing functionality | Reuse, adapt, port or migrate per `FEATURE_INVENTORY.md` |
-| 8 | Test features and data handling | Port or reuse Node tests; import/export fidelity; unit and UI tests |
-| 9 | Real-device testing | Owner's phone; GPS background, steps, notifications, widgets, performance measurement |
-| 10 | Prepare a stable release | Identity and signing decisions executed only with explicit owner approval |
+## Milestone 1 — Product and design foundation
 
-Workflow for custom visuals: screen concept -> visual direction -> asset creation -> implementation -> phone testing -> refinement.
-Principles: inspect before changing; preserve working systems; no unrelated changes; never claim tested without testing; report limitations honestly.
+Finish essential screen designs, the shared visual/interaction system, core feature requirements and user journeys.
+
+Current order:
+
+1. G01 V04 — complete Main Plan product decisions and design QA using V03 as the current proposed candidate.
+2. Design and review the Manage Plan sheet.
+3. Complete/reconcile the essential Today, Train, Progress and Me screen designs (reuse the completed Round 2 Today references; do not repeat them unnecessarily).
+4. Consolidate navigation, session states, buttons, surfaces, sheets, typography, motion, Progressive Blur and Liquid Glass rules.
+5. Map requirements and user journeys to existing legacy capabilities; keep unsupported or unverified behaviours labelled Open.
+
+**Exit gate:** owner review of the essential screen directions and key user journeys; Approved/Proposed/Open states are explicit; responsive browser reviews and accessibility concerns are documented. No Android implementation claim is implied.
+
+## Milestone 2 — Technical validation and architecture decision
+
+Compare:
+
+- Native Kotlin / Jetpack Compose.
+- A redesigned Capacitor / WebView application.
+
+The existing native prototype and its Haze/progressive-blur experiments are test assets only; they do not select the final architecture.
+
+Validate an approved representative slice on real hardware. Compare rendering, scrolling, blur/glass behaviour, accessibility, dependency/maintenance costs and compatibility with existing GPS/run tracking, background services, steps, notifications, widgets, offline data, import/export, backups and permissions. Use equivalent test conditions and report what was actually measured. A green CI build is not evidence of real-device smoothness.
+
+**Exit gate:** an evidence-based trade-off report and explicit owner architecture decision, with repository, app identity, signing and migration implications understood before implementation.
+
+## Milestone 3 — Actual application development
+
+After architecture approval:
+
+1. Establish the selected foundation, build and CI.
+2. Define storage/data compatibility and backup/migration strategy.
+3. Implement navigation and shared design-system components.
+4. Build approved screens and core journeys incrementally.
+5. Integrate legacy functionality and native services carefully.
+6. Test every phase in CI and on the owner's device where hardware/platform behaviour matters.
+7. Prepare a stable release only after explicit identity/signing and release approval.
+
+## Principles
+
+- Preserve working legacy V1 behaviours and data contracts until replacements are proven.
+- Inspect actual files before making project-specific claims.
+- No mass rewrite or unrelated refactor.
+- Do not introduce a feature because a mockup depicts it; verify its product behaviour.
+- Do not claim tested/building/fast/smooth without named evidence.
+- Keep the owner involved in major decisions.
+- Keep the repository public-safe: no credentials, secrets, keystores, personal data or backups.
+- Use small update ZIPs with repo-relative paths; note that the current Apply update workflow adds/replaces files but does not delete paths.

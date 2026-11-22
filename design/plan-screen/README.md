@@ -1,4 +1,25 @@
-# AERUNO Plan screen: design exploration (2026-11-21)
+# Current status — 2026-11-22
+
+**Current candidate:** G01 V03 — Scroll-aware Editorial Plan. **Status: Proposed / owner review pending, NOT Approved.**
+
+The owner selected **Concept B — Program Edition + Concept A — Training Route**. V03 is the latest visual prototype and introduces the intended editorial identity, programme-duration numeral/Depth B, sage route/Depth C, localized topography, variable-height weekly rhythm, Deep Forest selected-session surface, schedule-derived Coming Up section, six-layer browser Progressive Blur prototype and fixed Liquid Glass navigation.
+
+The owner prefers natural vertical scrolling and the expressive unequal-height weekly rhythm from the earlier exploration. Do not compress the page into one viewport just to avoid scrolling. The fixed nav may overlay the moving content as glass, but must not make interactive content inaccessible. Progressive Blur and Liquid Glass are design prototypes only; real Android/WebView/Compose performance is untested.
+
+**Current files:**
+- `aeruno-plan-g01-v03.html` — latest editable prototype.
+- `G01_V03_DESIGN_HANDOFF.md` — detailed handoff and evidence boundaries.
+- `owner-captures/` — owner-supplied browser-preview captures; not formal automated viewport render checks.
+- `aeruno-plan-screen.html` — original Plan functional/layout exploration, retained for research only. Its visual treatment is superseded.
+
+**Next:** G01 V04 — product completeness and design QA (week navigation/full-plan access, state coverage, contextual session actions, Today/Selected independence, Coming Up, progressive blur/nav glass, responsive/accessibility review). Then design the Manage Plan sheet. No app implementation or architecture decision is authorized.
+
+The functionality gaps later in this README are historical research observations, not a fresh or exhaustive audit. Use them as guidance and verify a specific behaviour against the actual source when needed. Do not repeat the entire research pass unnecessarily.
+
+---
+
+# Historical functional exploration — 2026-11-21
+
 
 **Status: first exploration reviewed; visual direction not approved.** The functionality map and information hierarchy remain useful, but the owner says the visual execution is too conventional and lacks the creative character established in the Round 2 boards. See `OWNER_REVIEW_CREATIVE_DIRECTION_2026-11-21.md` for the required rework. Design only: no app code, architecture, identity, signing or data touched. Train is not started.
 

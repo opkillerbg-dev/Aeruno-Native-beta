@@ -1,66 +1,101 @@
-# START HERE: AERUNO project handoff
+# START HERE — AERUNO project handoff
 
-You are continuing the existing AERUNO project. Do not restart the design process. Read this file, the current handoff documents and the separately supplied Visual Reference Pack before proposing or changing anything.
+You are continuing the existing AERUNO project. Do not restart the project, recreate completed visual research or assume that a prototype is the final application.
 
-## Current status — read first
+## 1. Current status
 
-1. `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md` — current phase and immediate next task.
-2. `AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md` — status, contents and authority of the completed visual pack. The owner supplies `AERUNO_Visual_Reference_Pack_v1.zip` separately with this repository.
-3. `AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-21.md` — authoritative owner decisions and superseded historical guidance.
-4. `design/plan-screen/OWNER_REVIEW_CREATIVE_DIRECTION_2026-11-21.md` — owner's review of the first Plan exploration and the required creative rework.
-5. `design/plan-screen/README.md` — researched Plan functionality, information hierarchy, and its Proposed/Open gaps.
-6. `AERUNO_HANDOFF/PROJECT_HISTORY_CLARIFICATION.md` — correction about V1, Smooth mode and V2.
-7. `AERUNO_HANDOFF/TYPE_DEPTH_BOARD_REVIEW.md` — completed Type & Depth refinement and selected type treatment.
-8. `design/round-02/` — approved Round 2 visual baseline.
-9. `design/type-depth/` — Type & Depth Board and refinement captures.
-10. `design/foundation-v1/aeruno-design-foundation.html` — Foundation draft 1; the owner reports Draft 2 correction/review complete, but that Draft 2 file is not in this repo copy.
+- **Current milestone:** Milestone 1 — Product and design foundation.
+- **Current screen:** Plan, G01 V03 scroll-aware editorial prototype.
+- **Current status:** Owner likes the direction; V03 is a strong proposed candidate, **not Approved**.
+- **Next task:** G01 V04 — Plan product completeness and design QA. Then design Manage Plan. Follow `AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md`.
+- **Architecture:** Native Kotlin/Compose vs redesigned Capacitor/WebView remains undecided.
+- **Implementation:** Not authorized by the current design stage.
 
-**Current phase: Plan screen creative rework (owner review pending).** Round 2 and the separate 8-image Visual Reference Pack are complete. The first Plan exploration is useful functional/layout research but its visual direction is not approved. Use the Visual Reference Pack as the primary creative benchmark, while using the Plan README and legacy V1 source for functional requirements. The next task is two materially different Plan concepts, each showing the Plan screen and Manage sheet, compared in one review artifact. Stop for the owner's selection. Do not begin Train until a Plan direction is selected. Do not recreate earlier design rounds or regenerate the Visual Reference Pack.
+## 2. Read these first (in order)
 
-## Important precedence and stale-document warning
+1. `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md` — current project and Plan status.
+2. `AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-22.md` — newest owner decisions and selected design direction.
+3. `AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md` — three milestones and exit gates.
+4. `AERUNO_HANDOFF/NEXT_TASK_G01_V04.md` — bounded next task.
+5. `AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md` — the completed external Visual Reference Pack and its authority.
+6. `design/plan-screen/README.md` — Plan feature research and current design files.
+7. `design/plan-screen/G01_V03_DESIGN_HANDOFF.md` — exact V03 design structure and limitations.
+8. `AERUNO_HANDOFF/PROJECT_HISTORY_CLARIFICATION.md` — correction about V1, Smooth mode and V2.
+9. `AERUNO_HANDOFF/TYPE_DEPTH_BOARD_REVIEW.md` — completed Type & Depth work and selected Variant C.
+10. `design/round-02/` and `design/type-depth/` — completed visual references; do not recreate.
+11. `design/foundation-v1/aeruno-design-foundation.html` — Foundation Draft 1 only. Draft 2 is owner-reported reviewed/corrected but its actual file is not in this repository copy. Do not reconstruct it or assume its contents.
 
-`AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md`, `AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-21.md`, and the addendum in `AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md` are the current source of truth. Where older prototype or phase documents conflict with them, follow the current handoff. In particular:
+If anything conflicts, use this precedence:
 
-- Variant C is selected as a **design direction**: Big Shoulders Display Black at ×1.14 vertical scale, used selectively. Android implementation and font-scaling feasibility remain untested.
-- The session-pill timer font is locked to Big Shoulders Display (Option 2), outside Variant C scaling.
-- The original `AGENTS.md` prototype plan and its dated phase statements describe the earlier native prototype experiment; they do not override the current design-only phase.
-- Older Lite/Smooth-mode diagnostic suggestions and V2-lag references are historical and must not be treated as current tasks or architecture evidence.
-- The Visual Reference Pack is a completed external companion artifact. Do not describe it as missing from the repo as a blocker, ask the owner to recreate it, or start another moodboard/reference-generation round. It will be attached separately to the new chat.
+1. Newest owner decision overlay (`OWNER_DECISIONS_OVERRIDE_2026-11-22.md`).
+2. `CURRENT_DESIGN_STATE.md` and this `START_HERE.md`.
+3. The completed Visual Reference Pack for creative direction.
+4. Existing feature research and legacy reference source for functionality.
+5. Older prototype notes and dated continuation updates as history only.
 
-## Important owner clarification about performance history
+## 3. Current Plan direction
 
-The owner reports that legacy V1 ran normally on his own phone. Smooth mode was added mainly for friends using lower-end devices; it was not a fix for the owner's V1 performance. V2 was a failed experiment and is not the target. Do not repeat the V1 Smooth/Lite-mode diagnostic or investigate V2 as a prerequisite to the redesign. The new architecture remains undecided and should be evaluated against the new AERUNO design and functional requirements when needed.
+**Concept B — Program Edition + Concept A — Training Route.**
 
-## Project overview
+Retain the editorial composition, programme-duration Depth B numeral, Depth C route, localized topography, expressive unequal-height weekly rhythm, Deep Forest selected-session surface, natural scrolling, Progressive Blur and selective Liquid Glass navigation.
 
-AERUNO (formerly Arya Fit) is a personal Android fitness app. The legacy V1 app is a Capacitor WebView app and remains the functional reference for existing capabilities. This repository also contains a small Kotlin/Jetpack Compose prototype. The final architecture remains undecided.
+V03 is not the final approved design. The user explicitly prefers natural scrolling over compressing everything into a single viewport. Do not require the complete page and primary CTA to fit above the fold. Do ensure controls are not obscured and content has enough clearance above the fixed navigation.
 
-## Working roles
+## 4. Next task: G01 V04
 
-- Owner: final product, design and architecture decisions; tests on the real Android phone.
-- ChatGPT: visual direction, creative exploration, critique and design guidance.
-- Claude/coding AI: artifact creation, engineering, implementation and testing when authorized.
+Finish the Plan product decisions without starting another moodboard round:
 
-## Ground rules
+- Week browsing and whole-programme calendar entry point.
+- Strength/run/rest/recovery/completed/upcoming states.
+- Access to contextual edit, individual exercise swap, reschedule preview, finish/reopen and rest-day choices.
+- Today vs selected-day independence.
+- Coming Up's purpose and selection behaviour.
+- Progressive Blur and Liquid Glass across scrolling states, including legibility and fallback.
+- Responsive/accessibility review at 360, 390 and 412 px.
 
-- Do not recreate Round 1, Round 2, Foundation v0.1/v0.2 or the Type & Depth Board. Continue from the current Plan creative rework; use the Foundation material as reference, not as a reason to restart.
-- Preserve the owner's preference for Depth B and Depth C.
-- Use Variant C only for selective display typography; do not apply it to ordinary UI text, buttons, navigation, chips, body text, exercise names, forms, settings, timers or secondary statistics.
-- Keep current work design-only. Do not begin app implementation, migration or architecture changes without explicit owner approval.
-- Do not claim build, performance or device testing without evidence.
-- Do not touch legacy app ID, signing, `aryaApp2`, storage schema, backup format, native services or legacy reference files without explicit approval.
-- This repository is public: never add secrets, keystores, passwords, tokens, private keys or personal backups.
-- Keep phases small and reviewable. Do not edit `AERUNO_HANDOFF/legacy-reference/`.
+Then design the Manage Plan sheet. Do not start app implementation or choose the architecture.
 
-## Evidence tags
+## 5. Locked design baseline
+
+- Aesthetic: Old Money × Liquid Glass.
+- Palette: Ivory `#F3EFE4`; Deep Forest `#1F3B30`; Terracotta `#C97855`; Surface `#FFFEFA`; Surface Alt `#E7E2D6`; Sage `#DCE5D7`; Text `#202A23`; Muted `#646E65`.
+- Fonts: Big Shoulders Display Black, Instrument Serif Italic and Inter.
+- Variant C: Big Shoulders ×1.14 vertical scale, selective display use only; implementation is untested.
+- Session-pill timer: Big Shoulders Display Option 2, locked; outside Variant C scaling.
+- Depth B: oversized numeral partially behind a foreground surface.
+- Depth C: route interacting with oversized typography.
+- Navigation: Today · Plan · Train · Progress · Me.
+- Terracotta is not ordinary small text on the light surfaces.
+
+## 6. Project history and preservation
+
+- Legacy V1 ran normally for the owner. Smooth mode was mainly for friends on lower-end devices; it was not a fix for the owner's V1 performance.
+- V2 was a failed experiment and is not the product or performance baseline. Do not investigate V2 or repeat the old Smooth/Lite diagnostic unless the owner requests a specific investigation.
+- The native Compose prototype is an experiment for later technical validation, not the chosen architecture.
+- The original Plan exploration and its render checks remain useful functional/layout history; they are not the current visual benchmark.
+- The eight-image Visual Reference Pack v1 is complete and supplied separately. Do not recreate it.
+
+## 7. Working and evidence rules
+
+- Inspect actual files before making project-specific assumptions.
+- Preserve Approved / Selected / Proposed / Open / Untested distinctions.
+- The previous Plan functionality gaps were research observations, not a fresh or exhaustive audit. Verify individual behaviour against source when needed.
+- Do not touch `AERUNO_HANDOFF/legacy-reference/`, legacy app IDs/signing, storage keys/schema, backup format, native services or existing build workflows.
+- Do not claim a build, device test, blur performance or feature behaviour without evidence.
+- Keep work bounded and reviewable. Owner decides major design and architecture questions.
+- This is a public repository: no secrets, credentials, personal data or backups.
+
+## 8. Evidence tags
 
 | Tag | Meaning |
 |---|---|
-| **[V]** | Verified by reading the named file in this repo |
-| **[S]** | Verified by running something in an AI sandbox; never means phone-tested |
-| **[D]** | Stated in repo documentation or a log; not re-checked |
-| **[O]** | Stated by the owner; not re-checked |
-| **[I]** | Inferred |
-| **[U]** | Unknown / not checked |
+| **[V]** | Verified by reading the named repository file. |
+| **[S]** | Verified by running something in an AI sandbox; not phone-tested. |
+| **[D]** | Recorded in repository documentation/log; not independently re-checked. |
+| **[O]** | Reported by the owner; not independently re-checked. |
+| **[I]** | Inference. |
+| **[U]** | Unknown / not checked. |
 
-"The code exists" is never evidence that a feature works.
+## 9. Repository update ZIP
+
+The established `Apply update` workflow accepts `update.zip` at the repository root. It adds or replaces files at their repo-relative paths and starts the existing debug build workflow. It does not delete tracked files. A separate cleanup action is required for removals. `.github/` entries inside the ZIP are skipped intentionally.

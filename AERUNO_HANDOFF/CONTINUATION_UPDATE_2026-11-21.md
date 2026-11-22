@@ -1,3 +1,5 @@
+> **HISTORICAL — SUPERSEDED 2026-11-22.** The Foundation/Plan next-step instructions below have been replaced by `OWNER_DECISIONS_OVERRIDE_2026-11-22.md`, `CURRENT_DESIGN_STATE.md` and `PRODUCT_AND_DEVELOPMENT_PLAN.md`. Keep this file as an audit trail; do not follow its old task order.
+
 # Continuation update — 2026-11-21
 
 This update supersedes the earlier continuation note that asked the next assistant to refine the Type & Depth Board. That checkpoint is complete.
