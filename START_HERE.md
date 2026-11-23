@@ -1,101 +1,76 @@
-# START HERE — AERUNO project handoff
+# START HERE: AERUNO project handoff
 
-You are continuing the existing AERUNO project. Do not restart the project, recreate completed visual research or assume that a prototype is the final application.
+You are continuing the existing AERUNO project. Do not restart completed design work. Read this file and the linked current handoff documents before proposing or changing anything.
 
-## 1. Current status
+## Current owner decision — 2026-11-23
 
-- **Current milestone:** Milestone 1 — Product and design foundation.
-- **Current screen:** Plan, G01 V03 scroll-aware editorial prototype.
-- **Current status:** Owner likes the direction; V03 is a strong proposed candidate, **not Approved**.
-- **Next task:** G01 V04 — Plan product completeness and design QA. Then design Manage Plan. Follow `AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md`.
-- **Architecture:** Native Kotlin/Compose vs redesigned Capacitor/WebView remains undecided.
-- **Implementation:** Not authorized by the current design stage.
+**Path A is selected: a complete native Android app using Kotlin + Jetpack Compose.** This is the owner's architecture decision. Path B (a redesigned Capacitor/WebView UI) is no longer the planned route.
 
-## 2. Read these first (in order)
+This decision does **not** mean HTML prototypes are automatically converted into Kotlin. HTML files are visual and interaction specifications. Each approved screen will be deliberately recreated in Jetpack Compose, then connected to Kotlin application logic, persistence and Android services.
 
-1. `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md` — current project and Plan status.
-2. `AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-22.md` — newest owner decisions and selected design direction.
-3. `AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md` — three milestones and exit gates.
-4. `AERUNO_HANDOFF/NEXT_TASK_G01_V04.md` — bounded next task.
-5. `AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md` — the completed external Visual Reference Pack and its authority.
-6. `design/plan-screen/README.md` — Plan feature research and current design files.
-7. `design/plan-screen/G01_V03_DESIGN_HANDOFF.md` — exact V03 design structure and limitations.
-8. `AERUNO_HANDOFF/PROJECT_HISTORY_CLARIFICATION.md` — correction about V1, Smooth mode and V2.
-9. `AERUNO_HANDOFF/TYPE_DEPTH_BOARD_REVIEW.md` — completed Type & Depth work and selected Variant C.
-10. `design/round-02/` and `design/type-depth/` — completed visual references; do not recreate.
-11. `design/foundation-v1/aeruno-design-foundation.html` — Foundation Draft 1 only. Draft 2 is owner-reported reviewed/corrected but its actual file is not in this repository copy. Do not reconstruct it or assume its contents.
+The existing `Aeruno-Native-beta` repository is the current native development workspace. Its existing app is still a prototype, not a finished production app. The temporary package ID `com.aeruno.nativeprototype`, final release package ID, signing and release identity remain separate decisions and must not be changed without explicit owner approval.
 
-If anything conflicts, use this precedence:
+## Current project status
 
-1. Newest owner decision overlay (`OWNER_DECISIONS_OVERRIDE_2026-11-22.md`).
-2. `CURRENT_DESIGN_STATE.md` and this `START_HERE.md`.
-3. The completed Visual Reference Pack for creative direction.
-4. Existing feature research and legacy reference source for functionality.
-5. Older prototype notes and dated continuation updates as history only.
+1. **Architecture:** Path A — Kotlin + Jetpack Compose — selected by the owner. See `AERUNO_HANDOFF/OWNER_ARCHITECTURE_DECISION_2026-11-23.md`.
+2. **Implementation route:** See `AERUNO_HANDOFF/IMPLEMENTATION_PATH_A_PLAN_2026-11-23.md` for the step-by-step route from HTML design prototypes to native Compose screens and a complete Android app.
+3. **Current design phase:** G01 Plan experience. The Manage Plan V05.2.1 design is the current baseline. The next design task is Day Actions, followed by Full Plan Calendar and an end-to-end Plan review.
+4. **Visual authority:** The completed eight-image `AERUNO_Visual_Reference_Pack_v1.zip` is the primary creative/art-direction reference. Its guide is `AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md`.
+5. **Functional authority:** The frozen legacy V1 source in `AERUNO_HANDOFF/legacy-reference/` is the read-only reference for existing behaviour, data formats and native integrations. Do not modify it from this repository.
+6. **Native proof work:** The existing Compose prototype and its N04/N05 visual-quality/performance checks remain useful validation work. They do not reopen the owner's Path A choice by default; they identify implementation risks that must be addressed.
 
-## 3. Current Plan direction
+## Read these first
 
-**Concept B — Program Edition + Concept A — Training Route.**
+1. `AERUNO_HANDOFF/OWNER_ARCHITECTURE_DECISION_2026-11-23.md` — the owner's selected architecture and boundaries.
+2. `AERUNO_HANDOFF/IMPLEMENTATION_PATH_A_PLAN_2026-11-23.md` — how design prototypes become native app features, in the intended order.
+3. `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md` — the exact current design checkpoint and next task.
+4. `AERUNO_HANDOFF/ROADMAP.md` — full phased route to the native app.
+5. `AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-21.md` — authoritative visual and project decisions; its V1/Smooth/V2 performance correction remains valid.
+6. `AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md` — contents, authority and use of the completed visual pack.
+7. `AERUNO_HANDOFF/ARCHITECTURE.md` — legacy/native integration facts and reuse map; estimates remain evidence-tagged.
+8. `AERUNO_HANDOFF/FEATURE_INVENTORY.md` — existing features, source locations and test coverage.
+9. `AERUNO_HANDOFF/DATA_AND_MIGRATION.md` — legacy data and migration constraints.
+10. `AGENTS.md` — mandatory repository rules and update workflow.
 
-Retain the editorial composition, programme-duration Depth B numeral, Depth C route, localized topography, expressive unequal-height weekly rhythm, Deep Forest selected-session surface, natural scrolling, Progressive Blur and selective Liquid Glass navigation.
+## Key distinction: design prototype vs native app
 
-V03 is not the final approved design. The user explicitly prefers natural scrolling over compressing everything into a single viewport. Do not require the complete page and primary CTA to fit above the fold. Do ensure controls are not obscured and content has enough clearance above the fixed navigation.
+- HTML/CSS/JavaScript screen prototypes are for visual exploration, owner review and interaction specification.
+- Approved HTML prototypes are **not** production app screens and are not automatically transpiled or embedded in the native app.
+- The native implementation recreates the approved layout and interactions with Kotlin/Jetpack Compose.
+- Colours, typography, spacing, shapes, graphics and motion decisions should be translated into the native design system. Suitable image/vector assets may be reused where licensing and technical requirements permit.
+- Functional rules must be implemented in Kotlin/domain code or through deliberately adapted Android services. Legacy JavaScript is a behaviour reference; it is not automatically executed by the native app.
 
-## 4. Next task: G01 V04
+## Project overview
 
-Finish the Plan product decisions without starting another moodboard round:
+AERUNO is a personal Android fitness app. The legacy V1 app is a Capacitor WebView application containing the currently working functional reference. The new AERUNO app will follow Path A and be built natively with Kotlin + Jetpack Compose. The legacy and native codebases remain separate during development and migration.
 
-- Week browsing and whole-programme calendar entry point.
-- Strength/run/rest/recovery/completed/upcoming states.
-- Access to contextual edit, individual exercise swap, reschedule preview, finish/reopen and rest-day choices.
-- Today vs selected-day independence.
-- Coming Up's purpose and selection behaviour.
-- Progressive Blur and Liquid Glass across scrolling states, including legibility and fallback.
-- Responsive/accessibility review at 360, 390 and 412 px.
+## Working roles
 
-Then design the Manage Plan sheet. Do not start app implementation or choose the architecture.
+- Owner: final product, design, architecture and release decisions; tests on the real Android phone.
+- ChatGPT: product direction, visual critique, planning and handoff guidance.
+- Coding AI/engineer: inspect source, implement approved work, run tests/CI and report evidence honestly.
 
-## 5. Locked design baseline
+## Ground rules
 
-- Aesthetic: Old Money × Liquid Glass.
-- Palette: Ivory `#F3EFE4`; Deep Forest `#1F3B30`; Terracotta `#C97855`; Surface `#FFFEFA`; Surface Alt `#E7E2D6`; Sage `#DCE5D7`; Text `#202A23`; Muted `#646E65`.
-- Fonts: Big Shoulders Display Black, Instrument Serif Italic and Inter.
-- Variant C: Big Shoulders ×1.14 vertical scale, selective display use only; implementation is untested.
-- Session-pill timer: Big Shoulders Display Option 2, locked; outside Variant C scaling.
-- Depth B: oversized numeral partially behind a foreground surface.
-- Depth C: route interacting with oversized typography.
-- Navigation: Today · Plan · Train · Progress · Me.
-- Terracotta is not ordinary small text on the light surfaces.
+- Path A is selected. Do not silently switch back to Path B.
+- Continue design in small, reviewable tasks. Current next design task: G01 V06 Day Actions; Full Plan Calendar follows.
+- Once a screen design is approved, recreate it in Compose; do not copy HTML into production as a WebView shortcut.
+- Build one vertical feature slice at a time: UI, state, domain logic, persistence/native integration, tests and owner verification.
+- Keep the legacy reference folder read-only. Do not modify the separate legacy repository, its app ID, signing, `aryaApp2` storage key/schema, backup format or services without explicit owner approval.
+- The temporary native prototype package ID is not a release identity. Final package ID, signing and distribution remain open.
+- No secrets, keystores, tokens, personal data or personal backups in this public repository.
+- Do not claim a build, test, visual result or device behaviour unless it was actually performed. A sandbox/browser check is not an Android phone test.
+- The update workflow expects one `update.zip` at the repository root. ZIP entries must use exact repository-relative paths, with no enclosing top-level folder. See `AGENTS.md` and `.github/workflows/apply-update.yml`.
 
-## 6. Project history and preservation
-
-- Legacy V1 ran normally for the owner. Smooth mode was mainly for friends on lower-end devices; it was not a fix for the owner's V1 performance.
-- V2 was a failed experiment and is not the product or performance baseline. Do not investigate V2 or repeat the old Smooth/Lite diagnostic unless the owner requests a specific investigation.
-- The native Compose prototype is an experiment for later technical validation, not the chosen architecture.
-- The original Plan exploration and its render checks remain useful functional/layout history; they are not the current visual benchmark.
-- The eight-image Visual Reference Pack v1 is complete and supplied separately. Do not recreate it.
-
-## 7. Working and evidence rules
-
-- Inspect actual files before making project-specific assumptions.
-- Preserve Approved / Selected / Proposed / Open / Untested distinctions.
-- The previous Plan functionality gaps were research observations, not a fresh or exhaustive audit. Verify individual behaviour against source when needed.
-- Do not touch `AERUNO_HANDOFF/legacy-reference/`, legacy app IDs/signing, storage keys/schema, backup format, native services or existing build workflows.
-- Do not claim a build, device test, blur performance or feature behaviour without evidence.
-- Keep work bounded and reviewable. Owner decides major design and architecture questions.
-- This is a public repository: no secrets, credentials, personal data or backups.
-
-## 8. Evidence tags
+## Evidence tags
 
 | Tag | Meaning |
 |---|---|
-| **[V]** | Verified by reading the named repository file. |
-| **[S]** | Verified by running something in an AI sandbox; not phone-tested. |
-| **[D]** | Recorded in repository documentation/log; not independently re-checked. |
-| **[O]** | Reported by the owner; not independently re-checked. |
-| **[I]** | Inference. |
-| **[U]** | Unknown / not checked. |
+| **[V]** | Verified by reading the named source file in this repository |
+| **[S]** | Verified by running something in an AI sandbox; not phone-tested |
+| **[D]** | Documented in project files; not re-checked in this task |
+| **[O]** | Owner decision or statement |
+| **[I]** | Inference or recommendation |
+| **[U]** | Unknown / not checked |
 
-## 9. Repository update ZIP
-
-The established `Apply update` workflow accepts `update.zip` at the repository root. It adds or replaces files at their repo-relative paths and starts the existing debug build workflow. It does not delete tracked files. A separate cleanup action is required for removals. `.github/` entries inside the ZIP are skipped intentionally.
+The existence of code or a prototype is not evidence that the feature works.

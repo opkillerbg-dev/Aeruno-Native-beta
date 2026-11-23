@@ -1,40 +1,50 @@
 # Architecture decision record
 
-**STATUS: NO DECISION HAS BEEN MADE.** Neither path is approved. The prototype and an early plan assume native, and an earlier AI audit leaned toward native; a later investigation said the evidence is not yet sufficient, and the owner declined to commit until more evidence exists. Do not describe the native migration as decided. Tags: see `../START_HERE.md`; `LEGACY/` = `AERUNO_HANDOFF/legacy-reference/`.
+**STATUS: PATH A SELECTED BY OWNER — 2026-11-23.** The target architecture for the new AERUNO Android app is a complete native Android application using **Kotlin + Jetpack Compose**. This supersedes the previous `UNDECIDED` status. The owner has selected Path A; Path B is not the planned implementation route.
 
-## The two paths
-**Path A: complete native Android redesign.** Kotlin + Jetpack Compose, using the prototype as a possible foundation; reuse the legacy Java services behind Kotlin adapters; port the logic; migrate data by import.
-**Path B: complete Capacitor/WebView UI redesign.** Keep the Capacitor shell, plugins, services, storage and logic; rebuild the entire user-facing UI from scratch (the old UI does not constrain the design).
+Decision record: [`OWNER_ARCHITECTURE_DECISION_2026-11-23.md`](OWNER_ARCHITECTURE_DECISION_2026-11-23.md). Execution plan: [`IMPLEMENTATION_PATH_A_PLAN_2026-11-23.md`](IMPLEMENTATION_PATH_A_PLAN_2026-11-23.md).
 
-## Facts both paths share [V]
-- The hard Android features (GPS service, step service, widgets, notifications, TTS, file sync) are already native Java and mostly independent of Capacitor (`ARCHITECTURE.md` section 4).
-- Logic is split: 7 pure DOM-free engines with Node tests, plus many pieces entangled with globals and the DOM.
-- Nothing proves that WebView glass is the cause of the reported lag, and nothing proves native is smoother (no measurement exists for either).
+## What this decision means
 
-## Comparison (assessments are [I]; effort is a relative estimate, not a commitment)
-| Criterion | Path A: native | Path B: WebView rebuild |
-|---|---|---|
-| UI freedom | Highest: shaders, real blur, shared transitions | High for layout/type/motion; glass limited to CSS filters |
-| Performance | Unproven; more control and measurable with `FrameMetrics` | Unproven; main-thread JS and WebView compositing; legacy needed a governor |
-| Liquid glass / blur | Haze backdrop blur confirmed visually in N03; progressive blur (N04) not confirmed | `backdrop-filter` exists in Chromium WebView; progressive blur possible in principle (CSS mask), untested; V2 glass lagged |
-| Animation | Native, high refresh rate | Good for transform/opacity; weak under blur |
-| GPS / background | Same services; needs new run-session persistence | Unchanged (but never device-tested) |
-| Step tracking | Same service | Unchanged |
-| Data preservation | Needs an import path (or same id and key plus export) | Trivial: same store and migrations |
-| Complexity | Large: shell, navigation, state, database, port logic | Medium; entangled controllers are the hard part |
-| Testing | Port Node tests as spec; Compose tests | Keep Node tests; Playwright cheap in CI; many UI tests obsolete |
-| Maintainability | Typed, structured | ES5 globals, no types, no lockfile |
-| Android integration | First-class | Via plugins |
-| Long-term flexibility | Android only | Web code could reach other platforms |
-| Main risks | Regressing working features; two codebases during transition | Performance ceiling unknown; fixing entangled glue |
-| Realistic effort | Large (about 9 phases) | Medium (about 6 to 7 phases) |
+- The new AERUNO user interface and application flows will be implemented natively in Kotlin + Jetpack Compose.
+- The existing `Aeruno-Native-beta` repository is the current native development workspace. Its current contents are still a prototype and must be inspected before treating any component as production-ready.
+- HTML/CSS/JavaScript design prototypes are visual and interaction specifications. They are **not automatically converted to Kotlin**, transpiled, or shipped as production WebView screens. Approved designs are recreated as Compose UI.
+- Legacy V1 remains a separate, read-only functional reference during this work. Existing business rules are ported or reimplemented in Kotlin with tests; native Java services are reused or adapted only after source and build review.
+- Existing user data is preserved through a deliberately designed export/import migration. No destructive in-place rewrite of legacy data is authorised.
 
-## What would settle it (evidence still missing)
-1. Does the legacy lag disappear in Lite mode? (owner test)
-2. Legacy CSS review for glass layering cost (the CSS is now in `LEGACY/web/css/`; not yet analysed).
-3. A native benchmark (card N05) and a comparable WebView measurement.
-4. Real redacted backup to test import fidelity.
-5. Compile/run status of legacy Java services on current Android.
+## Decisions not included in Path A
 
-## Current status
-**UNDECIDED.** Next decision step is the owner's, after the architecture investigation. See `ROADMAP.md`.
+The owner has not thereby approved or finalised:
+
+- The production application ID/package name or signing/release strategy. `com.aeruno.nativeprototype` remains temporary.
+- Whether this repository remains the final production repository or a later clean production repository is created.
+- The complete database schema, Room migrations, DataStore keys, or final repository/domain module boundaries.
+- The detailed legacy data migration/import UX and release cutover date.
+- Permissions, privacy disclosures, distribution channel or store-release settings.
+
+These require separate documented decisions before the relevant implementation/release work.
+
+## The two paths (historical comparison)
+
+- **Path A — selected:** Complete native Android redesign using Kotlin + Jetpack Compose. The native app owns its UI, state, domain logic and persistence. Existing Java Android services may be reused behind Kotlin-facing interfaces after review. Legacy JavaScript logic is ported/reimplemented in Kotlin with tests.
+- **Path B — not selected:** Complete Capacitor/WebView UI redesign retaining the web shell and much of the JavaScript runtime. Do not begin this route unless the owner explicitly reverses the decision.
+
+## Evidence and rationale
+
+- **[O] Owner decision (2026-11-23):** The owner explicitly chose Path A.
+- **[V] Repository evidence:** The native repository already contains a Kotlin/Compose prototype, a bundled AERUNO type/palette foundation, a Haze glass experiment and Android build workflow.
+- **[V] Legacy architecture evidence:** `ARCHITECTURE.md` and the frozen legacy source show that several Android services are plain Java or mostly independent of Capacitor, while some plugin wrappers and `RunService` data wrappers are Capacitor-coupled and need adaptation.
+- **[I] Engineering implication:** Path A requires more deliberate porting and data migration than Path B, but creates a native Android UI and application runtime as selected by the owner.
+- **[U] Not proven by this decision:** Full feature parity, final-device performance, background GPS/step reliability, migration fidelity and production readiness. These require implementation and testing.
+
+The choice is an owner decision, not a claim that the previous comparative performance study conclusively proved native is faster. Do not invent benchmark results or describe untested features as migrated.
+
+## Implementation constraints
+
+1. Keep `AERUNO_HANDOFF/legacy-reference/` read-only.
+2. Do not change legacy app ID `com.arya.fit3`, signing, `aryaApp2` storage, schema or backup format without explicit approval.
+3. Treat `com.aeruno.nativeprototype` as temporary; do not silently promote it to the release ID.
+4. Port pure JavaScript engines and their tests one at a time. Rework DOM/global-coupled code into native domain/state layers rather than carrying the old global architecture forward.
+5. Reuse/adapt Android Java services only after checking Capacitor dependencies, manifests, foreground-service declarations, permissions and lifecycle behaviour.
+6. Design a validated import path for existing user data before release. Keep the original legacy install/data untouched until restore is verified.
+7. Implement one vertical feature slice at a time with unit tests, Compose UI tests, CI build evidence and owner device review.

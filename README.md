@@ -1,38 +1,44 @@
-# AERUNO — Native prototype repository and product handoff
+# AERUNO Native Android App
 
-> **Start with [`START_HERE.md`](START_HERE.md).** It identifies the active design phase, current source-of-truth documents and exact next task.
+> **New here?** Read [`START_HERE.md`](START_HERE.md) first.
 
-This public repository contains:
+**Architecture selected by the owner (2026-11-23): Path A — Kotlin + Jetpack Compose, native Android.** This repository is the current native development workspace. The app currently present here is still a prototype; it is not the completed product.
 
-- AERUNO's project handoff and design archive.
-- A read-only reference copy of legacy V1 under `AERUNO_HANDOFF/legacy-reference/`.
-- A small experimental Kotlin/Jetpack Compose prototype under `app/`.
-- Design prototypes and supporting review records under `design/`.
+The HTML/CSS/JavaScript files created during design are visual and interaction specifications. They are **not automatically converted into Kotlin**. Each owner-approved screen will be deliberately recreated in Jetpack Compose and connected to native application state, Kotlin domain logic, persistence and Android services.
 
-It is **not yet the production AERUNO application**. The legacy app remains separate and must not be modified from this repository.
+The legacy AERUNO application remains in its separate repository. Its frozen copy in `AERUNO_HANDOFF/legacy-reference/` is a read-only source of existing functionality, business rules, data formats and Android integration behaviour. Do not modify it from this repository.
 
 ## Current phase
 
-**Milestone 1 — Product and design foundation.** The current main Plan candidate is `design/plan-screen/aeruno-plan-g01-v03.html`; its status is Proposed / owner review pending, not Approved. The selected direction is Concept B — Program Edition + Concept A — Training Route. Natural scrolling, variable-height weekly rhythm, Progressive Blur and selective Liquid Glass are part of the working direction.
+G01 Plan experience design is in progress. Manage Plan V05.2.1 is the current design baseline. The next design task is the Day Actions sheet, followed by Full Plan Calendar and an end-to-end Plan review. See [`AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md`](AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md) and [`AERUNO_HANDOFF/IMPLEMENTATION_PATH_A_PLAN_2026-11-23.md`](AERUNO_HANDOFF/IMPLEMENTATION_PATH_A_PLAN_2026-11-23.md).
 
-The completed eight-image Visual Reference Pack v1 is supplied separately as a companion ZIP and is the primary creative benchmark. Do not regenerate it.
+## Important project documents
 
-Architecture (native Compose vs redesigned Capacitor/WebView), implementation and migration remain undecided/not approved. The native prototype is an experiment, not the final architecture.
+- [`START_HERE.md`](START_HERE.md) — current project status and required reading.
+- [`AERUNO_HANDOFF/OWNER_ARCHITECTURE_DECISION_2026-11-23.md`](AERUNO_HANDOFF/OWNER_ARCHITECTURE_DECISION_2026-11-23.md) — Path A owner decision.
+- [`AERUNO_HANDOFF/IMPLEMENTATION_PATH_A_PLAN_2026-11-23.md`](AERUNO_HANDOFF/IMPLEMENTATION_PATH_A_PLAN_2026-11-23.md) — complete design-to-native implementation route.
+- [`AERUNO_HANDOFF/ROADMAP.md`](AERUNO_HANDOFF/ROADMAP.md) — phased roadmap.
+- [`AGENTS.md`](AGENTS.md) — repository rules and delivery protocol.
+- [`docs/DESIGN_TOKENS.md`](docs/DESIGN_TOKENS.md) — existing native design tokens.
+- [`AERUNO_HANDOFF/FEATURE_INVENTORY.md`](AERUNO_HANDOFF/FEATURE_INVENTORY.md) — legacy functionality inventory.
 
-## Where to read
+## Build and install the current prototype
 
-- [`START_HERE.md`](START_HERE.md) — current handoff and precedence.
-- [`AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md`](AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md) — detailed current state.
-- [`AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-22.md`](AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-22.md) — newest owner decisions.
-- [`AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md`](AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md) — three development milestones.
-- [`AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md`](AERUNO_HANDOFF/VISUAL_REFERENCE_PACK_GUIDE.md) — companion reference pack rules.
-- [`design/plan-screen/README.md`](design/plan-screen/README.md) — Plan research and current artifact links.
-- [`AGENTS.md`](AGENTS.md) — working rules for coding/design AIs.
+GitHub builds the debug APK through the **Build debug APK** workflow. A green run means the Android project compiled; it does not prove that all app features work or that the interface has been tested on a device.
 
-## Safety
+1. Open the repository's **Actions** tab.
+2. Open the newest **Build debug APK** run and confirm it succeeded.
+3. Download the `aeruno-native-debug-apk` artifact.
+4. Extract it and install the APK.
+5. A fresh debug signing key may mean the previous prototype must be uninstalled before installing a new build. The prototype has no production data.
 
-This repository is public. Never add credentials, API keys, keystores, personal data, personal backups or release signing material. Do not edit `AERUNO_HANDOFF/legacy-reference/`. Preserve the existing app ID, storage contracts, backup format, native services and build workflows unless the owner explicitly approves a change.
+## Delivering repository updates
 
-## Repository update workflow
+The `Apply update` workflow expects one file named **`update.zip`** uploaded to the repository root. ZIP entries must be paths relative to the repository root (for example, `AERUNO_HANDOFF/ROADMAP.md`), with no enclosing project folder. The workflow extracts and commits those files, removes `update.zip`, and attempts to start the debug APK build. Files under `.github/` are skipped and must be added manually.
 
-The established workflow accepts one file named `update.zip` at the repository root. It writes or replaces repo-relative files, commits them, removes the uploaded ZIP and attempts to start the debug build. It **does not delete existing files**; cleanup deletions require a separate GitHub repository action. Files inside `.github/` are skipped and must be handled manually if ever necessary.
+## Current identity and data boundaries
+
+- Temporary prototype package ID: `com.aeruno.nativeprototype`.
+- Final production package ID and signing: not decided.
+- Legacy package ID, signing, `aryaApp2` storage key/schema, backup format and native services: frozen; do not change without explicit owner approval.
+- No production user data or credentials belong in this public repository.

@@ -7,7 +7,7 @@ Read `START_HERE.md` and the documents in `AERUNO_HANDOFF/` before suggesting or
 1. **Inspect before you act.** Open the real files. Repo documentation can be stale; the source and the `AERUNO_HANDOFF/` evidence tags tell you how far to trust a statement.
 2. **Evidence honesty.** Never say "tested", "works", "smooth" or "fast" without naming what was run and where. A sandbox run is not a phone test. See the tags in `START_HERE.md`.
 3. **The owner decides.** Architecture, identity, signing, design direction. Offer two options and a recommendation; never settle a disagreement silently.
-4. **Current phase (2026-11-22): Milestone 1 — product and design foundation.** The current Plan candidate is G01 V03 and is not yet Approved. The hybrid Concept B + Concept A direction is selected. Follow `START_HERE.md`, `AERUNO_HANDOFF/CURRENT_DESIGN_STATE.md`, `AERUNO_HANDOFF/OWNER_DECISIONS_OVERRIDE_2026-11-22.md` and `AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md`. Do not start app implementation, migrate data or change native services during this design phase. Native Compose vs redesigned Capacitor/WebView remains undecided.
+4. **Current architecture (owner decision 2026-11-23): Path A — Kotlin + Jetpack Compose.** The owner selected the native Android route. HTML files are design/interaction specifications, not automatically converted production screens. Approved screens must be recreated in Compose. Follow `AERUNO_HANDOFF/IMPLEMENTATION_PATH_A_PLAN_2026-11-23.md`; do not silently switch to Path B.
 5. **Two codebases, do not mix them up.** The legacy app (`AERUNO_HANDOFF/legacy-reference/`, a read-only copy at v150) is the functional asset. The native prototype (`app/`) is an experiment. Never edit `AERUNO_HANDOFF/legacy-reference/`; if legacy needs changing, that happens in the legacy repository and only with the owner's explicit OK.
 6. **Frozen without explicit OK:** legacy app id (`com.arya.fit3`) and signing key, storage key `aryaApp2`, storage schema and backup format, native service architecture. The prototype's own id (`com.aeruno.nativeprototype`) is temporary.
 7. **Security.** The repo is public. No keystores, passwords, tokens, API keys, personal data or backups. The legacy `debug.keystore` was deliberately not copied here.
@@ -18,22 +18,22 @@ Read `START_HERE.md` and the documents in `AERUNO_HANDOFF/` before suggesting or
 
 ---
 
-## Part 2. Native prototype plan and rules (original AGENTS.md)
+## Part 2. Native prototype plan and rules (historical proof-work plan)
 
-Note: the card list below was written for the native prototype experiment before the 2026-11-20 redesign reset. It is **historical and on hold**; it is not the current product roadmap. The current product milestones are in `AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md`. Card numbers N04 and later changed meaning once (see `AERUNO_HANDOFF/PROTOTYPE_HISTORY.md`).
+The owner selected Path A on 2026-11-23. The N00–N08 cards below were written for the earlier bounded native prototype experiment, not as the full production-app roadmap. N04/N05 and related remaining cards are still useful native visual-quality/performance checks. They do not automatically reopen the Path A vs Path B choice. Follow `AERUNO_HANDOFF/ROADMAP.md` and `IMPLEMENTATION_PATH_A_PLAN_2026-11-23.md` for the actual full-app sequence. Card numbers N04 and later changed meaning once (see `AERUNO_HANDOFF/PROTOTYPE_HISTORY.md`).
 
 # AERUNO Native Prototype: plan and rules for every AI
 
 Repo: `opkillerbg-dev/Aeruno-Native-beta` (public). Read this whole file first. Keep it under ~250 lines; when a fact changes, change it here.
-Created 2026-11-19. This is a historical record of the native prototype experiment: N00 to N03 done; N04 (top progressive blur test) delivered with its owner gate not confirmed in this snapshot. The owner subsequently continued the full product/design foundation in Milestone 1; the native-prototype card sequence remains on hold pending Milestone 2 technical validation and an explicit owner decision.
+Created 2026-11-19. N00 to N03 were completed as bounded prototype work. N04 (top progressive blur) was delivered, but its owner build/visual gate was not confirmed in the source snapshot used for this update. On 2026-11-23 the owner selected Path A. The remaining cards are native quality/benchmark checks, not the full app delivery plan.
 
-## 0. Historical native-prototype state snapshot (2026-11-20; not the current product status)
+## 0. Current state (update after every card)
 
 - **Done:** N00 baseline. N01 skeleton + CI: GitHub Actions run "Build debug APK #4" (commit 93a3528) was green and produced the artifact `aeruno-native-debug-apk`; the owner installed it and saw the blank AERUNO screen on his phone (his screenshot). The Gradle build compiled Kotlin 2.3.0, Compose BOM 2026.05.00, AGP 8.13.2, Gradle 8.13 together; the app id and minSdk 31 were checked inside the built APK by the workflow.
 - **N02 (done 2026-11-20: owner confirmed green build, status bar and display type on his phone):** typography tokens, bundled fonts + OFL licenses, type specimen screen (now the only screen), `docs/DESIGN_TOKENS.md`. Fonts are the owner-approved set Big Shoulders Display 900, Instrument Serif Italic, Inter Regular/Bold (same as the legacy app), replacing the Manrope plan. Refinement 1 (owner approved palette and type): Palette A Deep Heritage, dark status-bar icons, compact stats in Inter Bold tnum, font notices checked. Refinement 2 (UNTESTED): status-bar cover so scrolling content no longer passes under the clock/icons; tighter, larger display styles. 
 - **N03 (done 2026-11-20: owner confirmed the build and that variant A is real backdrop blur):** `ui/glass/GlassSurface.kt`, `ui/cardtest/CardTestScreen.kt`, Haze 1.7.2 (`docs/VERSIONS.md`). Screen file stays in the repo, unused.
 - **N04 (owner brief 2026-11-20, delivered, UNTESTED, gate pending):** top-edge progressive blur test. Owner redefined N04; the old "Today screen" card is now N04b (deferred). Files: `ui/glass/ProgressiveEdgeBlur.kt` (Haze `HazeProgressive.verticalGradient`, 1.7.2, no new dependency), `ui/topblur/TopBlurTestScreen.kt` (now the only screen), `MainActivity.kt` (shows it; nav-bar icons back to dark). Log: `docs/log/2026-11-20_N04.md`. Not `[x]` until a green build and the owner confirms the look on the phone.
-- **Next:** nothing until N04's gate passes and the owner says go. N05 not started.
+- **Next native proof task:** close the N04 build/phone review gate, then N05 benchmark. These checks validate native visual/performance quality within the selected Path A direction; they are not a renewed architecture vote.
 - **How code reaches the repo:** the owner uploads `update.zip` (changed files, repo paths) to the repo root; the `Apply update` workflow unpacks it and starts a build. Files under `.github/` are skipped by it and are pasted in by hand.
 - **Installing:** every CI build has a fresh debug key, so the owner uninstalls the previous prototype first.
 - **Not verified yet:** that the N04 code builds, that the top blur looks right, speed. Fonts, palette and status bar were confirmed by the owner in N02.
@@ -41,11 +41,9 @@ Created 2026-11-19. This is a historical record of the native prototype experime
 
 ## 1. What this is (and is not)
 
-A small, throwaway **Phase 2 prototype**: one native Today screen plus a three-way card rendering test, built to answer one question for the owner:
+A small, bounded **native UI/quality prototype**: it contains early Compose/theme/glass experiments and is not the complete AERUNO application. The owner has since selected Path A (native Kotlin + Jetpack Compose) on 2026-11-23. This prototype is a technical starting point and evidence source, not automatically a production-ready app. Follow `AERUNO_HANDOFF/IMPLEMENTATION_PATH_A_PLAN_2026-11-23.md` for the full migration and implementation sequence.
 
-> Can a premium "Verdant Glass" look run smoothly on the owner's real phone? GO or NO-GO on a full native migration.
-
-It is NOT the migration. The legacy app (Arya Fit / AERUNO, Capacitor, `com.arya.fit3`) stays untouched and stable in its own repo. Phase 0/1/3+ of `AERUNO-Native-Migration-Plan.md` are out of scope until the owner says GO.
+The legacy app (Arya Fit / AERUNO, Capacitor, `com.arya.fit3`) stays untouched and stable in its separate repository. The N04/N05 cards validate native UI quality/performance; they do not decide between Path A and Path B.
 
 The web "V2" glass look lagged badly on the owner's phone (OnePlus Nord CE5, 8 GB, high refresh rate). **The cause is unproven.** Never state blur, WebView or GPU as the cause without measurement.
 
@@ -188,7 +186,7 @@ Order: N00 -> N01 -> N02 -> N03 -> N04 -> N05 -> N06 -> N07 -> N08. Each card en
 - [ ] **N05 Benchmark (UI).** Benchmark mode: scripted scroll sequence (same distance, same timing every run) over the same content for a fixed duration, per variant; `FrameMetrics` collection; refresh rate recorded at start and end; battery temperature at start and end; results screen with a copy-to-clipboard text report. Optional live overlay (variant, mode, frame time, FPS estimate, slow-frame flag), updated at most twice per second, hidden in benchmark mode. *Gate: green build; a run finishes and shows the report.*
 - [ ] **N06 Docs (DOCS).** README (build and install), `docs/BENCHMARK.md` (procedure, results template, limitations), verified/not-verified list. *Gate: a stranger could follow it.*
 - [ ] **N07 Owner device test (OWNER).** Follow `docs/BENCHMARK.md`. Paste the reports into chat or `docs/results/`.
-- [ ] **N08 GO / NO-GO (OWNER).** Decide on look, type, glass quality, responsiveness, measured numbers, battery/thermal feel, maintainability. ChatGPT reviews the visuals; a coding AI summarizes the numbers.
+- [ ] **N08 Native proof-quality review (OWNER).** Review look, type, glass quality, responsiveness, measured numbers, battery/thermal feel and maintainability. Path A is already selected; this gate confirms implementation readiness/risks and does not reopen the architecture choice by default. ChatGPT reviews visuals; a coding AI summarises measured results.
 
 ## 10. Evidence rules
 
@@ -219,8 +217,8 @@ Order: N00 -> N01 -> N02 -> N03 -> N04 -> N05 -> N06 -> N07 -> N08. Each card en
 1. `Apply update` workflow: uploading `update.zip` to the repo root unpacks and commits it (needs no secrets; skips `.github/` files, which are added by hand).
 2. Every CI build is signed with a fresh debug key, so the owner uninstalls the previous prototype before installing the next. Committing a key is forbidden (rule 3). Alternative later if this annoys: keep a generated debug key in the GitHub cache.
 
-**Still open:** none.
+**Still open for later app phases:** production package ID, release signing/distribution, exact persistence schema, detailed data-import rules and any release-specific decisions. These do not change the completed Path A architecture selection.
 
-## 13. Definition of done for the prototype
+## 13. Definition of done for the bounded native proof
 
-Looks premium on the real phone; type hierarchy is noticeable; variant A is true backdrop blur; all three variants measured under the rules above; a clear verified / not-verified list; nothing from the frozen list touched. Then stop. The owner decides.
+The native visual proof is complete when it looks acceptable on the real phone; the type hierarchy is clear; variant A is confirmed as true backdrop blur; the variants are measured under the rules above; the verified/not-verified list is clear; and nothing in the frozen list was touched. This closes the prototype quality gate and informs Path A implementation; it is not a Path A vs Path B vote. The owner approves the next implementation slice separately.

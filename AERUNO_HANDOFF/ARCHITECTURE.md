@@ -1,5 +1,9 @@
 # Architecture and integration
 
+**Current owner decision (2026-11-23): Path A — Kotlin + Jetpack Compose — selected for the new AERUNO app.** This document's component reuse assessments remain evidence-tagged and are not proof that a component will compile or work in the native app. HTML prototypes are design specifications; approved screens are recreated in Compose. See `OWNER_ARCHITECTURE_DECISION_2026-11-23.md` and `IMPLEMENTATION_PATH_A_PLAN_2026-11-23.md`.
+
+**Current owner decision (2026-11-23): Path A — Kotlin + Jetpack Compose — selected for the new AERUNO app.** This document's component reuse assessments remain evidence-tagged and are not proof that a component will compile or work in the native app. HTML prototypes are design specifications; approved screens are recreated in Compose. See `OWNER_ARCHITECTURE_DECISION_2026-11-23.md` and `IMPLEMENTATION_PATH_A_PLAN_2026-11-23.md`.
+
 Tags: see `../START_HERE.md`. `LEGACY/` = `AERUNO_HANDOFF/legacy-reference/`. Assessments marked **[I]** are the handoff author's inferences from reading code; nothing here is a decision (`ARCHITECTURE_DECISIONS.md`).
 
 ## 1. The two systems today

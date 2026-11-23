@@ -1,53 +1,43 @@
-# AERUNO Roadmap — Current owner-approved sequence
+# AERUNO roadmap — Path A native Android
 
-**Updated:** 2026-11-22. This roadmap supersedes the earlier phase sequence where it conflicts. It is a gated plan, not authorization to skip owner decisions.
+**Architecture decision:** Path A (Kotlin + Jetpack Compose) selected by the owner on 2026-11-23.  
+**Current phase:** Finish the G01 Plan design package.  
+**Detailed execution plan:** `IMPLEMENTATION_PATH_A_PLAN_2026-11-23.md`.
 
-## Milestone 1 — Product and design foundation
+This roadmap supersedes the prior sequence that kept Path A and Path B undecided. It does not claim that implementation or feature migration is complete.
 
-Finish essential screen designs, the shared visual/interaction system, core feature requirements and user journeys.
+| # | Phase | Status | Exit condition |
+|---|---|---|---|
+| 0 | Choose target architecture | **Complete — Path A selected** | Owner decision recorded in `OWNER_ARCHITECTURE_DECISION_2026-11-23.md` |
+| 1 | Complete the Plan design specification | **In progress** | Day Actions + Full Plan Calendar reviewed; main Plan, Manage, day and calendar states checked together |
+| 2 | Design remaining app flows progressively | Next after Plan package | Required Today/Train/Run/Progress/Profile/settings/support flows have clear approved designs and functional specs; do not restart completed Round 2 work without reason |
+| 3 | Close native UI/quality proof gates | Pending | Current Compose prototype builds; N04 progressive blur gate and N05 benchmark/device evidence are reviewed; design tokens/system insets/accessibility direction are ready |
+| 4 | Establish native app foundation | Pending | Compose shell, canonical navigation, theme, state pattern, domain/repository boundaries and CI are agreed and verified |
+| 5 | Build domain and data foundation | Pending | Core Kotlin models/use cases, persistence plan, schema/versioning, tests and backup/import strategy are validated |
+| 6 | Implement approved features in vertical slices | Pending | Each slice includes Compose UI, Kotlin behaviour, data/native integrations, automated tests, CI and owner device review |
+| 7 | Migrate legacy data safely | Pending | Explicit importer tested against representative exports; restore and failure cases verified without altering the legacy install/data |
+| 8 | Full device validation | Pending | Background GPS, steps, timers, notifications, widgets, lifecycle, accessibility, performance and battery checks pass for included features |
+| 9 | Release preparation | Pending | Separate owner decisions for production app ID, signing, distribution, privacy and release process are documented |
 
-Current order:
+## Current design sequence
 
-1. G01 V04 — complete Main Plan product decisions and design QA using V03 as the current proposed candidate.
-2. Design and review the Manage Plan sheet.
-3. Complete/reconcile the essential Today, Train, Progress and Me screen designs (reuse the completed Round 2 Today references; do not repeat them unnecessarily).
-4. Consolidate navigation, session states, buttons, surfaces, sheets, typography, motion, Progressive Blur and Liquid Glass rules.
-5. Map requirements and user journeys to existing legacy capabilities; keep unsupported or unverified behaviours labelled Open.
+1. G01 main Plan and Manage Plan baseline.
+2. G01 V06 Day Actions — next.
+3. G01 V07 Full Plan Calendar.
+4. Review the whole Plan experience and its states together.
+5. Design and implement later features in small, dependent slices.
 
-**Exit gate:** owner review of the essential screen directions and key user journeys; Approved/Proposed/Open states are explicit; responsive browser reviews and accessibility concerns are documented. No Android implementation claim is implied.
+## Important implementation rule
 
-## Milestone 2 — Technical validation and architecture decision
+HTML/CSS/JavaScript prototypes are design and interaction references. They are not automatically converted into Kotlin, and they are not production WebView screens. Approved designs are recreated in Kotlin/Jetpack Compose. The implementation must separately provide native state, domain logic, persistence, Android service integration and tests.
 
-Compare:
+## Path A boundaries
 
-- Native Kotlin / Jetpack Compose.
-- A redesigned Capacitor / WebView application.
+- The legacy application remains a separate functional reference and is not modified from this repository.
+- Existing Java Android services may be reused/adapted after checking Capacitor coupling, manifest entries, permissions, lifecycle and tests.
+- Pure JavaScript business engines are ported/reimplemented in Kotlin with equivalent tests. DOM/global-dependent controllers are not copied wholesale.
+- Existing user data is migrated through a deliberate, tested import/export flow. No direct destructive rewrite of legacy private storage.
+- `com.aeruno.nativeprototype` remains a temporary app ID. Production identity, signing and distribution remain open.
+- The N04/N05 native prototype checks measure quality/readiness within Path A; they do not automatically reopen the Path A vs Path B decision.
 
-The existing native prototype and its Haze/progressive-blur experiments are test assets only; they do not select the final architecture.
-
-Validate an approved representative slice on real hardware. Compare rendering, scrolling, blur/glass behaviour, accessibility, dependency/maintenance costs and compatibility with existing GPS/run tracking, background services, steps, notifications, widgets, offline data, import/export, backups and permissions. Use equivalent test conditions and report what was actually measured. A green CI build is not evidence of real-device smoothness.
-
-**Exit gate:** an evidence-based trade-off report and explicit owner architecture decision, with repository, app identity, signing and migration implications understood before implementation.
-
-## Milestone 3 — Actual application development
-
-After architecture approval:
-
-1. Establish the selected foundation, build and CI.
-2. Define storage/data compatibility and backup/migration strategy.
-3. Implement navigation and shared design-system components.
-4. Build approved screens and core journeys incrementally.
-5. Integrate legacy functionality and native services carefully.
-6. Test every phase in CI and on the owner's device where hardware/platform behaviour matters.
-7. Prepare a stable release only after explicit identity/signing and release approval.
-
-## Principles
-
-- Preserve working legacy V1 behaviours and data contracts until replacements are proven.
-- Inspect actual files before making project-specific claims.
-- No mass rewrite or unrelated refactor.
-- Do not introduce a feature because a mockup depicts it; verify its product behaviour.
-- Do not claim tested/building/fast/smooth without named evidence.
-- Keep the owner involved in major decisions.
-- Keep the repository public-safe: no credentials, secrets, keystores, personal data or backups.
-- Use small update ZIPs with repo-relative paths; note that the current Apply update workflow adds/replaces files but does not delete paths.
+Principles: inspect before changing; preserve working systems; make small reviewable changes; label evidence honestly; do not claim a feature is migrated until it is tested.

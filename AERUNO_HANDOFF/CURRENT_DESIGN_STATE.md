@@ -1,106 +1,65 @@
-# AERUNO Current Design State — 2026-11-22
+# AERUNO current design state — 2026-11-23
 
-**Current milestone:** Milestone 1 — Product and design foundation.  
-**Current screen:** Plan — G01 V03 scroll-aware editorial prototype.  
-**Status:** Direction selected; V03 is a strong candidate but is **NOT Approved**.  
-**Implementation:** Not started.  
-**Architecture:** Native Kotlin/Compose vs redesigned Capacitor/WebView remains undecided.
+## Current architecture
 
-## 1. Current handoff in one minute
+**Path A — native Android with Kotlin + Jetpack Compose — selected by the owner on 2026-11-23.** The final app is to be implemented natively. HTML screen files are visual/interaction prototypes and specifications; they are not automatically converted to Kotlin or shipped as WebView production screens. See `OWNER_ARCHITECTURE_DECISION_2026-11-23.md` and `IMPLEMENTATION_PATH_A_PLAN_2026-11-23.md`.
 
-AERUNO is not a new project. Continue the existing redesign from the completed visual foundation and the supplied Visual Reference Pack v1.
+The existing `Aeruno-Native-beta` repository is the current native development workspace, but the current app remains a prototype. The temporary package ID `com.aeruno.nativeprototype` is not the final production identity. Release identity/signing and the final production repository strategy remain open.
 
-The owner selected **Concept B — Program Edition + Concept A — Training Route topographic language** for the Plan screen. Gemini produced G01 V03, which introduces the intended editorial hero, Depth B programme-duration numeral, Depth C route, variable-height weekly rhythm, Deep Forest session, Coming Up list, Progressive Blur and floating Liquid Glass navigation.
+## Current product/design phase — G01 Plan experience
 
-The owner likes this direction and wants natural scrolling. The previous instruction to fit every section and the CTA into one 844 px viewport is withdrawn. Do not compress the page just to avoid scrolling. The earlier unequal-height weekly rhythm is preferred over uniform bars.
+The immediate work is to finish the Plan experience as a coherent set of screens and interactions, then recreate the approved result in Compose during the Plan implementation slice.
 
-The V03 HTML and handoff are now stored in `design/plan-screen/`. Owner-supplied captures are stored separately from formal render checks. The handoff says no automated headless-browser capture or Android/device test was performed by the artifact author. The owner's browser screenshots are visual review evidence only; they do not establish exact CSS viewport measurements or Android performance.
+| Area | Current state |
+|---|---|
+| AERUNO visual language | Eight-image Visual Reference Pack v1 complete; primary creative benchmark |
+| Round 2 Today designs | Existing reviewed/archived baseline; do not restart without a concrete reason |
+| Main Plan | V03 editorial Plan prototype is the working design reference; Plan research remains in `design/plan-screen/` |
+| Manage Plan | V05.2.1 is the current Manage Plan design baseline |
+| Day Actions | **Next design task: G01 V06** |
+| Full Plan Calendar | Follows Day Actions |
+| Plan package review | Required after Day Actions and Calendar to check the end-to-end Plan journey |
+| Native Compose implementation | Not yet started for the redesigned G01 Plan feature set |
 
-## 2. Completed work — do not repeat
+The older first Plan exploration remains useful for functional research but its conventional visual execution is not the visual benchmark. Use the Visual Reference Pack for art direction and the legacy V1 source for functional requirements.
 
-- Eight-image **AERUNO Visual Reference Pack v1** and its reviews/rules/handoff: complete; supplied separately as a companion ZIP. It is the primary creative benchmark. Do not regenerate it or recreate the same review work.
-- Round 2 visual baseline: Today strength, navigation states and Today running boards are complete and retained in `design/round-02/`.
-- Type & Depth Board: refinement checkpoint complete; owner selected Variant C ×1.14 selectively. `design/type-depth/` is retained as a reference.
-- Foundation Draft 1 is stored at `design/foundation-v1/aeruno-design-foundation.html`. The owner reports Foundation Draft 2 correction/review complete, but the actual Draft 2 file is absent from this repository copy. Treat Draft 2 as owner-reported context only; do not reconstruct or approve it.
-- First Plan exploration `design/plan-screen/aeruno-plan-screen.html`: retained as functional/layout research only. Its earlier gaps are prior observations, not a fresh or exhaustive audit.
-- Plan creative development: G01 V01/V02 led to G01 V03. V03 is the current proposed candidate; do not restart from earlier concepts.
+## Immediate next task
 
-## 3. Locked and selected direction
+Create the G01 V06 Day Actions Sheet using the Visual Reference Pack, the selected G01 Plan direction and verified legacy behaviour. Its main job is to manage a selected day: edit workout, swap eligible exercises, preview rescheduling, finish or reopen the day. Preserve distinctions between completed, manually closed, rest, in-progress, ready and future states. Keep prototype actions in sample/demo state only.
 
-Inherited locked visual baseline:
+After V06 owner review, design the Full Plan Calendar. Then review main Plan + Manage + Day Actions + Calendar together before closing the Plan design package.
 
-- Old Money × Liquid Glass.
+## Locked visual direction
+
+- Aesthetic: **Old Money × Liquid Glass**. Solid surfaces carry important information; glass is selective and functional.
 - Palette: Ivory `#F3EFE4`; Deep Forest `#1F3B30`; Terracotta `#C97855`; Surface `#FFFEFA`; Surface Alt `#E7E2D6`; Sage `#DCE5D7`; Text `#202A23`; Muted `#646E65`.
-- Fonts: Big Shoulders Display Black, Instrument Serif Italic and Inter.
-- Selective Variant C: Big Shoulders Display Black ×1.14 vertical scale. Implementation remains untested.
-- Session-pill timer: Big Shoulders Display Option 2, locked; outside Variant C scaling.
-- Depth B: oversized number partially occluded by a foreground card.
-- Depth C: route interacting with oversized typography.
-- Navigation: Today · Plan · Train · Progress · Me.
+- Font families: Big Shoulders Display Black, Instrument Serif Italic and Inter. No new network font dependency or font family without owner approval.
+- Navigation: **Today · Plan · Train · Progress · Me**.
+- Variant C: Big Shoulders Display Black at ×1.14 vertical scale, used selectively for hero titles, major workout/category words and at most one hero stat per screen. Not for ordinary UI, buttons, chips, body text, forms, timers or secondary stats.
+- Session-pill timer: Big Shoulders Display (Option 2), locked; outside Variant C scaling.
+- Preserve Depth B (number partially behind a foreground card) and Depth C (route crossing typography). Depth A remains exploratory. Keep real information readable.
+- Keep solid Deep Forest hero surfaces, generous warm-ivory space, restrained terracotta markers and selective Liquid Glass. Do not copy the reference boards literally or use every motif at once.
 
-Selected Plan treatment (not final-screen approval):
+## Visual Reference Pack authority
 
-- Concept B composition plus Concept A's topographic route language.
-- Programme-duration numeral, not the current-week number, anchors Depth B.
-- Unequal weekly bars encode planned session duration where data supports it.
-- Today and selected-day states are independent.
-- Natural scroll is welcome; don't squeeze all content into one viewport.
-- Progressive Blur is strongest at the top edge and fades downward without a visible cutoff.
-- Liquid Glass is selective, especially for fixed bottom navigation; solid surfaces remain responsible for content and controls.
+`AERUNO_Visual_Reference_Pack_v1.zip` is complete. Its eight original images, reviews, visual direction, typography/graphic rules and navigation specification are the primary art-direction source. Do not regenerate the pack or use a contact sheet as a substitute for inspecting its individual images when a task requires visual access.
 
-## 4. Current Plan artifact
+## Functional authority and preservation
 
-- `design/plan-screen/aeruno-plan-g01-v03.html` — latest editable browser prototype.
-- `design/plan-screen/G01_V03_DESIGN_HANDOFF.md` — design and implementation notes, proposed/open items, responsive intentions and evidence limits.
-- `design/plan-screen/owner-captures/` — owner-supplied screenshots of the browser preview (not automated responsive captures).
+- Legacy V1 in `AERUNO_HANDOFF/legacy-reference/` is a frozen, read-only behaviour/data/native-integration reference.
+- Existing feature capabilities and known tests are listed in `FEATURE_INVENTORY.md`.
+- Legacy Smart Week, plan editing, exercise swapping, rescheduling, closure states, GPS/steps, timers, widgets and backup rules must be source-verified before being represented as real behaviour.
+- Do not edit the legacy reference copy or change its app ID `com.arya.fit3`, signing, `aryaApp2` key/schema, backup format or native services without explicit owner approval.
+- The native app must receive legacy user data only through a deliberate, validated import path; do not assume private app storage can be shared.
 
-V03 prototype includes:
+## Native proof/implementation status
 
-- Programme identity and total-duration numeral `4` for the sample four-week plan.
-- Depth C sage route with ivory-ringed terracotta markers.
-- Compact three-metric current-week progress surface and segmented week status.
-- Variable-height weekly rhythm with undulating route thread and `STR / RUN / REST` labels.
-- Deep Forest selected-session hero.
-- Schedule-derived Coming Up rows.
-- Six-layer scroll-aware Progressive Blur prototype and fixed translucent Liquid Glass navigation.
+- Existing Compose app: prototype/technical starting workspace, not the finished app.
+- N04 progressive top blur: delivered in prototype; owner build/visual gate remains to be confirmed unless a later log proves otherwise.
+- N05 benchmark and owner device measurement: pending unless later evidence proves completion.
+- Full Plan feature implementation in Compose: not started.
+- Room/DataStore schema, final app identity and signing: open for the appropriate implementation/release decision gates.
 
-The V03 actions for Manage, other tabs and workout launch are prototype notices, not implemented application flows. W1–W4 segments are visual progress, not approved week-navigation controls. Whole-plan calendar access and secondary session controls remain open.
+## Evidence and decision discipline
 
-## 5. Current next task
-
-**G01 V04 — Product Completeness and Design QA** (brief: `AERUNO_HANDOFF/NEXT_TASK_G01_V04.md`). Do not start a new moodboard or re-generate the hero. Decide/represent the outstanding Plan behaviours:
-
-1. Week browsing and the entry point to the full programme calendar.
-2. Strength, run, rest/recovery, completed and upcoming session states.
-3. Contextual access to edit sets/reps, individual exercise swap, reschedule preview, finish/reopen and rest-day choices.
-4. Today versus selected-day independence.
-5. Coming Up's role and selection behaviour.
-6. Progressive Blur and Liquid Glass behaviour at multiple scroll positions, with readability and fallback.
-7. Responsive, enlarged-text, touch-target and accessibility review.
-
-After Main Plan is coherent, design **Manage Plan** as its own task. Then finish the other essential screen designs and shared user journeys. Follow `AERUNO_HANDOFF/PRODUCT_AND_DEVELOPMENT_PLAN.md`.
-
-## 6. Wider milestones
-
-1. **Product and design foundation:** essential screens, design system, interaction patterns, feature requirements and user journeys.
-2. **Technical validation:** compare native Compose and redesigned Capacitor/WebView with focused, measured tests and compatibility checks. The existing native prototype is not the final architecture.
-3. **Actual app development:** implement the selected architecture and approved product incrementally, preserve V1 functionality/data/workflows and test every phase.
-
-## 7. Open / untested
-
-- Final approval of the Plan screen and V03 composition.
-- Week switching and whole-programme calendar entry.
-- Manage Plan sheet and contextual secondary actions.
-- Some conditional session states and detailed interaction flows.
-- Progressive Blur and Liquid Glass performance and fallback on actual Android devices.
-- Exact font metrics with bundled Android fonts, enlarged text, TalkBack and dark-mode behaviour.
-- Native Compose vs Capacitor/WebView architecture.
-- Foundation Draft 2 source file is not present; do not reconstruct it.
-
-## 8. Preservation and evidence rules
-
-- No app implementation, Android code, migration or architecture decision during current design work.
-- Do not touch `AERUNO_HANDOFF/legacy-reference/`, legacy app IDs/signing, storage keys/schema, backups, native services or GitHub workflows.
-- Keep old design artifacts when they contain useful history or functional research; clearly label them superseded rather than pretending they never existed.
-- Do not infer that a browser prototype works on Android. Separate source inspection, browser preview, CI build and real-device evidence.
-- Do not investigate V2 or repeat the old Smooth/Lite diagnostic.
+Use `[V]` verified in source, `[S]` sandbox run, `[D]` documented, `[O]` owner decision, `[I]` inference and `[U]` unknown/untested. Use Approved / Proposed / Open / Untested explicitly. Browser rendering does not prove Android rendering, and a prototype does not prove production functionality.
